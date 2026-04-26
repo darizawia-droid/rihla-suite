@@ -1,0 +1,77 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
+import path from 'path'
+
+// API target: backend RIHLA port 3000 (Node.js/Express)
+const API_TARGET = process.env.VITE_API_URL
+  || (process.env.DOCKER ? 'http://backend:3000' : 'http://127.0.0.1:3000')
+
+export default defineConfig({
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      includeAssets: ['manifest.json', 'pwa-192x192.png', 'pwa-512x512.png'],
+      manifest: false, // already handled by public/manifest.json
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // App shell — cache-first
+        runtimeCaching: [
+          {
+            // API GET requests — network-first, fall back to cache (24h)
+            urlPattern: ({ url }) => url.pathname.startsWith('/api/') && !url.pathname.includes('/generate'),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 100, maxAgeSeconds: 24 * 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+              matchOptions: { ignoreSearch: false },
+            },
+          },
+          {
+            // AI generate & heavy POST endpoints — network-only (never cache)
+            urlPattern: ({ url, request }) =>
+              url.pathname.includes('/generate') || request.method !== 'GET',
+            handler: 'NetworkOnly',
+          },
+          {
+            // Google Fonts / external CDN
+            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts',
+              expiration: { maxEntries: 10, maxAgeSeconds: 365 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
+      },
+      devOptions: {
+        enabled: false, // disable SW in dev to avoid confusion
+      },
+    }),
+  ],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      '/api': { target: API_TARGET, changeOrigin: true },
+      '/socket.io': { target: API_TARGET, changeOrigin: true, ws: true },
+    },
+    watch: {
+      usePolling: true,
+    },
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    target: 'es2020',
+  },
+})

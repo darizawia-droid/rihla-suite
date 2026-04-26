@@ -1,0 +1,103 @@
+# ═══════════════════════════════════════════════════════════════
+# RIHLA Tourist Platform — Production stack
+# Run:  docker compose -f docker-compose.prod.yml up -d
+# Then: http://YOUR_SERVER  (all traffic via Nginx on port 80)
+# ═══════════════════════════════════════════════════════════════
+services:
+
+  # ── PostgreSQL 16 ─────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: rihla_db_prod
+    restart: always
+    environment:
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB:       ${POSTGRES_DB}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    networks:
+      - rihla_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    # No ports exposed — only the API talks to it internally
+
+  # ── Redis 7 ───────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: rihla_redis_prod
+    restart: always
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - rihla_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI Backend (production) ──────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rihla_api_prod
+    restart: always
+    environment:
+      DATABASE_URL:        postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL:           redis://:${REDIS_PASSWORD}@redis:6379/0
+      ANTHROPIC_API_KEY:   ${ANTHROPIC_API_KEY}
+      ENVIRONMENT:         production
+      DEBUG:               "false"
+      SECRET_KEY:          ${SECRET_KEY}
+      JWT_SECRET_KEY:      ${JWT_SECRET_KEY}
+      JWT_ALGORITHM:       HS256
+      JWT_EXPIRATION_HOURS: "24"
+      CORS_ORIGINS:        ${CORS_ORIGINS}
+      ADMIN_EMAIL:         ${ADMIN_EMAIL:-a.chakir@stours.ma}
+      ADMIN_PASSWORD:      ${ADMIN_PASSWORD}
+      SENTRY_DSN:          ${SENTRY_DSN:-}
+    volumes:
+      - exports_data:/app/exports
+      - ./scripts:/scripts:ro
+    networks:
+      - rihla_net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "alembic upgrade head &&
+             python /scripts/seed_data.py &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4"
+
+  # ── Nginx + React (production) ────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rihla_frontend_prod
+    restart: always
+    ports:
+      - "80:80"
+      # - "443:443"   # Uncomment when SSL certificates are configured
+    networks:
+      - rihla_net
+    depends_on:
+      - api
+
+networks:
+  rihla_net:
+    driver: bridge
+
+volumes:
+  pg_data:
+  redis_data:
+  exports_data:
