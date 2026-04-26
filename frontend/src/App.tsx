@@ -96,6 +96,7 @@ const AllotmentManagerPage   = lazy(() => import('@/pages/AllotmentManagerPage')
 const WhatsAppHubPage        = lazy(() => import('@/pages/WhatsAppHubPage').then(m => ({ default: m.WhatsAppHubPage })))
 const FlightSearchPage       = lazy(() => import('@/pages/FlightSearchPage').then(m => ({ default: m.FlightSearchPage })))
 const SupplierScoringPage    = lazy(() => import('@/pages/SupplierScoringPage').then(m => ({ default: m.SupplierScoringPage })))
+const GroupOpsHubPage        = lazy(() => import('@/pages/GroupOpsHubPage').then(m => ({ default: m.GroupOpsHubPage })))
 
 // ── Skeleton loader shown during page transitions ─────────────────
 function PageSkeleton() {
@@ -256,6 +257,7 @@ export default function App() {
                 <Route path="/whatsapp"              element={<WhatsAppHubPage />} />
                 <Route path="/flight-search"         element={<FlightSearchPage />} />
                 <Route path="/supplier-scoring"      element={<SupplierScoringPage />} />
+                <Route path="/group-ops"              element={<GroupOpsHubPage />} />
               </Route>
 
               <Route path="*" element={<Navigate to="/dashboard" replace />} />

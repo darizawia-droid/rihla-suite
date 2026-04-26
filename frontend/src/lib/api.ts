@@ -1340,3 +1340,24 @@ export const supplierScoringApi = {
   reportIncident: (supplierId: string, data: { description: string; severity: string; project_id?: string }) =>
     api.post(`/suppliers/${supplierId}/incidents`, data),
 }
+
+export const groupOpsApi = {
+  getGroupStatus: (projectId: string) => api.get(`/group-ops/${projectId}/status`),
+  getDayPlan: (projectId: string, day: number) => api.get(`/group-ops/${projectId}/days/${day}`),
+  getTeam: (projectId: string) => api.get(`/group-ops/${projectId}/team`),
+  getIncidents: (projectId: string) => api.get(`/group-ops/${projectId}/incidents`),
+  createIncident: (projectId: string, data: { title: string; description: string; severity: string; category: string; day: number }) =>
+    api.post(`/group-ops/${projectId}/incidents`, data),
+  resolveIncident: (projectId: string, incidentId: string, data: { resolution: string }) =>
+    api.patch(`/group-ops/${projectId}/incidents/${incidentId}/resolve`, data),
+  escalateIncident: (projectId: string, incidentId: string) =>
+    api.post(`/group-ops/${projectId}/incidents/${incidentId}/escalate`),
+  getMessages: (projectId: string, day?: number) =>
+    api.get(`/group-ops/${projectId}/messages`, { params: { day } }),
+  sendMessage: (projectId: string, data: { text: string; day?: number; is_alert?: boolean }) =>
+    api.post(`/group-ops/${projectId}/messages`, data),
+  changeSupplier: (projectId: string, day: number, data: { type: 'hotel' | 'restaurant' | 'guide'; new_supplier_id: string; reason: string }) =>
+    api.post(`/group-ops/${projectId}/days/${day}/change-supplier`, data),
+  updateSatisfaction: (projectId: string, day: number, data: { satisfaction: 'happy' | 'neutral' | 'unhappy' }) =>
+    api.patch(`/group-ops/${projectId}/days/${day}/satisfaction`, data),
+}

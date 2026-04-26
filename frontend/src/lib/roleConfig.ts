@@ -81,6 +81,7 @@ const ALL_GROUPS: NavGroup[] = [
       { to: '/operations',           icon: 'Building2',       label: 'Suivi Terrain',           shortcut: 'L' },
       { to: '/operations/calendar',  icon: 'Calendar',        label: 'Planning Global',         shortcut: 'K' },
       { to: '/operations/concierge', icon: 'Gem',             label: 'Conciergerie VIP',        shortcut: 'J' },
+      { to: '/group-ops',            icon: 'Users',           label: 'Coordination Groupe' },
     ],
   },
   {
