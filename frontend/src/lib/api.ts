@@ -1251,3 +1251,92 @@ export const cotationApi = {
     quotations: Array<{ id: string; version: number; status: string; currency: string; margin_pct: number }>
   }>>('/cotation/projects-with-quotations'),
 }
+
+// ── 10 Extras — APIs ──────────────────────────────────────────────
+
+export const clientPortalApi = {
+  getProposal: (token: string) => api.get(`/client-portal/proposals/${token}`),
+  addComment: (token: string, data: { day_id: number; text: string }) =>
+    api.post(`/client-portal/proposals/${token}/comments`, data),
+  approve: (token: string) => api.post(`/client-portal/proposals/${token}/approve`),
+  sign: (token: string, data: { full_name: string; signature_data: string; notes?: string }) =>
+    api.post(`/client-portal/proposals/${token}/sign`, data),
+}
+
+export const excelExportApi = {
+  generate: (projectId: string, config: {
+    models: string[]; pax_ranges: number[]; include_breakdown: boolean;
+    include_comparison: boolean; include_charts: boolean; currency: string;
+  }) => api.post(`/export/excel/${projectId}`, config, { responseType: 'blob' }),
+}
+
+export const whatIfApi = {
+  simulate: (projectId: string, overrides: {
+    days: Array<{ day: number; hotel_category?: string; guide_included?: boolean; activities?: string[] }>;
+    pax: number; margin_pct: number;
+  }) => api.post(`/what-if/${projectId}/simulate`, overrides),
+}
+
+export const projectCloneApi = {
+  clone: (projectId: string, config: {
+    new_name: string; new_client?: string; copy_itinerary: boolean;
+    copy_cotation: boolean; copy_documents: boolean; new_start_date?: string; new_pax?: number;
+  }) => api.post(`/projects/${projectId}/clone`, config),
+}
+
+export const passengersApi = {
+  list: (projectId: string) => api.get(`/projects/${projectId}/passengers`),
+  create: (projectId: string, data: Record<string, unknown>) =>
+    api.post(`/projects/${projectId}/passengers`, data),
+  update: (projectId: string, passengerId: string, data: Record<string, unknown>) =>
+    api.put(`/projects/${projectId}/passengers/${passengerId}`, data),
+  delete: (projectId: string, passengerId: string) =>
+    api.delete(`/projects/${projectId}/passengers/${passengerId}`),
+  exportCsv: (projectId: string) =>
+    api.get(`/projects/${projectId}/passengers/export`, { responseType: 'blob' }),
+}
+
+export const budgetTrackerApi = {
+  get: (projectId: string) => api.get(`/projects/${projectId}/budget`),
+  updateActual: (projectId: string, lineId: string, data: { actual: number; notes?: string }) =>
+    api.patch(`/projects/${projectId}/budget/${lineId}`, data),
+  exportReport: (projectId: string) =>
+    api.get(`/projects/${projectId}/budget/export`, { responseType: 'blob' }),
+}
+
+export const allotmentsApi = {
+  list: (projectId?: string) => api.get('/allotments', { params: { project_id: projectId } }),
+  confirm: (allotmentId: string) => api.post(`/allotments/${allotmentId}/confirm`),
+  release: (allotmentId: string) => api.post(`/allotments/${allotmentId}/release`),
+  create: (data: Record<string, unknown>) => api.post('/allotments', data),
+}
+
+export const whatsappApi = {
+  status: () => api.get('/whatsapp/status'),
+  conversations: () => api.get('/whatsapp/conversations'),
+  messages: (conversationId: string) => api.get(`/whatsapp/conversations/${conversationId}/messages`),
+  send: (conversationId: string, data: { text: string; template_id?: string }) =>
+    api.post(`/whatsapp/conversations/${conversationId}/send`, data),
+  sendProposal: (conversationId: string, projectId: string) =>
+    api.post(`/whatsapp/conversations/${conversationId}/send-proposal`, { project_id: projectId }),
+  templates: () => api.get('/whatsapp/templates'),
+}
+
+export const flightSearchApi = {
+  search: (params: {
+    origin: string; destination: string; depart_date: string;
+    return_date?: string; pax: number; cabin_class?: string;
+  }) => api.post('/flights/search', params),
+  addToQuote: (projectId: string, flightIds: string[]) =>
+    api.post(`/flights/add-to-quote`, { project_id: projectId, flight_ids: flightIds }),
+}
+
+export const supplierScoringApi = {
+  list: (params?: { type?: string; city?: string; min_score?: number }) =>
+    api.get('/suppliers/scoring', { params }),
+  get: (supplierId: string) => api.get(`/suppliers/${supplierId}/scoring`),
+  addReview: (supplierId: string, data: { rating: number; comment: string; project_id?: string }) =>
+    api.post(`/suppliers/${supplierId}/reviews`, data),
+  reportIncident: (supplierId: string, data: { description: string; severity: string; project_id?: string }) =>
+    api.post(`/suppliers/${supplierId}/incidents`, data),
+}
