@@ -85,6 +85,19 @@ const OpsCockpitPageLazy   = lazy(() => import('./pages/OpsCockpitPage'))
 const SubAgentPortalPageLazy = lazy(() => import('./pages/SubAgentPortalPage'))
 const LeaderboardPage       = lazy(() => import('@/pages/LeaderboardPage').then(m => ({ default: m.LeaderboardPage })))
 
+// ── 10 Extras Features ────────────────────────────────────────────
+const ClientPortalInteractivePage = lazy(() => import('@/pages/ClientPortalInteractivePage').then(m => ({ default: m.ClientPortalInteractivePage })))
+const ExcelExportPage        = lazy(() => import('@/pages/ExcelExportPage').then(m => ({ default: m.ExcelExportPage })))
+const WhatIfSimulatorPage    = lazy(() => import('@/pages/WhatIfSimulatorPage').then(m => ({ default: m.WhatIfSimulatorPage })))
+const ProjectClonePage       = lazy(() => import('@/pages/ProjectClonePage').then(m => ({ default: m.ProjectClonePage })))
+const PassengerManagementPage = lazy(() => import('@/pages/PassengerManagementPage').then(m => ({ default: m.PassengerManagementPage })))
+const BudgetTrackerPage      = lazy(() => import('@/pages/BudgetTrackerPage').then(m => ({ default: m.BudgetTrackerPage })))
+const AllotmentManagerPage   = lazy(() => import('@/pages/AllotmentManagerPage').then(m => ({ default: m.AllotmentManagerPage })))
+const WhatsAppHubPage        = lazy(() => import('@/pages/WhatsAppHubPage').then(m => ({ default: m.WhatsAppHubPage })))
+const FlightSearchPage       = lazy(() => import('@/pages/FlightSearchPage').then(m => ({ default: m.FlightSearchPage })))
+const SupplierScoringPage    = lazy(() => import('@/pages/SupplierScoringPage').then(m => ({ default: m.SupplierScoringPage })))
+const GroupOpsHubPage        = lazy(() => import('@/pages/GroupOpsHubPage').then(m => ({ default: m.GroupOpsHubPage })))
+
 // ── Skeleton loader shown during page transitions ─────────────────
 function PageSkeleton() {
   return (
@@ -232,6 +245,19 @@ export default function App() {
                 <Route path="/finance/strategy"      element={<FinancialStrategyPage />} />
                 <Route path="/finance/p-l"           element={<FinancialDashboardPage />} />
                 <Route path="/gamification/leaderboard" element={<LeaderboardPage />} />
+
+                {/* ── 10 EXTRAS ──────────────────────────────────── */}
+                <Route path="/client-portal"         element={<ClientPortalInteractivePage />} />
+                <Route path="/export-excel"          element={<ExcelExportPage />} />
+                <Route path="/what-if"               element={<WhatIfSimulatorPage />} />
+                <Route path="/projects/clone"        element={<ProjectClonePage />} />
+                <Route path="/passengers"            element={<PassengerManagementPage />} />
+                <Route path="/budget-tracker"        element={<BudgetTrackerPage />} />
+                <Route path="/allotments"            element={<AllotmentManagerPage />} />
+                <Route path="/whatsapp"              element={<WhatsAppHubPage />} />
+                <Route path="/flight-search"         element={<FlightSearchPage />} />
+                <Route path="/supplier-scoring"      element={<SupplierScoringPage />} />
+                <Route path="/group-ops"              element={<GroupOpsHubPage />} />
               </Route>
 
               <Route path="*" element={<Navigate to="/dashboard" replace />} />

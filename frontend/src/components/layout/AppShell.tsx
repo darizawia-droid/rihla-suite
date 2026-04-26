@@ -11,7 +11,8 @@ import {
   Sparkles, BarChart2, Hash, Receipt, LogOut,
   Search, Bell, HelpCircle, Settings, Bus, FileText, Building2, Calendar, Hotel, BarChart3,
   Sun, Moon, Type, Compass, Gem, Utensils, Users, Radio, PieChart, TrendingUp,
-  Globe, Car, Star, Truck, Trophy, Copy, Image as ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, LucideIcon
+  Globe, Car, Star, Truck, Trophy, Copy, Image as ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, LucideIcon,
+  FileSpreadsheet, Sliders, MessageCircle, Plane, Award
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -34,6 +35,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   LayoutDashboard, FolderKanban, Calculator, MapPin, Sparkles, BarChart2, Hash, Receipt,
   Bus, FileText, Building2, Calendar, Hotel, BarChart3, Type, Compass, Gem, Utensils,
   Users, Radio, PieChart, TrendingUp, Globe, Car, Star, Truck, Bell, Settings, Trophy, Copy, ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database,
+  FileSpreadsheet, Sliders, MessageCircle, Plane, Award,
 }
 
 export function AppShell() {

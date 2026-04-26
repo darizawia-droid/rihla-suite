@@ -81,6 +81,7 @@ const ALL_GROUPS: NavGroup[] = [
       { to: '/operations',           icon: 'Building2',       label: 'Suivi Terrain',           shortcut: 'L' },
       { to: '/operations/calendar',  icon: 'Calendar',        label: 'Planning Global',         shortcut: 'K' },
       { to: '/operations/concierge', icon: 'Gem',             label: 'Conciergerie VIP',        shortcut: 'J' },
+      { to: '/group-ops',            icon: 'Users',           label: 'Coordination Groupe' },
     ],
   },
   {
@@ -113,6 +114,31 @@ const ALL_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: 'EXTRAS — HAUTE VALEUR',
+    items: [
+      { to: '/client-portal',      icon: 'Globe',           label: 'Portail Client B2C' },
+      { to: '/export-excel',       icon: 'FileSpreadsheet', label: 'Export Excel Cotation' },
+      { to: '/what-if',            icon: 'Sliders',         label: 'Simulation What-If' },
+      { to: '/projects/clone',     icon: 'Copy',            label: 'Dupliquer Projet' },
+    ],
+  },
+  {
+    label: 'EXTRAS — OPÉRATIONNEL',
+    items: [
+      { to: '/passengers',         icon: 'Users',           label: 'Gestion Passagers' },
+      { to: '/budget-tracker',     icon: 'BarChart2',       label: 'Budget Tracker' },
+      { to: '/allotments',         icon: 'Hotel',           label: 'Allotements' },
+    ],
+  },
+  {
+    label: 'EXTRAS — INNOVATION',
+    items: [
+      { to: '/whatsapp',           icon: 'MessageCircle',   label: 'WhatsApp Hub' },
+      { to: '/flight-search',      icon: 'Plane',           label: 'Recherche Vols' },
+      { to: '/supplier-scoring',   icon: 'Award',           label: 'Scoring Fournisseurs' },
+    ],
+  },
+  {
     label: 'MON ESPACE',
     items: [
       { to: '/portal',               icon: 'Globe',           label: 'Mon Voyage',              shortcut: 'W' },
@@ -132,20 +158,29 @@ const ROLE_GROUPS: Record<string, string[]> = {
     'OPÉRATIONS LIVE',
     'LOGISTIQUE & RESSOURCES',
     'GESTION & FINANCE',
+    'EXTRAS — HAUTE VALEUR',
+    'EXTRAS — OPÉRATIONNEL',
+    'EXTRAS — INNOVATION',
   ],
   sales_director: [
     'OPÉRATIONS LIVE',
     'LOGISTIQUE & RESSOURCES',
     'GESTION & FINANCE',
+    'EXTRAS — HAUTE VALEUR',
+    'EXTRAS — OPÉRATIONNEL',
+    'EXTRAS — INNOVATION',
   ],
   travel_designer: [
     'CŒUR DE MÉTIER DMC',
     'STUDIO CRÉATIF (IA)',
     'LOGISTIQUE & RESSOURCES',
+    'EXTRAS — HAUTE VALEUR',
+    'EXTRAS — OPÉRATIONNEL',
   ],
   quotation_officer: [
     'CŒUR DE MÉTIER DMC',
     'GESTION & FINANCE',
+    'EXTRAS — HAUTE VALEUR',
   ],
   data_operator: [
     'LOGISTIQUE & RESSOURCES',
