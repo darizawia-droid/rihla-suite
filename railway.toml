@@ -1,0 +1,11 @@
+# Railway project configuration — RIHLA DMC Platform
+# Docs: https://docs.railway.app/reference/config-as-code
+
+[build]
+builder = "DOCKERFILE"
+
+# ── Services are configured individually in the Railway dashboard ──
+# Backend  → root: /backend,  Dockerfile: backend/Dockerfile
+# Frontend → root: /frontend, Dockerfile: frontend/Dockerfile
+# Database → PostgreSQL plugin (auto-provisioned by Railway)
+# Cache    → Redis plugin (optional)

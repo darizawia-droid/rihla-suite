@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIHLA Platform — Présentation Technique — S'TOURS DMC Morocco</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --red:    #A8371D;
+    --navy:   #1628A9;
+    --ink:    #141414;
+    --cream:  #FFFEE9;
+    --surface:#F8F6F2;
+    --grey:   #6B6B6B;
+    --line:   #E4E2DC;
+    --green:  #2D6A4F;
+    --purple: #6A2D6A;
+    --teal:   #1A6A85;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0A1240;
+    color: var(--ink);
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: white; }
+    .page { page-break-after: always; box-shadow: none; margin: 0; border-radius: 0; }
+    .cover { background: #0A1240 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .no-print { display: none; }
+    nav { display: none; }
+    @page { margin: 0; size: A4; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,18,64,0.97); backdrop-filter: blur(8px);
+    padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+    border-bottom: 2px solid var(--red);
+  }
+  nav .brand { color: white; font-weight: 800; font-size: 18px; margin-right: auto; }
+  nav .brand span { color: var(--red); }
+  nav a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 12px; font-weight: 500;
+           padding: 4px 10px; border-radius: 4px; transition: all 0.2s; }
+  nav a:hover { color: white; background: rgba(255,255,255,0.12); }
+  nav .print-btn {
+    background: var(--red); color: white; border: none; padding: 7px 16px;
+    border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  nav .print-btn:hover { background: #8B2A12; }
+
+  /* ── PAGES ── */
+  .pages { margin-top: 52px; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px; }
+  .page {
+    width: 210mm; min-height: 297mm;
+    background: white; border-radius: 4px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    position: relative; overflow: hidden;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(160deg, #0A1240 0%, #0D1B6E 40%, #1628A9 100%) !important;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 0; min-height: 297mm;
+  }
+  .cover-red-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 18mm;
+    background: var(--red); display: flex; align-items: center; padding: 0 20mm;
+  }
+  .cover-logo-text { color: white; font-size: 15px; font-weight: 800; letter-spacing: 2px; }
+  .cover-logo-sub { color: rgba(255,255,255,0.7); font-size: 8px; letter-spacing: 3px; margin-top: 2px; }
+  .cover-body { text-align: center; padding: 20mm; padding-top: 30mm; }
+  .cover h1 { font-size: 72px; font-weight: 900; color: white; letter-spacing: -2px; line-height: 1; }
+  .cover .subtitle { font-size: 20px; color: rgba(245,221,215,0.9); margin-top: 12px; font-weight: 300; }
+  .cover-line { width: 120px; height: 4px; background: var(--red); margin: 16px auto; border-radius: 2px; }
+  .cover-tagline { font-size: 13px; color: var(--cream); font-style: italic; font-weight: 400; margin-top: 8px; }
+  .version-badge { display: inline-block; background: var(--red); color: white; padding: 4px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 20px; letter-spacing: 1px; }
+  .cover-company-box { margin-top: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 16px 32px; }
+  .cover-company-box .name { color: white; font-size: 16px; font-weight: 700; }
+  .cover-company-box .dmc { color: rgba(200,208,255,0.8); font-size: 11px; margin-top: 4px; }
+  .cover-company-box .cities { color: rgba(200,208,255,0.7); font-size: 10px; margin-top: 2px; }
+  .tech-pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 40px; }
+  .tech-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(200,208,255,0.9); padding: 4px 14px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+  .cover-bottom { position: absolute; bottom: 0; left: 0; right: 0; background: var(--red); padding: 6px; text-align: center; }
+  .cover-bottom p { color: white; font-size: 9px; font-weight: 500; }
+
+  /* ── PAGE LAYOUT ── */
+  .page-header {
+    padding: 6mm 20mm 3mm;
+    border-bottom: 1.5px solid var(--red);
+    display: flex; align-items: center; justify-content: flex-end;
+  }
+  .page-header .logo-area { color: var(--red); font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+  .page-header .logo-area span { color: var(--navy); font-size: 8px; display: block; letter-spacing: 2px; font-weight: 500; }
+  .page-content { padding: 8mm 20mm 6mm; }
+  .page-footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--red); padding: 5px 20mm;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .page-footer p { color: white; font-size: 8px; font-weight: 500; }
+
+  /* ── SECTION HEADERS ── */
+  .section-banner {
+    background: var(--red); color: white;
+    padding: 8px 12px; border-radius: 4px;
+    font-size: 13px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-banner .num { background: rgba(0,0,0,0.2); border-radius: 3px; padding: 1px 6px; font-size: 11px; }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 12px 0; }
+  .kpi-card { background: var(--cream); border: 1px solid var(--line); border-radius: 8px; padding: 14px 10px; text-align: center; }
+  .kpi-value { font-size: 32px; font-weight: 800; color: var(--red); line-height: 1; }
+  .kpi-label { font-size: 9px; color: var(--grey); margin-top: 4px; font-weight: 500; }
+
+  /* ── PROP TABLE ── */
+  .prop-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  .prop-table td { padding: 7px 8px; font-size: 9px; border-bottom: 0.5px solid var(--line); vertical-align: top; }
+  .prop-table td:first-child { font-weight: 700; color: var(--ink); width: 100px; }
+  .prop-table td:last-child { color: var(--grey); }
+
+  /* ── TECH TABLE ── */
+  .tech-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 8.5px; }
+  .tech-table thead tr { background: var(--red); color: white; }
+  .tech-table thead th { padding: 7px 8px; text-align: left; font-weight: 600; font-size: 8.5px; }
+  .tech-table tbody tr:nth-child(odd) { background: white; }
+  .tech-table tbody tr:nth-child(even) { background: var(--cream); }
+  .tech-table tbody td { padding: 5px 8px; border-bottom: 0.3px solid var(--line); color: var(--ink); }
+  .tech-table tbody td:first-child { font-weight: 600; color: var(--navy); }
+  .tech-table code { font-family: 'JetBrains Mono', monospace; font-size: 8px; background: rgba(22,40,169,0.08); padding: 1px 4px; border-radius: 3px; color: var(--navy); }
+
+  /* ── ARCH DIAGRAM ── */
+  .arch-diagram { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 12px 0; }
+  .arch-box { border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .arch-box-header { padding: 10px; text-align: center; font-size: 9px; font-weight: 700; color: white; letter-spacing: 1px; }
+  .arch-box-body { padding: 10px; font-size: 8px; line-height: 1.6; }
+  .arch-box-body p { color: white; opacity: 0.85; }
+  .arch-box-body .tech-tag { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 3px; padding: 1px 4px; margin: 1px; font-size: 7.5px; color: white; }
+  .docker-label { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; text-align: center; padding: 7px; font-size: 8px; font-weight: 600; color: var(--grey); margin-top: 6px; }
+
+  /* ── MODULE CARDS ── */
+  .module-card { margin-bottom: 14px; border-left: 4px solid var(--red); padding-left: 10px; }
+  .module-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+  .module-title-row { display: flex; align-items: center; gap: 6px; }
+  .module-num { font-size: 9px; font-weight: 700; color: var(--grey); background: var(--surface); padding: 2px 6px; border-radius: 3px; }
+  .module-icon { font-size: 14px; }
+  .module-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .endpoint-badge { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; font-weight: 600; background: var(--red); color: white; padding: 2px 7px; border-radius: 4px; }
+  .module-desc { font-size: 9px; color: var(--grey); line-height: 1.5; margin-bottom: 6px; }
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .feature-item { display: flex; align-items: flex-start; gap: 4px; font-size: 8.5px; color: var(--ink); line-height: 1.4; padding: 2px 0; }
+  .feature-item::before { content: '→'; color: var(--red); font-weight: 600; flex-shrink: 0; font-size: 8px; margin-top: 1px; }
+  .tech-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+  .tech-tag-sm { font-size: 7.5px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .divider { border: none; border-top: 0.5px solid var(--line); margin: 8px 0; }
+
+  /* ── API TABLE ── */
+  .api-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 8.5px; }
+  .api-table thead tr { background: var(--red); }
+  .api-table thead th { color: white; padding: 7px 8px; font-weight: 600; text-align: left; }
+  .api-table tbody tr:nth-child(odd) { background: white; }
+  .api-table tbody tr:nth-child(even) { background: var(--cream); }
+  .api-table td { padding: 5px 8px; border-bottom: 0.3px solid var(--line); vertical-align: middle; }
+  .method { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
+  .method.post { color: var(--green); background: rgba(45,106,79,0.1); }
+  .method.get { color: var(--navy); background: rgba(22,40,169,0.1); }
+  .endpoint-code { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: var(--ink); }
+  .auth-badge { font-size: 7.5px; font-weight: 600; padding: 2px 6px; border-radius: 10px; }
+  .auth-jwt { background: rgba(22,40,169,0.1); color: var(--navy); }
+  .auth-public { background: rgba(45,106,79,0.1); color: var(--green); }
+  .auth-admin { background: rgba(168,55,29,0.1); color: var(--red); }
+
+  /* ── ENV TABLE ── */
+  .env-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 8.5px; }
+  .env-table thead tr { background: var(--navy); }
+  .env-table thead th { color: white; padding: 7px 8px; text-align: left; font-weight: 600; }
+  .env-table tbody tr:nth-child(odd) { background: white; }
+  .env-table tbody tr:nth-child(even) { background: rgba(22,40,169,0.04); }
+  .env-table td { padding: 5px 8px; border-bottom: 0.3px solid var(--line); vertical-align: middle; }
+  .env-var { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--navy); font-weight: 600; }
+  .env-val { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: var(--grey); }
+
+  /* ── DOCKER SERVICES ── */
+  .docker-services { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 10px 0; }
+  .docker-service { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .ds-header { background: var(--green); color: white; padding: 8px; text-align: center; font-size: 10px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .ds-body { padding: 8px; font-size: 8px; }
+  .ds-body p { color: var(--grey); line-height: 1.5; }
+  .ds-port { font-family: 'JetBrains Mono', monospace; color: var(--navy); font-weight: 600; background: rgba(22,40,169,0.08); padding: 2px 5px; border-radius: 3px; margin-top: 4px; display: inline-block; }
+
+  /* ── CI/CD ── */
+  .ci-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .ci-box { border-radius: 8px; padding: 12px; }
+  .ci-box.ci-left { background: var(--cream); border: 1px solid var(--line); }
+  .ci-box.ci-right { background: rgba(22,40,169,0.05); border: 1px solid rgba(22,40,169,0.15); }
+  .ci-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; margin-bottom: 8px; }
+  .ci-title.green { color: var(--green); }
+  .ci-title.navy { color: var(--navy); }
+  .ci-step { display: flex; gap: 6px; font-size: 8.5px; color: var(--ink); margin-bottom: 4px; line-height: 1.4; }
+  .ci-step::before { content: '→'; color: var(--grey); font-weight: 600; flex-shrink: 0; }
+
+  /* ── ROADMAP ── */
+  .roadmap-item { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .roadmap-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .roadmap-line { display: flex; flex-direction: column; }
+  .roadmap-version { font-size: 10px; font-weight: 700; color: var(--ink); }
+  .roadmap-status { font-size: 8px; font-weight: 600; padding: 1px 7px; border-radius: 10px; margin-left: 6px; }
+  .status-done { background: rgba(45,106,79,0.15); color: var(--green); }
+  .status-inprogress { background: rgba(168,55,29,0.15); color: var(--red); }
+  .status-planned { background: rgba(107,107,107,0.15); color: var(--grey); }
+  .roadmap-items-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .roadmap-chip { font-size: 8px; color: var(--ink); background: var(--surface); border: 0.5px solid var(--line); padding: 2px 7px; border-radius: 10px; }
+  .roadmap-track { display: flex; flex-direction: column; gap: 0; padding-left: 6px; border-left: 2px solid var(--line); margin-left: 5px; }
+  .roadmap-entry { padding: 10px 14px; position: relative; }
+  .roadmap-entry::before { content: ''; position: absolute; left: -9px; top: 16px; width: 12px; height: 12px; border-radius: 50%; }
+  .roadmap-entry.done::before { background: var(--green); }
+  .roadmap-entry.inprogress::before { background: var(--red); }
+  .roadmap-entry.planned::before { background: var(--grey); }
+  .roadmap-entry.done { background: rgba(45,106,79,0.05); border-radius: 0 6px 6px 0; }
+  .roadmap-entry.inprogress { background: rgba(168,55,29,0.05); border-radius: 0 6px 6px 0; }
+  .roadmap-entry.planned { background: rgba(107,107,107,0.05); border-radius: 0 6px 6px 0; }
+  .roadmap-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+
+  /* ── COLOR SWATCHES ── */
+  .color-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; margin: 10px 0; }
+  .color-swatch { border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+  .color-block { height: 40px; }
+  .color-info { padding: 5px; background: white; }
+  .color-hex { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 600; color: var(--ink); }
+  .color-name { font-size: 7.5px; color: var(--grey); margin-top: 1px; }
+  .color-usage { font-size: 7px; color: var(--grey); opacity: 0.7; }
+
+  /* ── CONTACT BOXES ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .contact-box { border-radius: 10px; overflow: hidden; }
+  .contact-header { padding: 12px; font-weight: 700; font-size: 12px; }
+  .contact-body { padding: 12px; font-size: 8.5px; line-height: 1.8; }
+  .contact-label { font-weight: 700; margin-top: 8px; margin-bottom: 2px; }
+  .contact-box.company { background: var(--surface); border: 1px solid var(--line); }
+  .contact-box.company .contact-header { background: var(--red); color: white; }
+  .contact-box.company .contact-body { color: var(--ink); }
+  .contact-box.dev { background: #0A1240; border: 1px solid rgba(255,255,255,0.1); }
+  .contact-box.dev .contact-header { background: var(--red); color: white; }
+  .contact-box.dev .contact-body { color: rgba(200,208,255,0.85); }
+  .contact-box.dev .contact-label { color: var(--cream); }
+  .final-note { text-align: center; font-size: 8.5px; color: var(--grey); font-style: italic; margin: 16px 0 4px; border-top: 1px solid var(--red); padding-top: 10px; }
+  .copyright { text-align: center; font-size: 10px; font-weight: 700; color: var(--red); }
+
+  /* ── TYPOGRAPHY TABLE ── */
+  .typo-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 8.5px; }
+  .typo-table thead tr { background: var(--red); }
+  .typo-table thead th { color: white; padding: 7px 8px; text-align: left; font-weight: 600; }
+  .typo-table tbody tr:nth-child(odd) { background: white; }
+  .typo-table tbody tr:nth-child(even) { background: var(--cream); }
+  .typo-table td { padding: 5px 8px; border-bottom: 0.3px solid var(--line); }
+
+  body { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="no-print">
+  <div class="brand">RIHLA <span>PLATFORM</span></div>
+  <a href="#resume">Résumé</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#modules">Modules</a>
+  <a href="#api">API</a>
+  <a href="#infra">Infra</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#brand">Charte</a>
+  <a href="#contact">Contact</a>
+  <button class="print-btn" onclick="window.print()">🖨 Imprimer / PDF</button>
+</nav>
+
+<div class="pages">
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 1 — COVER                                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-red-bar">
+    <div>
+      <div class="cover-logo-text">S'TOURS</div>
+      <div class="cover-logo-sub">DESTINATION MANAGEMENT COMPANY</div>
+    </div>
+  </div>
+
+  <div class="cover-body">
+    <h1>RIHLA</h1>
+    <div class="subtitle">Plateforme de Gestion DMC</div>
+    <div class="cover-line"></div>
+    <div class="cover-tagline">"Du brief client au document prêt à envoyer — en moins de 15 minutes."</div>
+    <div class="version-badge">VERSION 0.7 — AVRIL 2026</div>
+
+    <div class="cover-company-box">
+      <div class="name">S'TOURS DMC Morocco</div>
+      <div class="dmc">Destination Management Company</div>
+      <div class="cities">Casablanca · Marrakech</div>
+    </div>
+
+    <div class="tech-pills">
+      <span class="tech-pill">Python 3.12</span>
+      <span class="tech-pill">FastAPI</span>
+      <span class="tech-pill">React 18</span>
+      <span class="tech-pill">PostgreSQL 16</span>
+      <span class="tech-pill">Redis 7</span>
+      <span class="tech-pill">Docker</span>
+      <span class="tech-pill">Claude AI</span>
+      <span class="tech-pill">GitHub Actions</span>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <p>Proprietary & Confidential · © 2026 S'TOURS DMC Morocco · contact@stours.ma · (+212) 522 95 40 00</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 2 — RÉSUMÉ EXÉCUTIF                              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="resume">
+  <div class="page-header">
+    <div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div>
+  </div>
+  <div class="page-content">
+    <div class="section-banner">
+      <span class="num">01</span> Résumé Exécutif
+    </div>
+
+    <p style="font-size:9.5px;color:var(--grey);line-height:1.7;margin-bottom:14px;">
+      RIHLA est la plateforme SaaS propriétaire de <strong style="color:var(--ink)">S'TOURS DMC Morocco</strong>,
+      conçue pour automatiser et centraliser la gestion des circuits touristiques — de la cotation jusqu'à la facturation finale.
+      En moins de 15 minutes, un travel designer peut passer d'un brief client à un devis complet, un programme
+      jour-par-jour généré par IA, et une facture PDF prête à envoyer.
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-value">15 min</div><div class="kpi-label">Brief → Document prêt</div></div>
+      <div class="kpi-card"><div class="kpi-value">41/41</div><div class="kpi-label">Tests pricing engine ✓</div></div>
+      <div class="kpi-card"><div class="kpi-value">6 rôles</div><div class="kpi-label">Auth RBAC granulaire</div></div>
+      <div class="kpi-card"><div class="kpi-value">12+</div><div class="kpi-label">Modules fonctionnels</div></div>
+      <div class="kpi-card"><div class="kpi-value">4 formats</div><div class="kpi-label">Exports PDF/PPTX/XLSX/CSV</div></div>
+      <div class="kpi-card"><div class="kpi-value">FR + EN</div><div class="kpi-label">Langues IA supportées</div></div>
+    </div>
+
+    <table class="prop-table">
+      <tr><td>⚡ Gain de temps</td><td>Cotation multi-ranges calculée en secondes avec le moteur déterministe DMC. Fini les tableaux Excel manuels.</td></tr>
+      <tr><td>📄 Qualité garantie</td><td>Documents aux couleurs et gabarit officiels S'TOURS, prêts à envoyer — factures PDF, programmes, présentations.</td></tr>
+      <tr><td>🤖 IA intégrée</td><td>Génération d'itinéraires par Claude Anthropic — 4 tons de rédaction (Standard, Luxe, Aventure, Famille), français et anglais.</td></tr>
+      <tr><td>🔐 Traçabilité</td><td>Historique complet : projets DRAFT→WON/LOST, cotations versionnées, factures, références IATA uniques.</td></tr>
+      <tr><td>🐳 Déploiement</td><td>Conteneurisé Docker Compose — 1 commande pour lancer l'ensemble de la plateforme en production.</td></tr>
+    </table>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 2</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 3 — ARCHITECTURE                                  -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="architecture">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">02</span> Architecture Technique</div>
+
+    <p style="font-size:9.5px;color:var(--grey);line-height:1.7;margin-bottom:12px;">
+      RIHLA suit une architecture <strong style="color:var(--ink)">3-tiers moderne</strong> : frontend SPA découplé,
+      backend API RESTful asynchrone, et couche données relationnelle avec cache Redis. Tout est conteneurisé Docker Compose.
+    </p>
+
+    <div class="arch-diagram">
+      <div class="arch-box">
+        <div class="arch-box-header" style="background:var(--navy)">FRONTEND</div>
+        <div class="arch-box-body" style="background:var(--navy)">
+          <div class="tech-tag">React 18</div><div class="tech-tag">Vite</div>
+          <div class="tech-tag">TypeScript</div><div class="tech-tag">Tailwind CSS</div>
+          <div class="tech-tag">TanStack Query v5</div><div class="tech-tag">Zustand</div>
+          <p style="margin-top:6px;font-size:7.5px;">Port 5173 (dev) / 80 (prod)</p>
+        </div>
+      </div>
+      <div class="arch-box">
+        <div class="arch-box-header" style="background:var(--red)">BACKEND API</div>
+        <div class="arch-box-body" style="background:var(--red)">
+          <div class="tech-tag">Python 3.12</div><div class="tech-tag">FastAPI</div>
+          <div class="tech-tag">SQLAlchemy 2.0</div><div class="tech-tag">Pydantic v2</div>
+          <div class="tech-tag">JWT HS256</div><div class="tech-tag">Uvicorn</div>
+          <p style="margin-top:6px;font-size:7.5px;">Port 8000 · /docs Swagger</p>
+        </div>
+      </div>
+      <div class="arch-box">
+        <div class="arch-box-header" style="background:#2D6A4F">BASE DE DONNÉES</div>
+        <div class="arch-box-body" style="background:#2D6A4F">
+          <div class="tech-tag">PostgreSQL 16</div><div class="tech-tag">18 tables</div>
+          <div class="tech-tag">Redis 7</div><div class="tech-tag">Cache sessions</div>
+          <div class="tech-tag">Alembic</div><div class="tech-tag">Migrations</div>
+          <p style="margin-top:6px;font-size:7.5px;">Port 5432 / 6379</p>
+        </div>
+      </div>
+      <div class="arch-box">
+        <div class="arch-box-header" style="background:#6A2D6A">IA & CLOUD</div>
+        <div class="arch-box-body" style="background:#6A2D6A">
+          <div class="tech-tag">Claude Anthropic</div><div class="tech-tag">claude-3-5-sonnet</div>
+          <div class="tech-tag">Sentry</div><div class="tech-tag">GitHub Actions</div>
+          <div class="tech-tag">Docker Hub</div><div class="tech-tag">CI/CD</div>
+          <p style="margin-top:6px;font-size:7.5px;">REST → HTTPS</p>
+        </div>
+      </div>
+    </div>
+    <div class="docker-label">🐳 Docker Compose · 4 services · PostgreSQL 16 + Redis 7 + API + Frontend</div>
+
+    <br>
+    <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">Stack Technique Détaillé</div>
+    <table class="tech-table">
+      <thead><tr><th>Couche</th><th>Technologie</th><th>Version</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td>Backend API</td><td><code>FastAPI + Uvicorn</code></td><td>0.115+</td><td>Serveur API RESTful asynchrone haute performance</td></tr>
+        <tr><td>Langage</td><td><code>Python</code></td><td>3.12</td><td>Backend, scripts, moteur de calcul, exports</td></tr>
+        <tr><td>ORM</td><td><code>SQLAlchemy</code></td><td>2.0</td><td>Modèles base de données, requêtes typées async</td></tr>
+        <tr><td>Validation</td><td><code>Pydantic</code></td><td>v2</td><td>Schémas d'entrée/sortie stricts, sérialisation</td></tr>
+        <tr><td>Base de données</td><td><code>PostgreSQL</code></td><td>16</td><td>18 tables, relations, migrations Alembic</td></tr>
+        <tr><td>Cache</td><td><code>Redis</code></td><td>7</td><td>Sessions utilisateurs, cache API, rate limiting</td></tr>
+        <tr><td>Frontend</td><td><code>React + Vite</code></td><td>18 + 5.x</td><td>SPA TypeScript découplée, HMR développement</td></tr>
+        <tr><td>Styles</td><td><code>Tailwind CSS</code></td><td>3.x</td><td>Design system utility-first, responsive</td></tr>
+        <tr><td>État / Cache</td><td><code>Zustand + TanStack Query</code></td><td>v5</td><td>State global + cache serveur automatique</td></tr>
+        <tr><td>Auth</td><td><code>JWT HS256 + RBAC</code></td><td>—</td><td>6 rôles, tokens 24h, refresh sécurisé</td></tr>
+        <tr><td>IA</td><td><code>Anthropic Claude</code></td><td>claude-3-5-sonnet</td><td>Génération itinéraires FR/EN, 4 tons</td></tr>
+        <tr><td>PDF</td><td><code>ReportLab</code></td><td>4.x</td><td>Factures, rapports aux couleurs S'TOURS</td></tr>
+        <tr><td>PPTX</td><td><code>python-pptx</code></td><td>1.x</td><td>Présentations commerciales automatiques</td></tr>
+        <tr><td>XLSX</td><td><code>openpyxl</code></td><td>3.x</td><td>Tableaux de bord Excel, exports data</td></tr>
+        <tr><td>Infra</td><td><code>Docker + GitHub Actions</code></td><td>—</td><td>CI/CD, conteneurisation, déploiement auto</td></tr>
+        <tr><td>Monitoring</td><td><code>Sentry</code></td><td>—</td><td>Suivi erreurs, performance, alertes</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 3</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 4 — MODULES (1/2)                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="modules">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">03</span> Modules Fonctionnels (1/2)</div>
+
+    <!-- Module 3.1 -->
+    <div class="module-card" style="border-left-color:var(--red)">
+      <div class="module-header">
+        <div class="module-title-row">
+          <span class="module-num">3.1</span>
+          <span class="module-icon">⚡</span>
+          <span class="module-title">Moteur de Cotation DMC</span>
+        </div>
+        <span class="endpoint-badge">POST /api/quotations/engine/calculate</span>
+      </div>
+      <p class="module-desc">Cœur du système — calcul déterministe garantissant que le prix coté ne sous-estime jamais le coût réel. <strong>Règle critique :</strong> toujours basé sur le MIN pax du range. 41/41 tests passants — zéro dépendance DB.</p>
+      <div class="features-grid">
+        <div class="feature-item">Hôtel : prix_chambre ÷ occupancy × nuits</div>
+        <div class="feature-item">Multi-ranges : 1–4 / 5–9 / 10–14 / 15–19 / 20–29 / 30+</div>
+        <div class="feature-item">Transport : ceil(min_pax ÷ capacité) × prix × jours</div>
+        <div class="feature-item">Taxi : petit (3 pl.) ou grand taxi (7 pl.) — ceil strict</div>
+        <div class="feature-item">Guide : coût_jour × jours ÷ min_pax</div>
+        <div class="feature-item">4×4 : capacité 4 forcée — treks Atlas & désert</div>
+        <div class="feature-item">Activité : per_person direct OU total ÷ min_pax</div>
+        <div class="feature-item"><strong style="color:var(--green)">41/41 tests ✓</strong> — zéro régression garantie</div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-tag-sm" style="background:rgba(168,55,29,0.1);color:var(--red)">Python 3.12</span>
+        <span class="tech-tag-sm" style="background:rgba(168,55,29,0.1);color:var(--red)">FastAPI</span>
+        <span class="tech-tag-sm" style="background:rgba(168,55,29,0.1);color:var(--red)">Pydantic v2</span>
+        <span class="tech-tag-sm" style="background:rgba(168,55,29,0.1);color:var(--red)">pytest</span>
+      </div>
+    </div>
+    <hr class="divider">
+
+    <!-- Module 3.2 -->
+    <div class="module-card" style="border-left-color:var(--navy)">
+      <div class="module-header">
+        <div class="module-title-row">
+          <span class="module-num">3.2</span>
+          <span class="module-icon">🤖</span>
+          <span class="module-title">Génération IA d'Itinéraires — Claude</span>
+        </div>
+        <span class="endpoint-badge" style="background:var(--navy)">POST /api/itineraries/{id}/generate-ai</span>
+      </div>
+      <p class="module-desc">Intégration Anthropic Claude pour rédaction automatique des programmes touristiques jour par jour. Quatre tons disponibles, bilingue FR/EN, avec suivi des tokens et coûts API.</p>
+      <div class="features-grid">
+        <div class="feature-item">4 tons : Standard, Luxe, Aventure, Famille</div>
+        <div class="feature-item">Interface chat avec historique persistant</div>
+        <div class="feature-item">Bilingue natif : Français (FR) et Anglais (EN)</div>
+        <div class="feature-item">Token logging & suivi coûts API en temps réel</div>
+        <div class="feature-item">Génération par jour avec contexte complet du circuit</div>
+        <div class="feature-item">Présets : itinéraire, email, traduction, calcul transport</div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-tag-sm" style="background:rgba(22,40,169,0.1);color:var(--navy)">Anthropic Claude</span>
+        <span class="tech-tag-sm" style="background:rgba(22,40,169,0.1);color:var(--navy)">claude-3-5-sonnet</span>
+        <span class="tech-tag-sm" style="background:rgba(22,40,169,0.1);color:var(--navy)">React 18</span>
+        <span class="tech-tag-sm" style="background:rgba(22,40,169,0.1);color:var(--navy)">TanStack Query</span>
+      </div>
+    </div>
+    <hr class="divider">
+
+    <!-- Module 3.3 -->
+    <div class="module-card" style="border-left-color:#2D6A4F">
+      <div class="module-header">
+        <div class="module-title-row">
+          <span class="module-num">3.3</span>
+          <span class="module-icon">📄</span>
+          <span class="module-title">Facturation PDF — Layout S'TOURS</span>
+        </div>
+        <span class="endpoint-badge" style="background:#2D6A4F">POST /api/invoices/{id}/generate-pdf</span>
+      </div>
+      <p class="module-desc">Génération automatique de factures PDF aux couleurs et gabarit officiels S'TOURS. Numérotation séquentielle FAC-YYYY-NNNN, gestion de l'acompte 30%.</p>
+      <div class="features-grid">
+        <div class="feature-item">Numérotation auto : FAC-2026-0001, FAC-2026-0002…</div>
+        <div class="feature-item">Statuts : DRAFT → SENT → PAID → CANCELLED</div>
+        <div class="feature-item">Layout officiel : logo, tableau prestations, TVA, totaux</div>
+        <div class="feature-item">Coordonnées bancaires et fiscales S'TOURS intégrées</div>
+        <div class="feature-item">Acompte 30% calculé et affiché automatiquement</div>
+        <div class="feature-item">Téléchargement immédiat depuis l'interface</div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-tag-sm" style="background:rgba(45,106,79,0.1);color:#2D6A4F">ReportLab 4.x</span>
+        <span class="tech-tag-sm" style="background:rgba(45,106,79,0.1);color:#2D6A4F">Python 3.12</span>
+        <span class="tech-tag-sm" style="background:rgba(45,106,79,0.1);color:#2D6A4F">FastAPI</span>
+        <span class="tech-tag-sm" style="background:rgba(45,106,79,0.1);color:#2D6A4F">PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 4</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 5 — MODULES (2/2)                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">03</span> Modules Fonctionnels (2/2)</div>
+
+    <!-- Module 3.4 -->
+    <div class="module-card" style="border-left-color:#6A2D6A">
+      <div class="module-header">
+        <div class="module-title-row">
+          <span class="module-num">3.4</span>
+          <span class="module-icon">📊</span>
+          <span class="module-title">Report Builder & Exports Multi-formats</span>
+        </div>
+        <span class="endpoint-badge" style="background:#6A2D6A">POST /api/reports/export</span>
+      </div>
+      <p class="module-desc">Tableau de bord analytique configurable avec export en 4 formats. KPI en temps réel, graphiques, filtres avancés.</p>
+      <div class="features-grid">
+        <div class="feature-item">4 formats d'export : PDF, PPTX, XLSX, CSV</div>
+        <div class="feature-item">Filtres : période, agence, type circuit, statut</div>
+        <div class="feature-item">KPI : revenus, conversion, projets actifs, top agences</div>
+        <div class="feature-item">Graphiques : évolution mensuelle, répartition marchés</div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-tag-sm" style="background:rgba(106,45,106,0.1);color:#6A2D6A">ReportLab</span>
+        <span class="tech-tag-sm" style="background:rgba(106,45,106,0.1);color:#6A2D6A">python-pptx</span>
+        <span class="tech-tag-sm" style="background:rgba(106,45,106,0.1);color:#6A2D6A">openpyxl</span>
+        <span class="tech-tag-sm" style="background:rgba(106,45,106,0.1);color:#6A2D6A">React Charts</span>
+      </div>
+    </div>
+    <hr class="divider">
+
+    <!-- Module 3.5 -->
+    <div class="module-card" style="border-left-color:#856A1A">
+      <div class="module-header">
+        <div class="module-title-row">
+          <span class="module-num">3.5</span>
+          <span class="module-icon">🔐</span>
+          <span class="module-title">Authentification RBAC — 6 Rôles</span>
+        </div>
+        <span class="endpoint-badge" style="background:#856A1A">POST /api/auth/login</span>
+      </div>
+      <p class="module-desc">Système JWT HS256 avec contrôle d'accès basé sur les rôles. 6 niveaux de permissions du super administrateur à l'agent commercial.</p>
+      <div class="features-grid">
+        <div class="feature-item">super_admin → admin → manager</div>
+        <div class="feature-item">Tokens JWT HS256 — durée 24h</div>
+        <div class="feature-item">travel_designer → sales_agent → viewer</div>
+        <div class="feature-item">Permissions granulaires par endpoint</div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-tag-sm" style="background:rgba(133,106,26,0.1);color:#856A1A">JWT HS256</span>
+        <span class="tech-tag-sm" style="background:rgba(133,106,26,0.1);color:#856A1A">FastAPI Security</span>
+        <span class="tech-tag-sm" style="background:rgba(133,106,26,0.1);color:#856A1A">Bcrypt</span>
+      </div>
+    </div>
+    <hr class="divider">
+
+    <!-- Module 3.6 -->
+    <div class="module-card" style="border-left-color:#1A6A85">
+      <div class="module-header">
+        <div class="module-title-row">
+          <span class="module-num">3.6</span>
+          <span class="module-icon">✈️</span>
+          <span class="module-title">Générateur de Références IATA</span>
+        </div>
+        <span class="endpoint-badge" style="background:#1A6A85">POST /api/references/generate</span>
+      </div>
+      <p class="module-desc">Génération automatique de références dossiers au format IATA. 16 aéroports marocains supportés, 5 départements S'TOURS.</p>
+      <div class="features-grid">
+        <div class="feature-item">Format : ST-[DEPT]-[IATA]-[YEAR]-[SEQ]</div>
+        <div class="feature-item">Ex : ST-INC-CMN-26-0042</div>
+        <div class="feature-item">16 aéroports : CMN, RAK, AGA, TNG, OUD…</div>
+        <div class="feature-item">5 départements : INC, OUT, GRP, EVT, VIP</div>
+      </div>
+      <div class="tech-row">
+        <span class="tech-tag-sm" style="background:rgba(26,106,133,0.1);color:#1A6A85">FastAPI</span>
+        <span class="tech-tag-sm" style="background:rgba(26,106,133,0.1);color:#1A6A85">PostgreSQL</span>
+        <span class="tech-tag-sm" style="background:rgba(26,106,133,0.1);color:#1A6A85">SQLAlchemy 2.0</span>
+      </div>
+    </div>
+    <hr class="divider">
+
+    <!-- Module 3.7 + 3.8 side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="module-card" style="border-left-color:#4A1A85;margin-bottom:0">
+        <div class="module-title-row" style="margin-bottom:4px">
+          <span class="module-num">3.7</span><span class="module-icon">🤝</span>
+          <span class="module-title" style="font-size:11px">CRM Agences B2B</span>
+        </div>
+        <p class="module-desc">Gestion des tour-opérateurs partenaires. Suivi performances, préférences, historique commercial.</p>
+        <div class="feature-item" style="font-size:8px">Tiers Platinum / Premium / Standard</div>
+        <div class="feature-item" style="font-size:8px">KPI : projets, conversion, CA en MAD</div>
+        <div class="feature-item" style="font-size:8px">Préférences hôtels, régimes, véhicules</div>
+      </div>
+      <div class="module-card" style="border-left-color:#0A4A5A;margin-bottom:0">
+        <div class="module-title-row" style="margin-bottom:4px">
+          <span class="module-num">3.8</span><span class="module-icon">🚌</span>
+          <span class="module-title" style="font-size:11px">Horizon Portal — Fleet</span>
+        </div>
+        <p class="module-desc">Dashboard temps réel flotte véhicules. 18 véhicules, missions, alertes maintenance, taux service.</p>
+        <div class="feature-item" style="font-size:8px">Sprinters, Minibus, 4×4, Coaches</div>
+        <div class="feature-item" style="font-size:8px">Statuts : active / scheduled / maintenance</div>
+        <div class="feature-item" style="font-size:8px">Taux service SLA : 98%</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 5</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 6 — API REFERENCE                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="api">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">04</span> Référence API</div>
+    <p style="font-size:9px;color:var(--grey);margin-bottom:10px;">
+      L'API RESTful RIHLA est documentée automatiquement via <strong>OpenAPI / Swagger</strong>
+      à <code style="font-family:monospace;background:rgba(22,40,169,0.08);color:var(--navy);padding:1px 4px;border-radius:3px">http://localhost:8000/docs</code>.
+      Tous les endpoints nécessitent un JWT Bearer token sauf /health et /auth/login.
+    </p>
+    <table class="api-table">
+      <thead><tr><th>Méthode</th><th>Endpoint</th><th>Description</th><th>Auth</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/auth/login</span></td><td style="font-size:8.5px">Connexion — retourne JWT Bearer token</td><td><span class="auth-badge auth-public">Public</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/health</span></td><td style="font-size:8.5px">Healthcheck — status DB & Redis</td><td><span class="auth-badge auth-public">Public</span></td></tr>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/quotations/engine/calculate</span></td><td style="font-size:8.5px">Moteur DMC multi-ranges — calcul déterministe</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/quotations/engine/presets</span></td><td style="font-size:8.5px">Véhicules & occupancies presets disponibles</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/projects</span></td><td style="font-size:8.5px">Liste projets avec filtres & pagination</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/projects</span></td><td style="font-size:8.5px">Créer projet (DRAFT → WON/LOST)</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/itineraries/{id}/days/{d}/generate-ai</span></td><td style="font-size:8.5px">Génération IA Claude — 4 tons, FR/EN</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/invoices/{id}/generate-pdf</span></td><td style="font-size:8.5px">Génération facture PDF layout S'TOURS</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/reports/export</span></td><td style="font-size:8.5px">Export rapport — PDF / PPTX / XLSX / CSV</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method post">POST</span></td><td><span class="endpoint-code">/api/references/generate</span></td><td style="font-size:8.5px">Générateur références IATA (5 dépt.)</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/admin/users</span></td><td style="font-size:8.5px">Gestion utilisateurs — admin seulement</td><td><span class="auth-badge auth-admin" style="background:rgba(168,55,29,0.1);color:var(--red)">Admin</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/guides</span></td><td style="font-size:8.5px">Catalogue guides touristiques & disponibilités</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/transports</span></td><td style="font-size:8.5px">Catalogue véhicules, capacités & tarifs</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+        <tr><td><span class="method get">GET</span></td><td><span class="endpoint-code">/api/menus</span></td><td style="font-size:8.5px">Catalogue menus restauration partenaires</td><td><span class="auth-badge auth-jwt">JWT</span></td></tr>
+      </tbody>
+    </table>
+
+    <div style="font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 8px">Variables d'Environnement</div>
+    <table class="env-table">
+      <thead><tr><th>Variable</th><th>Valeur exemple</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="env-var">DATABASE_URL</span></td><td><span class="env-val">postgresql://user:pass@localhost:5432/rihla</span></td><td style="font-size:8px">Connexion PostgreSQL principale</td></tr>
+        <tr><td><span class="env-var">REDIS_URL</span></td><td><span class="env-val">redis://localhost:6379</span></td><td style="font-size:8px">Cache et sessions Redis</td></tr>
+        <tr><td><span class="env-var">SECRET_KEY</span></td><td><span class="env-val">your-secret-key-here-256bits</span></td><td style="font-size:8px">Clé signature JWT (256 bits minimum)</td></tr>
+        <tr><td><span class="env-var">ANTHROPIC_API_KEY</span></td><td><span class="env-val">sk-ant-api03-...</span></td><td style="font-size:8px">Clé API Claude pour génération IA</td></tr>
+        <tr><td><span class="env-var">CORS_ORIGINS</span></td><td><span class="env-val">http://localhost:5173</span></td><td style="font-size:8px">Origines CORS autorisées (prod: domaine)</td></tr>
+        <tr><td><span class="env-var">SENTRY_DSN</span></td><td><span class="env-val">https://...@sentry.io/...</span></td><td style="font-size:8px">Monitoring erreurs et performance</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 6</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 7 — INFRA & CI/CD                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="infra">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">05</span> Infrastructure & Déploiement</div>
+    <p style="font-size:9.5px;color:var(--grey);line-height:1.7;margin-bottom:12px;">
+      RIHLA est entièrement conteneurisé. Un simple <code style="font-family:monospace;background:rgba(45,106,79,0.1);color:#2D6A4F;padding:2px 6px;border-radius:3px">docker compose up</code>
+      démarre les 4 services en production.
+    </p>
+
+    <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Services Docker Compose</div>
+    <div class="docker-services">
+      <div class="docker-service">
+        <div class="ds-header">api</div>
+        <div class="ds-body">
+          <p>python:3.12-slim</p>
+          <p>FastAPI + Uvicorn</p>
+          <span class="ds-port">:8000</span>
+        </div>
+      </div>
+      <div class="docker-service">
+        <div class="ds-header" style="background:var(--navy)">frontend</div>
+        <div class="ds-body">
+          <p>node:18 + nginx</p>
+          <p>React SPA built</p>
+          <span class="ds-port" style="color:var(--green)">:80 / 5173</span>
+        </div>
+      </div>
+      <div class="docker-service">
+        <div class="ds-header" style="background:#336699">db</div>
+        <div class="ds-body">
+          <p>postgres:16-alpine</p>
+          <p>18 tables, 50+ index</p>
+          <span class="ds-port" style="color:#336699">:5432</span>
+        </div>
+      </div>
+      <div class="docker-service">
+        <div class="ds-header" style="background:#CC0000">redis</div>
+        <div class="ds-body">
+          <p>redis:7-alpine</p>
+          <p>Cache + sessions</p>
+          <span class="ds-port" style="color:#CC0000">:6379</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 8px">Pipeline CI/CD — GitHub Actions</div>
+    <div class="ci-grid">
+      <div class="ci-box ci-left">
+        <div class="ci-title green">ci.yml — Pull Request</div>
+        <div class="ci-step">Checkout + Python 3.12 setup</div>
+        <div class="ci-step">Installation dépendances backend</div>
+        <div class="ci-step">Linting : ruff + mypy (type checking)</div>
+        <div class="ci-step">Tests : pytest — 41/41 pricing engine</div>
+        <div class="ci-step">Frontend : npm install + build TypeScript</div>
+        <div class="ci-step">Rapport de couverture automatique</div>
+      </div>
+      <div class="ci-box ci-right">
+        <div class="ci-title navy">deploy.yml — Main Branch</div>
+        <div class="ci-step">Build image Docker API (python:3.12)</div>
+        <div class="ci-step">Build image Docker Frontend (nginx)</div>
+        <div class="ci-step">Push images → GitHub Container Registry</div>
+        <div class="ci-step">Deploy sur serveur production via SSH</div>
+        <div class="ci-step">Migrations Alembic automatiques</div>
+        <div class="ci-step">Health check post-déploiement /api/health</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;font-weight:700;color:var(--navy);margin:14px 0 8px">Quickstart — 3 étapes</div>
+    <div style="background:#0A1240;border-radius:8px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:8.5px;color:#C8D0FF;">
+      <span style="color:#6A8F6A"># 1. Cloner et configurer</span><br>
+      <span style="color:white">git clone https://github.com/stours/rihla.git && cd rihla</span><br>
+      <span style="color:white">echo "ANTHROPIC_API_KEY=sk-ant-..." > .env</span><br><br>
+      <span style="color:#6A8F6A"># 2. Lancer avec Docker (recommandé)</span><br>
+      <span style="color:white">docker compose up</span><br><br>
+      <span style="color:#6A8F6A"># 3. Accéder à la plateforme</span><br>
+      <span style="color:#FFD700">Frontend : </span><span style="color:white">http://localhost:5173</span><br>
+      <span style="color:#FFD700">API Docs : </span><span style="color:white">http://localhost:8000/docs</span><br>
+      <span style="color:#FFD700">Login    : </span><span style="color:white">a.chakir@stours.ma / Abdo@1937</span>
+    </div>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 7</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 8 — ROADMAP                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="roadmap">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">06</span> Roadmap & Évolution</div>
+    <p style="font-size:9.5px;color:var(--grey);line-height:1.7;margin-bottom:14px;">
+      RIHLA suit un cycle de release itératif aligné sur les besoins opérationnels de S'TOURS DMC.
+      Chaque version ajoute des modules ou améliore l'existant.
+    </p>
+
+    <div class="roadmap-track">
+      <div class="roadmap-entry done">
+        <div class="roadmap-header-row">
+          <span style="font-size:10px;font-weight:800;color:#2D6A4F">v0.1 – v0.3</span>
+          <span class="roadmap-status status-done">✓ Livré</span>
+          <span style="font-size:9px;font-weight:600;color:var(--ink)">— Fondations</span>
+        </div>
+        <div class="roadmap-items-list">
+          <span class="roadmap-chip">Auth JWT RBAC 6 rôles</span>
+          <span class="roadmap-chip">CRUD Projets 5 statuts</span>
+          <span class="roadmap-chip">Moteur cotation v1</span>
+          <span class="roadmap-chip">Report Builder</span>
+          <span class="roadmap-chip">Générateur références IATA</span>
+        </div>
+      </div>
+      <div class="roadmap-entry done">
+        <div class="roadmap-header-row">
+          <span style="font-size:10px;font-weight:800;color:#2D6A4F">v0.4</span>
+          <span class="roadmap-status status-done">✓ Livré</span>
+          <span style="font-size:9px;font-weight:600;color:var(--ink)">— IA & Documents</span>
+        </div>
+        <div class="roadmap-items-list">
+          <span class="roadmap-chip">Itinéraires IA Claude (4 tons, FR/EN)</span>
+          <span class="roadmap-chip">Facturation PDF layout S'TOURS</span>
+          <span class="roadmap-chip">Rebranding → RIHLA</span>
+        </div>
+      </div>
+      <div class="roadmap-entry done">
+        <div class="roadmap-header-row">
+          <span style="font-size:10px;font-weight:800;color:#2D6A4F">v0.5</span>
+          <span class="roadmap-status status-done">✓ Livré</span>
+          <span style="font-size:9px;font-weight:600;color:var(--ink)">— Pricing Engine DMC</span>
+        </div>
+        <div class="roadmap-items-list">
+          <span class="roadmap-chip">41 tests unitaires — 0 régression</span>
+          <span class="roadmap-chip">Transport ceil strict</span>
+          <span class="roadmap-chip">Multi-ranges pax 1→30+</span>
+          <span class="roadmap-chip">4×4 & taxi Maroc</span>
+        </div>
+      </div>
+      <div class="roadmap-entry inprogress">
+        <div class="roadmap-header-row">
+          <span style="font-size:10px;font-weight:800;color:var(--red)">v0.6</span>
+          <span class="roadmap-status status-inprogress">⟳ En cours</span>
+          <span style="font-size:9px;font-weight:600;color:var(--ink)">— Finalisation</span>
+        </div>
+        <div class="roadmap-items-list">
+          <span class="roadmap-chip">Page détail projet complète</span>
+          <span class="roadmap-chip">Génération PPTX propositions</span>
+          <span class="roadmap-chip">Pipeline CI/CD complet</span>
+          <span class="roadmap-chip">CRM Agences B2B enrichi</span>
+        </div>
+      </div>
+      <div class="roadmap-entry planned">
+        <div class="roadmap-header-row">
+          <span style="font-size:10px;font-weight:800;color:var(--grey)">v1.0</span>
+          <span class="roadmap-status status-planned">◈ Vision 2026</span>
+          <span style="font-size:9px;font-weight:600;color:var(--ink)">— Expansion</span>
+        </div>
+        <div class="roadmap-items-list">
+          <span class="roadmap-chip">Mobile PWA (iOS + Android)</span>
+          <span class="roadmap-chip">Multi-langues (AR, ES, DE)</span>
+          <span class="roadmap-chip">Transcription Whisper audio</span>
+          <span class="roadmap-chip">Connecteur GDS (Amadeus/Sabre)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 8</p></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PAGE 9 — CHARTE GRAPHIQUE + CONTACT                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page" id="brand">
+  <div class="page-header"><div class="logo-area">S'TOURS<span>RIHLA PLATFORM</span></div></div>
+  <div class="page-content">
+    <div class="section-banner"><span class="num">07</span> Charte Graphique S'TOURS</div>
+    <p style="font-size:9.5px;color:var(--grey);margin-bottom:10px;">
+      RIHLA respecte intégralement la charte graphique officielle S'TOURS DMC — de l'interface web jusqu'aux PDF exportés.
+    </p>
+
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-block" style="background:#A8371D"></div>
+        <div class="color-info"><div class="color-hex">#A8371D</div><div class="color-name">Rouge S'TOURS</div><div class="color-usage">Accents, CTA</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#1628A9"></div>
+        <div class="color-info"><div class="color-hex">#1628A9</div><div class="color-name">Bleu Navy</div><div class="color-usage">Logo, liens</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#141414"></div>
+        <div class="color-info"><div class="color-hex">#141414</div><div class="color-name">Encre Foncée</div><div class="color-usage">Texte corps</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#FFFEE9;border:1px solid #E4E2DC"></div>
+        <div class="color-info"><div class="color-hex">#FFFEE9</div><div class="color-name">Crème</div><div class="color-usage">Surfaces chaudes</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#F8F6F2;border:1px solid #E4E2DC"></div>
+        <div class="color-info"><div class="color-hex">#F8F6F2</div><div class="color-name">Surface</div><div class="color-usage">Fond page</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#6B6B6B"></div>
+        <div class="color-info"><div class="color-hex">#6B6B6B</div><div class="color-name">Gris</div><div class="color-usage">Texte secondaire</div></div>
+      </div>
+    </div>
+
+    <table class="typo-table">
+      <thead><tr><th>Usage</th><th>Police</th><th>Graisse</th><th>Taille</th></tr></thead>
+      <tbody>
+        <tr><td>Titres documents</td><td>Calibri / Helvetica</td><td>Bold</td><td>24–28pt</td></tr>
+        <tr><td>Bandeaux sections</td><td>Calibri</td><td>Bold</td><td>11pt (blanc sur rouge)</td></tr>
+        <tr><td>Corps de texte</td><td>Calibri</td><td>Regular</td><td>9–10pt</td></tr>
+        <tr><td>En-têtes tableaux</td><td>Calibri</td><td>Bold</td><td>9pt (blanc sur rouge)</td></tr>
+        <tr><td>Notes & légendes</td><td>Calibri</td><td>Italic</td><td>7.5pt (gris)</td></tr>
+        <tr><td>Code / Références</td><td>Courier / JetBrains Mono</td><td>Bold</td><td>8pt</td></tr>
+      </tbody>
+    </table>
+    <hr class="divider">
+
+    <div class="section-banner" style="margin-top:8px"><span class="num">08</span> Contact & Informations</div>
+    <div class="contact-grid">
+      <div class="contact-box company">
+        <div class="contact-header" style="background:var(--red);color:white;font-size:11px">S'TOURS VOYAGES S.A.R.L</div>
+        <div class="contact-body">
+          <div class="contact-label" style="color:var(--red)">Casablanca HQ</div>
+          4, rue Turgot — Quartier Racine, 20100<br>
+          Tél. : (+212) 522 95 40 00<br>
+          <div class="contact-label" style="color:var(--red)">Marrakech Office</div>
+          61, rue Yougoslavie — Imm. F, Guéliz<br>
+          Tél. : (+212) 524 43 67 46<br>
+          <div class="contact-label" style="color:var(--red)">Contact</div>
+          contact@stours.ma<br>
+          <div class="contact-label" style="color:var(--grey)">Informations légales</div>
+          R.C. 44367 · I.F. 01000972 · ICE 001542976000081<br>
+          Capital : 2 000 000 MAD
+        </div>
+      </div>
+      <div class="contact-box dev">
+        <div class="contact-header" style="background:var(--red);color:white;font-size:11px">Plateforme RIHLA</div>
+        <div class="contact-body">
+          <div class="contact-label">CHAKIR Abdelwahed</div>
+          Architecte & Lead Developer<br>
+          <div class="contact-label">Contact technique</div>
+          a.chakir@stours.ma<br>
+          +212 522 95 40 00<br>
+          <div class="contact-label">Stack</div>
+          Python 3.12 · FastAPI · React 18<br>
+          PostgreSQL 16 · Redis 7 · Docker<br>
+          Anthropic Claude · GitHub Actions<br>
+          <div class="contact-label">Version</div>
+          v0.7 (Avril 2026) · Propriétaire · 41/41 tests ✓
+        </div>
+      </div>
+    </div>
+
+    <div class="final-note">
+      Ce document est <strong>propriétaire et confidentiel</strong>. Toute reproduction sans autorisation écrite de S'TOURS DMC Morocco est interdite.
+    </div>
+    <div class="copyright">© 2026 S'TOURS VOYAGES S.A.R.L · Tous droits réservés</div>
+  </div>
+  <div class="page-footer"><p>RIHLA Platform — Présentation Technique</p><p>Page 9</p></div>
+</div>
+
+</div><!-- /pages -->
+</body>
+</html>

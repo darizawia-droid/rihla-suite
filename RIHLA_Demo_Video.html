@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIHLA Platform — Démo Interactive — S'TOURS DMC Morocco</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root {
+    --red:#A8371D; --navy:#1628A9; --ink:#141414; --cream:#FFFEE9;
+    --surface:#F8F6F2; --grey:#6B6B6B; --line:#E4E2DC;
+    --green:#2D6A4F; --purple:#6A2D6A; --teal:#1A6A85;
+    --slide-w:900px; --slide-h:540px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0f2e; color:var(--ink); font-family:'Inter',sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+
+  /* ── DEMO SHELL ── */
+  .demo-shell { width:100%; max-width:1100px; padding:20px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+
+  /* ── TITLE BAR ── */
+  .title-bar { display:flex; align-items:center; gap:14px; width:100%; }
+  .title-bar .logo { font-size:24px; font-weight:900; color:white; letter-spacing:-1px; }
+  .title-bar .logo span { color:var(--red); }
+  .title-bar .sub { font-size:11px; color:rgba(200,208,255,0.7); font-weight:500; }
+  .title-bar .progress-outer { margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .slide-counter { font-size:12px; color:rgba(200,208,255,0.6); font-weight:600; font-family:'JetBrains Mono'; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar { width:200px; height:4px; background:rgba(255,255,255,0.15); border-radius:2px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--red); border-radius:2px; transition:width 0.4s ease; }
+
+  /* ── SLIDE VIEWPORT ── */
+  .slide-viewport {
+    width:var(--slide-w); height:var(--slide-h);
+    border-radius:12px; overflow:hidden;
+    box-shadow:0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+    position:relative; background:white;
+  }
+  .slide { width:100%; height:100%; position:absolute; top:0; left:0; opacity:0; transition:opacity 0.5s ease, transform 0.5s ease; transform:translateX(40px); pointer-events:none; }
+  .slide.active { opacity:1; transform:translateX(0); pointer-events:all; }
+
+  /* ── CONTROLS ── */
+  .controls { display:flex; align-items:center; gap:12px; }
+  .ctrl-btn {
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
+    color:white; padding:10px 22px; border-radius:8px; font-size:13px;
+    font-weight:600; cursor:pointer; font-family:'Inter'; transition:all 0.2s;
+    display:flex; align-items:center; gap:8px;
+  }
+  .ctrl-btn:hover { background:rgba(255,255,255,0.18); }
+  .ctrl-btn.play { background:var(--red); border-color:var(--red); }
+  .ctrl-btn.play:hover { background:#8B2A12; }
+  .ctrl-btn:disabled { opacity:0.35; cursor:not-allowed; }
+
+  /* ── CHAPTER DOTS ── */
+  .chapters { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; max-width:700px; }
+  .chap-dot {
+    font-size:10px; font-weight:600; padding:5px 12px; border-radius:20px;
+    border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.5);
+    cursor:pointer; transition:all 0.2s; background:transparent;
+    font-family:'Inter';
+  }
+  .chap-dot.active { background:var(--red); border-color:var(--red); color:white; }
+  .chap-dot:hover { border-color:rgba(255,255,255,0.4); color:white; }
+
+  /* ── NARRATION BOX ── */
+  .narration {
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+    border-radius:10px; padding:14px 20px; width:100%; max-width:var(--slide-w);
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .narration .icon { font-size:20px; flex-shrink:0; margin-top:2px; }
+  .narration-text { font-size:12px; color:rgba(200,208,255,0.85); line-height:1.7; }
+  .narration-text strong { color:white; }
+
+  /* ══════════════════════════════════════════
+     SLIDES CONTENT
+  ══════════════════════════════════════════ */
+
+  /* ─ Slide utilities ─ */
+  .slide-bg { width:100%; height:100%; }
+  .s-header { height:44px; display:flex; align-items:center; padding:0 20px; gap:12px; border-bottom:2px solid var(--red); background:white; }
+  .s-logo { font-size:12px; font-weight:800; color:var(--red); letter-spacing:1px; }
+  .s-logo span { color:var(--navy); font-size:8px; display:block; font-weight:500; letter-spacing:2px; }
+  .s-nav { display:flex; gap:2px; margin-left:auto; }
+  .s-nav-item { font-size:9px; padding:4px 10px; border-radius:4px; color:var(--grey); font-weight:500; }
+  .s-nav-item.active { background:rgba(168,55,29,0.1); color:var(--red); font-weight:700; }
+  .s-body { padding:16px 20px; height:calc(100% - 44px - 32px); overflow:hidden; }
+  .s-footer { height:32px; background:var(--red); display:flex; align-items:center; padding:0 20px; justify-content:space-between; }
+  .s-footer p { color:white; font-size:8px; font-weight:500; }
+
+  /* ─ Slide 1: Cover ─ */
+  #s1 { background:linear-gradient(140deg,#0A1240,#1628A9); }
+  .s1-content { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:40px; text-align:center; }
+  .s1-badge { background:var(--red); color:white; font-size:9px; font-weight:700; padding:4px 16px; border-radius:20px; letter-spacing:1px; margin-bottom:16px; }
+  .s1-title { font-size:64px; font-weight:900; color:white; letter-spacing:-3px; line-height:1; }
+  .s1-sub { font-size:16px; color:rgba(245,221,215,0.9); margin-top:8px; font-weight:300; }
+  .s1-line { width:80px; height:3px; background:var(--red); margin:14px auto; border-radius:2px; }
+  .s1-tag { font-size:11px; color:var(--cream); font-style:italic; }
+  .s1-company { margin-top:24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 28px; }
+  .s1-company .n { color:white; font-size:13px; font-weight:700; }
+  .s1-company .d { color:rgba(200,208,255,0.7); font-size:9px; margin-top:3px; }
+  .s1-pills { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:20px; }
+  .s1-pill { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); color:rgba(200,208,255,0.85); padding:3px 10px; border-radius:12px; font-size:9px; font-weight:600; }
+
+  /* ─ Slide 2: Dashboard ─ */
+  .dash-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
+  .dash-kpi { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .dash-kpi .val { font-size:26px; font-weight:800; color:var(--red); line-height:1; }
+  .dash-kpi .lbl { font-size:8px; color:var(--grey); margin-top:3px; font-weight:500; }
+  .dash-chart { display:grid; grid-template-columns:2fr 1fr; gap:10px; }
+  .chart-box { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .chart-title { font-size:9px; font-weight:700; color:var(--ink); margin-bottom:8px; }
+  .bar-chart { display:flex; align-items:flex-end; gap:6px; height:60px; }
+  .bar { flex:1; border-radius:3px 3px 0 0; position:relative; }
+  .bar-label { font-size:7px; color:var(--grey); text-align:center; margin-top:3px; }
+  .pie-legend { display:flex; flex-direction:column; gap:4px; }
+  .pie-row { display:flex; align-items:center; gap:6px; font-size:8px; }
+  .pie-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .recent-projects { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .proj-row { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:0.5px solid var(--line); font-size:8.5px; }
+  .proj-row:last-child { border:none; }
+  .proj-status { font-size:7.5px; font-weight:600; padding:2px 7px; border-radius:10px; }
+  .status-won { background:rgba(45,106,79,0.15); color:#2D6A4F; }
+  .status-draft { background:rgba(133,106,26,0.15); color:#856A1A; }
+  .status-lost { background:rgba(168,55,29,0.15); color:var(--red); }
+  .status-sent { background:rgba(22,40,169,0.15); color:var(--navy); }
+
+  /* ─ Slide 3: Quotation Engine ─ */
+  .engine-layout { display:grid; grid-template-columns:1fr 1fr; gap:14px; height:100%; }
+  .engine-form { background:var(--surface); border-radius:8px; padding:14px; }
+  .form-title { font-size:10px; font-weight:700; color:var(--ink); margin-bottom:10px; }
+  .form-group { margin-bottom:8px; }
+  .form-label { font-size:8px; color:var(--grey); margin-bottom:3px; font-weight:600; }
+  .form-input { width:100%; background:white; border:1px solid var(--line); border-radius:5px; padding:6px 8px; font-size:8.5px; color:var(--ink); }
+  .form-input.highlight { border-color:var(--red); box-shadow:0 0 0 2px rgba(168,55,29,0.15); }
+  .calc-btn { width:100%; background:var(--red); color:white; border:none; padding:8px; border-radius:6px; font-size:9px; font-weight:700; margin-top:8px; cursor:pointer; letter-spacing:0.5px; }
+  .engine-result { background:white; border-radius:8px; padding:14px; border:1px solid var(--line); }
+  .result-title { font-size:10px; font-weight:700; color:var(--green); margin-bottom:8px; display:flex; align-items:center; gap:4px; }
+  .range-table { width:100%; border-collapse:collapse; font-size:8px; }
+  .range-table th { background:var(--red); color:white; padding:5px 6px; text-align:center; font-weight:600; }
+  .range-table td { padding:5px 6px; text-align:center; border-bottom:0.5px solid var(--line); }
+  .range-table tr:nth-child(even) td { background:var(--cream); }
+  .range-table .total-row td { font-weight:700; color:var(--red); background:rgba(168,55,29,0.06); }
+  .engine-tag { font-size:7px; background:rgba(45,106,79,0.1); color:var(--green); padding:2px 6px; border-radius:10px; font-weight:600; }
+
+  /* ─ Slide 4: AI Itinerary ─ */
+  .ai-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:12px; height:100%; }
+  .ai-sidebar { background:var(--surface); border-radius:8px; padding:12px; }
+  .ai-title { font-size:10px; font-weight:700; color:var(--navy); margin-bottom:8px; display:flex; align-items:center; gap:4px; }
+  .ai-preset { display:flex; align-items:center; gap:6px; background:white; border:1px solid var(--line); border-radius:6px; padding:7px 8px; margin-bottom:5px; cursor:pointer; }
+  .ai-preset-icon { font-size:14px; }
+  .ai-preset-text { font-size:8px; font-weight:600; color:var(--ink); }
+  .ai-preset.active { border-color:var(--navy); background:rgba(22,40,169,0.06); }
+  .tone-select { display:flex; gap:4px; flex-wrap:wrap; margin-top:8px; }
+  .tone-btn { font-size:7.5px; padding:3px 8px; border-radius:10px; border:1px solid var(--line); color:var(--grey); font-weight:600; cursor:pointer; background:white; }
+  .tone-btn.active { background:var(--navy); color:white; border-color:var(--navy); }
+  .ai-chat { background:white; border-radius:8px; padding:12px; border:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
+  .ai-msg { padding:8px 10px; border-radius:8px; font-size:8px; line-height:1.5; max-width:85%; }
+  .ai-msg.user { background:var(--navy); color:white; align-self:flex-end; }
+  .ai-msg.assistant { background:var(--surface); color:var(--ink); border:1px solid var(--line); align-self:flex-start; }
+  .ai-msg.typing { display:flex; gap:3px; align-items:center; padding:10px; }
+  .ai-dot { width:6px; height:6px; background:var(--grey); border-radius:50%; animation:blink 1s infinite; }
+  .ai-dot:nth-child(2) { animation-delay:0.2s; }
+  .ai-dot:nth-child(3) { animation-delay:0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.3} 40%{opacity:1} }
+  .token-info { font-size:7.5px; color:var(--grey); margin-top:auto; display:flex; gap:8px; }
+  .token-badge { background:var(--cream); border:1px solid var(--line); border-radius:10px; padding:2px 8px; }
+
+  /* ─ Slide 5: Invoice PDF ─ */
+  .invoice-preview { height:100%; display:flex; gap:14px; }
+  .invoice-controls { width:140px; flex-shrink:0; }
+  .inv-btn { width:100%; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:8px; margin-bottom:6px; font-size:8.5px; font-weight:600; color:var(--ink); cursor:pointer; display:flex; align-items:center; gap:6px; }
+  .inv-btn.primary { background:var(--red); color:white; border-color:var(--red); }
+  .inv-info { background:var(--cream); border-radius:6px; padding:8px; margin-top:8px; }
+  .inv-info-label { font-size:7.5px; color:var(--grey); font-weight:600; margin-bottom:4px; }
+  .inv-info-val { font-size:9px; font-weight:700; color:var(--ink); }
+  .invoice-paper { flex:1; background:white; border:1px solid var(--line); border-radius:6px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+  .inv-header { background:var(--red); padding:10px 14px; display:flex; justify-content:space-between; align-items:center; }
+  .inv-header-title { color:white; font-size:11px; font-weight:800; }
+  .inv-header-ref { color:rgba(255,255,255,0.8); font-size:8px; font-family:'JetBrains Mono'; }
+  .inv-body { padding:12px 14px; }
+  .inv-section-title { background:var(--red); color:white; font-size:8px; font-weight:700; padding:4px 8px; margin-bottom:6px; }
+  .inv-table { width:100%; border-collapse:collapse; font-size:7.5px; }
+  .inv-table th { background:var(--navy); color:white; padding:4px 6px; text-align:left; }
+  .inv-table td { padding:4px 6px; border-bottom:0.3px solid var(--line); }
+  .inv-table tr:nth-child(even) td { background:var(--cream); }
+  .inv-total-box { margin-top:8px; display:flex; justify-content:flex-end; }
+  .inv-total-inner { background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:8px 12px; min-width:160px; }
+  .inv-total-row { display:flex; justify-content:space-between; font-size:8px; padding:2px 0; }
+  .inv-total-row.final { font-weight:700; color:var(--red); font-size:9px; border-top:1px solid var(--line); padding-top:4px; margin-top:2px; }
+
+  /* ─ Slide 6: CRM ─ */
+  .crm-layout { height:100%; }
+  .crm-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
+  .crm-stat { background:white; border:1px solid var(--line); border-radius:6px; padding:8px; text-align:center; }
+  .crm-stat .v { font-size:20px; font-weight:800; color:var(--navy); }
+  .crm-stat .l { font-size:7.5px; color:var(--grey); }
+  .crm-table { width:100%; border-collapse:collapse; font-size:8.5px; }
+  .crm-table thead tr { background:var(--navy); }
+  .crm-table th { color:white; padding:6px 8px; text-align:left; font-weight:600; font-size:8px; }
+  .crm-table td { padding:7px 8px; border-bottom:0.5px solid var(--line); }
+  .crm-table tr:nth-child(even) td { background:rgba(22,40,169,0.02); }
+  .tier-badge { font-size:7.5px; font-weight:600; padding:2px 7px; border-radius:10px; }
+  .tier-platinum { background:rgba(168,55,29,0.1); color:var(--red); }
+  .tier-premium { background:rgba(22,40,169,0.1); color:var(--navy); }
+  .tier-standard { background:rgba(107,107,107,0.1); color:var(--grey); }
+  .conv-bar-wrap { display:flex; align-items:center; gap:6px; }
+  .conv-bar { height:6px; border-radius:3px; }
+
+  /* ─ Slide 7: Report Builder ─ */
+  .report-layout { display:grid; grid-template-columns:1fr 1fr; gap:10px; height:100%; }
+  .report-box { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .report-box-title { font-size:9px; font-weight:700; color:var(--ink); margin-bottom:8px; display:flex; align-items:center; gap:6px; justify-content:space-between; }
+  .export-btns { display:flex; gap:4px; }
+  .export-btn { font-size:7.5px; font-weight:600; padding:3px 8px; border-radius:4px; border:none; cursor:pointer; }
+  .export-pdf { background:rgba(168,55,29,0.1); color:var(--red); }
+  .export-pptx { background:rgba(22,40,169,0.1); color:var(--navy); }
+  .export-xlsx { background:rgba(45,106,79,0.1); color:var(--green); }
+  .export-csv { background:rgba(107,107,107,0.1); color:var(--grey); }
+  .kpi-mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .kpi-mini { background:var(--surface); border-radius:5px; padding:8px; text-align:center; }
+  .kpi-mini .v { font-size:18px; font-weight:800; color:var(--red); }
+  .kpi-mini .l { font-size:7.5px; color:var(--grey); }
+  .revenue-bars { display:flex; align-items:flex-end; gap:5px; height:70px; }
+  .rev-bar { flex:1; background:linear-gradient(180deg,var(--red),rgba(168,55,29,0.6)); border-radius:3px 3px 0 0; position:relative; min-height:8px; }
+  .rev-bar-lbl { font-size:6.5px; color:var(--grey); text-align:center; margin-top:3px; }
+
+  /* ─ Slide 8: Auth RBAC ─ */
+  .auth-layout { display:grid; grid-template-columns:1fr 1fr; gap:14px; height:100%; }
+  .auth-roles { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; }
+  .role-item { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:0.5px solid var(--line); }
+  .role-item:last-child { border:none; }
+  .role-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+  .role-name { font-size:9px; font-weight:700; color:var(--ink); }
+  .role-desc { font-size:7.5px; color:var(--grey); }
+  .role-badge { margin-left:auto; font-size:7px; font-weight:600; padding:2px 7px; border-radius:10px; }
+  .auth-diagram { background:var(--surface); border-radius:8px; padding:12px; display:flex; flex-direction:column; }
+  .jwt-flow { display:flex; flex-direction:column; gap:6px; }
+  .jwt-step { background:white; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:8px; display:flex; align-items:center; gap:8px; }
+  .jwt-step-num { width:18px; height:18px; border-radius:50%; background:var(--navy); color:white; font-size:8px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .jwt-arrow { text-align:center; font-size:10px; color:var(--red); }
+
+  /* ─ Slide 9: Horizon Fleet ─ */
+  .fleet-layout { height:100%; }
+  .fleet-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
+  .fleet-stat { border-radius:6px; padding:10px; text-align:center; }
+  .fleet-stat .v { font-size:22px; font-weight:800; }
+  .fleet-stat .l { font-size:8px; margin-top:2px; opacity:0.8; }
+  .fleet-table { width:100%; border-collapse:collapse; font-size:8.5px; }
+  .fleet-table thead tr { background:var(--ink); }
+  .fleet-table th { color:white; padding:6px 8px; text-align:left; font-weight:600; font-size:8px; }
+  .fleet-table td { padding:7px 8px; border-bottom:0.5px solid var(--line); }
+  .fleet-table tr:nth-child(even) td { background:var(--surface); }
+  .mission-status { font-size:7.5px; font-weight:600; padding:2px 7px; border-radius:10px; display:inline-flex; align-items:center; gap:3px; }
+  .mis-active { background:rgba(45,106,79,0.15); color:#2D6A4F; }
+  .mis-scheduled { background:rgba(22,40,169,0.12); color:var(--navy); }
+  .mis-maintenance { background:rgba(168,55,29,0.12); color:var(--red); }
+  .mis-done { background:rgba(107,107,107,0.12); color:var(--grey); }
+
+  /* ─ Slide 10: Closing ─ */
+  #s10 { background:linear-gradient(140deg,#0A1240,#1628A9); }
+  .s10-content { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:40px; text-align:center; }
+  .s10-title { font-size:36px; font-weight:900; color:white; margin-bottom:8px; }
+  .s10-sub { font-size:14px; color:rgba(200,208,255,0.8); }
+  .s10-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:24px 0; }
+  .s10-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px; text-align:center; }
+  .s10-card .icon { font-size:24px; margin-bottom:6px; }
+  .s10-card .label { font-size:9px; color:rgba(200,208,255,0.7); font-weight:600; margin-bottom:2px; }
+  .s10-card .value { font-size:14px; font-weight:800; color:white; }
+  .s10-contact { color:rgba(200,208,255,0.6); font-size:11px; margin-top:16px; }
+  .s10-contact a { color:rgba(200,208,255,0.9); }
+  .stours-logo-area { margin-bottom:20px; }
+  .stours-wordmark { font-size:22px; font-weight:900; color:white; letter-spacing:3px; }
+  .stours-tagline { font-size:9px; letter-spacing:4px; color:var(--red); font-weight:600; margin-top:2px; }
+
+  /* ── AUTOPLAY INDICATOR ── */
+  .autoplay-ring { width:40px; height:40px; position:relative; }
+  .autoplay-ring svg { transform:rotate(-90deg); }
+  .autoplay-ring circle { fill:none; stroke:rgba(255,255,255,0.15); stroke-width:3; }
+  .autoplay-ring .progress-circle { stroke:var(--red); stroke-dasharray:100; stroke-dashoffset:100; transition:stroke-dashoffset 0.1s linear; }
+</style>
+</head>
+<body>
+
+<div class="demo-shell">
+
+  <!-- Title bar -->
+  <div class="title-bar">
+    <div class="logo">RIHLA<span>.</span></div>
+    <div class="sub">Démo Interactive · S'TOURS DMC Morocco</div>
+    <div class="progress-outer">
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+    </div>
+  </div>
+
+  <!-- Chapter dots -->
+  <div class="chapters">
+    <button class="chap-dot active" onclick="goTo(0)">Intro</button>
+    <button class="chap-dot" onclick="goTo(1)">Dashboard</button>
+    <button class="chap-dot" onclick="goTo(2)">Cotation ⚡</button>
+    <button class="chap-dot" onclick="goTo(3)">IA Claude 🤖</button>
+    <button class="chap-dot" onclick="goTo(4)">Factures 📄</button>
+    <button class="chap-dot" onclick="goTo(5)">CRM 🤝</button>
+    <button class="chap-dot" onclick="goTo(6)">Reports 📊</button>
+    <button class="chap-dot" onclick="goTo(7)">Auth 🔐</button>
+    <button class="chap-dot" onclick="goTo(8)">Fleet 🚌</button>
+    <button class="chap-dot" onclick="goTo(9)">Fin 🏁</button>
+  </div>
+
+  <!-- Slide viewport -->
+  <div class="slide-viewport">
+
+    <!-- SLIDE 1: Cover -->
+    <div class="slide active" id="s1">
+      <div class="s1-content">
+        <div class="s1-badge">S'TOURS DMC MOROCCO — VERSION 0.7</div>
+        <div class="s1-title">RIHLA</div>
+        <div class="s1-sub">Plateforme de Gestion DMC</div>
+        <div class="s1-line"></div>
+        <div class="s1-tag">"Du brief client au document prêt — en moins de 15 minutes"</div>
+        <div class="s1-company">
+          <div class="n">S'TOURS VOYAGES S.A.R.L</div>
+          <div class="d">Casablanca · Marrakech · contact@stours.ma</div>
+        </div>
+        <div class="s1-pills">
+          <span class="s1-pill">Python 3.12</span><span class="s1-pill">FastAPI</span>
+          <span class="s1-pill">React 18</span><span class="s1-pill">PostgreSQL 16</span>
+          <span class="s1-pill">Redis 7</span><span class="s1-pill">Docker</span>
+          <span class="s1-pill">Claude AI</span><span class="s1-pill">41/41 Tests ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Dashboard -->
+    <div class="slide" id="s2">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav">
+          <div class="s-nav-item active">Dashboard</div>
+          <div class="s-nav-item">Projets</div>
+          <div class="s-nav-item">Cotation</div>
+          <div class="s-nav-item">IA</div>
+          <div class="s-nav-item">Rapports</div>
+        </div>
+        <div style="margin-left:10px;font-size:8px;color:var(--grey)">a.chakir@stours.ma</div>
+      </div>
+      <div class="s-body" style="background:var(--surface)">
+        <div class="dash-grid">
+          <div class="dash-kpi"><div class="val">124</div><div class="lbl">Projets actifs</div></div>
+          <div class="dash-kpi"><div class="val">4.2M</div><div class="lbl">CA (MAD)</div></div>
+          <div class="dash-kpi"><div class="val">78%</div><div class="lbl">Taux conversion</div></div>
+          <div class="dash-kpi"><div class="val">38</div><div class="lbl">Cotations ce mois</div></div>
+        </div>
+        <div class="dash-chart">
+          <div class="chart-box">
+            <div class="chart-title">📈 Revenus mensuels (MAD)</div>
+            <div class="bar-chart">
+              <div style="flex:1"><div class="bar" style="height:35px;background:var(--red);opacity:0.6"></div><div class="bar-label">Jan</div></div>
+              <div style="flex:1"><div class="bar" style="height:45px;background:var(--red);opacity:0.7"></div><div class="bar-label">Fév</div></div>
+              <div style="flex:1"><div class="bar" style="height:55px;background:var(--red);opacity:0.8"></div><div class="bar-label">Mar</div></div>
+              <div style="flex:1"><div class="bar" style="height:50px;background:var(--red);opacity:0.85"></div><div class="bar-label">Avr</div></div>
+              <div style="flex:1"><div class="bar" style="height:58px;background:var(--red)"></div><div class="bar-label">Mai</div></div>
+              <div style="flex:1"><div class="bar" style="height:62px;background:var(--red)"></div><div class="bar-label">Jun</div></div>
+            </div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">🌍 Marchés</div>
+            <div class="pie-legend">
+              <div class="pie-row"><div class="pie-dot" style="background:var(--red)"></div>France 38%</div>
+              <div class="pie-row"><div class="pie-dot" style="background:var(--navy)"></div>UK 22%</div>
+              <div class="pie-row"><div class="pie-dot" style="background:var(--green)"></div>Espagne 18%</div>
+              <div class="pie-row"><div class="pie-dot" style="background:#856A1A"></div>USA 12%</div>
+              <div class="pie-row"><div class="pie-dot" style="background:var(--grey)"></div>Autres 10%</div>
+            </div>
+          </div>
+        </div>
+        <div class="recent-projects" style="margin-top:10px">
+          <div style="font-size:9px;font-weight:700;color:var(--ink);margin-bottom:6px">Projets récents</div>
+          <div class="proj-row"><span style="flex:1;font-weight:600">Atlas Premium 9J — Luxe Voyages Paris</span><span class="proj-status status-won">WON</span><span style="color:var(--grey);font-size:7.5px;margin-left:8px">240 000 MAD</span></div>
+          <div class="proj-row"><span style="flex:1;font-weight:600">Circuit Sahara 7J — Atlas Tours UK</span><span class="proj-status status-sent">ENVOYÉ</span><span style="color:var(--grey);font-size:7.5px;margin-left:8px">185 000 MAD</span></div>
+          <div class="proj-row"><span style="flex:1;font-weight:600">Imperial Cities 11J — Nordic Adventures</span><span class="proj-status status-draft">DRAFT</span><span style="color:var(--grey);font-size:7.5px;margin-left:8px">—</span></div>
+        </div>
+      </div>
+      <div class="s-footer"><p>Dashboard principal</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 3: Quotation Engine -->
+    <div class="slide" id="s3">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">⚡ Moteur de Cotation DMC</div></div>
+      </div>
+      <div class="s-body" style="background:var(--surface)">
+        <div class="engine-layout">
+          <div class="engine-form">
+            <div class="form-title">Paramètres du circuit</div>
+            <div class="form-group">
+              <div class="form-label">CIRCUIT</div>
+              <input class="form-input" value="Atlas Premium — 9 jours" readonly>
+            </div>
+            <div class="form-group">
+              <div class="form-label">PAX MIN → MAX</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                <input class="form-input highlight" value="10" readonly>
+                <input class="form-input" value="19" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">HÔTEL (par chambre / nuit)</div>
+              <input class="form-input" value="1 800 MAD  ·  Double  ·  8 nuits" readonly>
+            </div>
+            <div class="form-group">
+              <div class="form-label">TRANSPORT</div>
+              <input class="form-input" value="Minibus 17  ·  380 MAD/j  ·  9 jours" readonly>
+            </div>
+            <div class="form-group">
+              <div class="form-label">GUIDE</div>
+              <input class="form-input" value="450 MAD/j  ·  9 jours" readonly>
+            </div>
+            <div class="form-group">
+              <div class="form-label">ACTIVITÉS</div>
+              <input class="form-input" value="Tanneries, Jardin Majorelle, Excursion Merzouga" readonly>
+            </div>
+            <button class="calc-btn">⚡ CALCULER TOUTES LES TRANCHES</button>
+            <div style="margin-top:6px;font-size:7.5px;color:var(--grey);font-style:italic">Règle : min_pax garanti — prix ne sous-estime jamais</div>
+          </div>
+          <div class="engine-result">
+            <div class="result-title">✅ Résultat — 41/41 tests passants <span class="engine-tag">DÉTERMINISTE</span></div>
+            <table class="range-table">
+              <thead><tr><th>Tranche pax</th><th>Min pax</th><th>Hôtel/p.</th><th>Transport/p.</th><th>Guide/p.</th><th>TOTAL/p.</th></tr></thead>
+              <tbody>
+                <tr><td>1 – 4</td><td>1</td><td>1 800</td><td>342</td><td>450</td><td style="font-weight:700;color:var(--red)">3 780</td></tr>
+                <tr><td>5 – 9</td><td>5</td><td>720</td><td>684</td><td>810</td><td style="font-weight:700;color:var(--red)">3 180</td></tr>
+                <tr><td>10 – 14</td><td>10</td><td>720</td><td>342</td><td>405</td><td style="font-weight:700;color:var(--green)">2 245</td></tr>
+                <tr><td>15 – 19</td><td>15</td><td>720</td><td>228</td><td>270</td><td style="font-weight:700;color:var(--green)">1 898</td></tr>
+                <tr><td>20 – 29</td><td>20</td><td>720</td><td>342</td><td>202</td><td style="font-weight:700;color:var(--navy)">1 820</td></tr>
+                <tr class="total-row"><td colspan="5">⭐ Meilleur prix groupe (20 pax)</td><td>1 820 MAD</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:8px;font-size:7.5px;color:var(--grey)">
+              Transport : ceil(min_pax ÷ 17) × 380 × 9 ÷ min_pax &nbsp;|&nbsp; Guide : 450 × 9 ÷ min_pax
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s-footer"><p>Moteur Cotation DMC — Calcul déterministe</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 4: AI Itinerary -->
+    <div class="slide" id="s4">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">🤖 IA Assistant — Claude</div></div>
+      </div>
+      <div class="s-body" style="background:var(--surface)">
+        <div class="ai-layout">
+          <div class="ai-sidebar">
+            <div class="ai-title">🤖 Présets rapides</div>
+            <div class="ai-preset active">
+              <div class="ai-preset-icon">📍</div>
+              <div class="ai-preset-text">Rédiger itinéraire jour</div>
+            </div>
+            <div class="ai-preset">
+              <div class="ai-preset-icon">📧</div>
+              <div class="ai-preset-text">Email client B2B</div>
+            </div>
+            <div class="ai-preset">
+              <div class="ai-preset-icon">🧮</div>
+              <div class="ai-preset-text">Calcul transport</div>
+            </div>
+            <div class="ai-preset">
+              <div class="ai-preset-icon">🌐</div>
+              <div class="ai-preset-text">Traduction FR → EN</div>
+            </div>
+            <div style="margin-top:10px">
+              <div class="ai-title" style="font-size:9px">Ton de rédaction</div>
+              <div class="tone-select">
+                <div class="tone-btn">Standard</div>
+                <div class="tone-btn active">Luxe</div>
+                <div class="tone-btn">Aventure</div>
+                <div class="tone-btn">Famille</div>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:8px;color:var(--grey);line-height:1.5">
+              Langue : <strong>EN</strong><br>
+              Modèle : claude-3-5-sonnet<br>
+              Tokens : 247 | Coût : $0.002
+            </div>
+          </div>
+          <div class="ai-chat">
+            <div class="ai-msg user">Rédige une description premium pour le Jour 3 : Fès — visite médina, tanneries Chouara, medersa Bou Inania. Ton luxe, anglais.</div>
+            <div class="ai-msg assistant">
+              <strong>Day 3 — Fès: Imperial Splendour</strong><br><br>
+              Immerse yourself in the timeless grandeur of Fès el-Bali, a UNESCO World Heritage medina where centuries dissolve into the perfume of cedar and spice. Your expert guide leads you through labyrinthine alleys to the <em>Chouara Tanneries</em> — a spectacular tableau of natural dyes seen from exclusive rooftop terraces. The afternoon unveils the breathtaking <em>Bou Inania Medersa</em>, a 14th-century masterpiece of zellige tilework and carved stucco, a testament to Marinid artistry at its most exquisite.
+            </div>
+            <div class="token-info">
+              <span class="token-badge">📊 Tokens : 312</span>
+              <span class="token-badge">💰 Coût : $0.0032</span>
+              <span class="token-badge">⚡ 2.4s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s-footer"><p>IA Assistant — Anthropic Claude · 4 tons · FR/EN</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 5: Invoice -->
+    <div class="slide" id="s5">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">📄 Facturation PDF</div></div>
+      </div>
+      <div class="s-body">
+        <div class="invoice-preview">
+          <div class="invoice-controls">
+            <div style="font-size:10px;font-weight:700;color:var(--ink);margin-bottom:10px">Facture</div>
+            <div class="inv-info">
+              <div class="inv-info-label">RÉFÉRENCE</div>
+              <div class="inv-info-val" style="font-family:monospace;color:var(--red)">FAC-2026-0042</div>
+            </div>
+            <div class="inv-info" style="margin-top:6px">
+              <div class="inv-info-label">CLIENT</div>
+              <div class="inv-info-val" style="font-size:8px">Luxe Voyages International<br>Paris, France</div>
+            </div>
+            <div class="inv-info" style="margin-top:6px">
+              <div class="inv-info-label">TOTAL TTC</div>
+              <div class="inv-info-val" style="color:var(--red)">240 000 MAD</div>
+            </div>
+            <div class="inv-info" style="margin-top:6px">
+              <div class="inv-info-label">ACOMPTE 30%</div>
+              <div class="inv-info-val" style="color:var(--navy)">72 000 MAD</div>
+            </div>
+            <button class="inv-btn primary" style="margin-top:12px">⬇ Générer PDF</button>
+            <button class="inv-btn">📧 Envoyer</button>
+            <button class="inv-btn">✏ Modifier</button>
+          </div>
+          <div class="invoice-paper">
+            <div class="inv-header">
+              <div><div class="inv-header-title">S'TOURS DMC MOROCCO</div><div style="color:rgba(255,255,255,0.7);font-size:7px;margin-top:2px">4 rue Turgot, Casablanca · Tel: +212 522 95 40 00</div></div>
+              <div style="text-align:right"><div class="inv-header-ref">FAC-2026-0042</div><div style="color:rgba(255,255,255,0.7);font-size:7px;margin-top:2px">27 Avril 2026</div></div>
+            </div>
+            <div class="inv-body">
+              <div class="inv-section-title">DÉTAIL DES PRESTATIONS — ATLAS PREMIUM 9J</div>
+              <table class="inv-table">
+                <thead><tr><th>Prestation</th><th>Quantité</th><th>P.U.</th><th>Total</th></tr></thead>
+                <tbody>
+                  <tr><td>Hôtels 5* (chambre double)</td><td>8 nuits × 10 ch.</td><td>1 800 MAD</td><td>144 000</td></tr>
+                  <tr><td>Transport Minibus 17 places</td><td>9 jours</td><td>6 840 MAD</td><td>61 560</td></tr>
+                  <tr><td>Guide professionnel FR/EN</td><td>9 jours</td><td>450 MAD</td><td>4 050</td></tr>
+                  <tr><td>Activités & entrées</td><td>Forfait/groupe</td><td>18 000 MAD</td><td>18 000</td></tr>
+                  <tr><td>Dîner de gala Marrakech</td><td>1 soir</td><td>4 000 MAD</td><td>4 000</td></tr>
+                </tbody>
+              </table>
+              <div class="inv-total-box">
+                <div class="inv-total-inner">
+                  <div class="inv-total-row"><span>Sous-total HT</span><span>231 610 MAD</span></div>
+                  <div class="inv-total-row"><span>TVA 10%</span><span>8 390 MAD</span></div>
+                  <div class="inv-total-row final"><span>TOTAL TTC</span><span>240 000 MAD</span></div>
+                  <div class="inv-total-row" style="color:var(--navy)"><span>Acompte 30%</span><span>72 000 MAD</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s-footer"><p>Facturation PDF — ReportLab · Layout S'TOURS · FAC-YYYY-NNNN</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 6: CRM -->
+    <div class="slide" id="s6">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">🤝 CRM Agences B2B</div></div>
+      </div>
+      <div class="s-body" style="background:var(--surface)">
+        <div class="crm-layout">
+          <div class="crm-stats">
+            <div class="crm-stat"><div class="v" style="color:var(--red)">24</div><div class="l">Agences actives</div></div>
+            <div class="crm-stat"><div class="v" style="color:var(--navy)">78%</div><div class="l">Conv. moyenne</div></div>
+            <div class="crm-stat"><div class="v" style="color:var(--green)">4.2M</div><div class="l">CA total (MAD)</div></div>
+            <div class="crm-stat"><div class="v" style="color:#856A1A">12</div><div class="l">Platinum</div></div>
+          </div>
+          <table class="crm-table">
+            <thead><tr><th>Agence</th><th>Pays</th><th>Tier</th><th>Projets</th><th>Conversion</th><th>CA (MAD)</th><th>Dernière activité</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:700">Luxe Voyages International</td><td>🇫🇷 France</td>
+                <td><span class="tier-badge tier-platinum">Platinum</span></td><td>45</td>
+                <td><div class="conv-bar-wrap"><div class="conv-bar" style="width:60px;background:var(--green);height:6px;border-radius:3px"></div><span style="font-size:8px;margin-left:4px">84%</span></div></td>
+                <td>2 450 000</td><td style="color:var(--grey);font-size:8px">Il y a 2 jours</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700">Atlas Tours UK</td><td>🇬🇧 UK</td>
+                <td><span class="tier-badge tier-premium">Premium</span></td><td>22</td>
+                <td><div class="conv-bar-wrap"><div class="conv-bar" style="width:35px;background:var(--navy);height:6px;border-radius:3px"></div><span style="font-size:8px;margin-left:4px">54%</span></div></td>
+                <td>850 000</td><td style="color:var(--grey);font-size:8px">Aujourd'hui</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700">Iberia Travel Group</td><td>🇪🇸 Espagne</td>
+                <td><span class="tier-badge tier-standard">Standard</span></td><td>11</td>
+                <td><div class="conv-bar-wrap"><div class="conv-bar" style="width:42px;background:#856A1A;height:6px;border-radius:3px"></div><span style="font-size:8px;margin-left:4px">63%</span></div></td>
+                <td>420 000</td><td style="color:var(--grey);font-size:8px">Il y a 5 jours</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700">Nordic Adventures</td><td>🇸🇪 Suède</td>
+                <td><span class="tier-badge tier-premium">Premium</span></td><td>18</td>
+                <td><div class="conv-bar-wrap"><div class="conv-bar" style="width:50px;background:var(--green);height:6px;border-radius:3px"></div><span style="font-size:8px;margin-left:4px">72%</span></div></td>
+                <td>680 000</td><td style="color:var(--grey);font-size:8px">Il y a 1 jour</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700">US Adventure Co.</td><td>🇺🇸 USA</td>
+                <td><span class="tier-badge tier-platinum">Platinum</span></td><td>31</td>
+                <td><div class="conv-bar-wrap"><div class="conv-bar" style="width:55px;background:var(--red);height:6px;border-radius:3px"></div><span style="font-size:8px;margin-left:4px">80%</span></div></td>
+                <td>1 120 000</td><td style="color:var(--grey);font-size:8px">Aujourd'hui</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="s-footer"><p>CRM Agences B2B — Tiers Platinum / Premium / Standard</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 7: Report Builder -->
+    <div class="slide" id="s7">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">📊 Report Builder</div></div>
+      </div>
+      <div class="s-body" style="background:var(--surface)">
+        <div class="report-layout">
+          <div class="report-box">
+            <div class="report-box-title">
+              KPI — Avril 2026
+              <div class="export-btns">
+                <button class="export-btn export-pdf">PDF</button>
+                <button class="export-btn export-pptx">PPTX</button>
+                <button class="export-btn export-xlsx">XLSX</button>
+                <button class="export-btn export-csv">CSV</button>
+              </div>
+            </div>
+            <div class="kpi-mini-grid">
+              <div class="kpi-mini"><div class="v">4.2M</div><div class="l">CA total (MAD)</div></div>
+              <div class="kpi-mini"><div class="v">78%</div><div class="l">Conversion</div></div>
+              <div class="kpi-mini"><div class="v">124</div><div class="l">Projets actifs</div></div>
+              <div class="kpi-mini"><div class="v">38</div><div class="l">Cotations</div></div>
+            </div>
+          </div>
+          <div class="report-box">
+            <div class="report-box-title">Revenus par mois (MAD)</div>
+            <div class="revenue-bars">
+              <div><div class="rev-bar" style="height:35px"></div><div class="rev-bar-lbl">Jan</div></div>
+              <div><div class="rev-bar" style="height:48px"></div><div class="rev-bar-lbl">Fév</div></div>
+              <div><div class="rev-bar" style="height:55px"></div><div class="rev-bar-lbl">Mar</div></div>
+              <div><div class="rev-bar" style="height:52px"></div><div class="rev-bar-lbl">Avr</div></div>
+              <div><div class="rev-bar" style="height:62px"></div><div class="rev-bar-lbl">Mai</div></div>
+              <div><div class="rev-bar" style="height:70px"></div><div class="rev-bar-lbl">Jun</div></div>
+            </div>
+          </div>
+          <div class="report-box" style="grid-column:span 2">
+            <div class="report-box-title">Top Agences — Performance mensuelle</div>
+            <table style="width:100%;font-size:8.5px;border-collapse:collapse">
+              <thead><tr style="background:var(--red)"><th style="color:white;padding:5px 8px;text-align:left">Agence</th><th style="color:white;padding:5px 8px">CA (MAD)</th><th style="color:white;padding:5px 8px">Projets</th><th style="color:white;padding:5px 8px">Conv.</th><th style="color:white;padding:5px 8px">Croissance</th></tr></thead>
+              <tbody>
+                <tr style="background:white"><td style="padding:5px 8px;font-weight:600">Luxe Voyages International</td><td style="padding:5px 8px;text-align:center">2 450 000</td><td style="padding:5px 8px;text-align:center">45</td><td style="padding:5px 8px;text-align:center;color:var(--green)">84%</td><td style="padding:5px 8px;text-align:center;color:var(--green)">↑ +18%</td></tr>
+                <tr style="background:var(--cream)"><td style="padding:5px 8px;font-weight:600">US Adventure Co.</td><td style="padding:5px 8px;text-align:center">1 120 000</td><td style="padding:5px 8px;text-align:center">31</td><td style="padding:5px 8px;text-align:center;color:var(--green)">80%</td><td style="padding:5px 8px;text-align:center;color:var(--green)">↑ +12%</td></tr>
+                <tr style="background:white"><td style="padding:5px 8px;font-weight:600">Nordic Adventures</td><td style="padding:5px 8px;text-align:center">680 000</td><td style="padding:5px 8px;text-align:center">18</td><td style="padding:5px 8px;text-align:center;color:var(--navy)">72%</td><td style="padding:5px 8px;text-align:center;color:var(--navy)">→ 0%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="s-footer"><p>Report Builder — Export PDF / PPTX / XLSX / CSV</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 8: Auth RBAC -->
+    <div class="slide" id="s8">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">🔐 Authentification RBAC</div></div>
+      </div>
+      <div class="s-body">
+        <div class="auth-layout">
+          <div class="auth-roles">
+            <div style="font-size:10px;font-weight:700;color:var(--ink);margin-bottom:10px">6 Rôles Granulaires</div>
+            <div class="role-item">
+              <div class="role-icon" style="background:rgba(168,55,29,0.1)">👑</div>
+              <div><div class="role-name">super_admin</div><div class="role-desc">Accès total — config système</div></div>
+              <span class="role-badge" style="background:rgba(168,55,29,0.1);color:var(--red)">Niveau 1</span>
+            </div>
+            <div class="role-item">
+              <div class="role-icon" style="background:rgba(22,40,169,0.1)">🛡</div>
+              <div><div class="role-name">admin</div><div class="role-desc">Gestion utilisateurs & agences</div></div>
+              <span class="role-badge" style="background:rgba(22,40,169,0.1);color:var(--navy)">Niveau 2</span>
+            </div>
+            <div class="role-item">
+              <div class="role-icon" style="background:rgba(45,106,79,0.1)">📋</div>
+              <div><div class="role-name">manager</div><div class="role-desc">Tous projets & rapports</div></div>
+              <span class="role-badge" style="background:rgba(45,106,79,0.1);color:var(--green)">Niveau 3</span>
+            </div>
+            <div class="role-item">
+              <div class="role-icon" style="background:rgba(106,45,106,0.1)">✈</div>
+              <div><div class="role-name">travel_designer</div><div class="role-desc">Circuits, cotations, IA</div></div>
+              <span class="role-badge" style="background:rgba(106,45,106,0.1);color:var(--purple)">Niveau 4</span>
+            </div>
+            <div class="role-item">
+              <div class="role-icon" style="background:rgba(133,106,26,0.1)">💼</div>
+              <div><div class="role-name">sales_agent</div><div class="role-desc">Projets assignés, cotations</div></div>
+              <span class="role-badge" style="background:rgba(133,106,26,0.1);color:#856A1A">Niveau 5</span>
+            </div>
+            <div class="role-item">
+              <div class="role-icon" style="background:rgba(107,107,107,0.1)">👁</div>
+              <div><div class="role-name">viewer</div><div class="role-desc">Lecture seule</div></div>
+              <span class="role-badge" style="background:rgba(107,107,107,0.1);color:var(--grey)">Niveau 6</span>
+            </div>
+          </div>
+          <div class="auth-diagram">
+            <div style="font-size:10px;font-weight:700;color:var(--ink);margin-bottom:10px">Flux JWT HS256</div>
+            <div class="jwt-flow">
+              <div class="jwt-step"><div class="jwt-step-num">1</div><span>Client envoie email + password → POST /api/auth/login</span></div>
+              <div class="jwt-arrow">↓</div>
+              <div class="jwt-step"><div class="jwt-step-num">2</div><span>Serveur vérifie Bcrypt → génère JWT HS256 (24h)</span></div>
+              <div class="jwt-arrow">↓</div>
+              <div class="jwt-step"><div class="jwt-step-num">3</div><span>Token retourné → stocké dans Zustand store</span></div>
+              <div class="jwt-arrow">↓</div>
+              <div class="jwt-step"><div class="jwt-step-num">4</div><span>Chaque requête → Authorization: Bearer &lt;token&gt;</span></div>
+              <div class="jwt-arrow">↓</div>
+              <div class="jwt-step"><div class="jwt-step-num">5</div><span>FastAPI vérifie signature + rôle → accès accordé/refusé</span></div>
+            </div>
+            <div style="margin-top:12px;background:var(--surface);border-radius:6px;padding:8px;font-size:8px;color:var(--grey)">
+              <strong style="color:var(--ink)">Compte admin par défaut :</strong><br>
+              Email : a.chakir@stours.ma<br>
+              Rôle : super_admin
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s-footer"><p>Auth RBAC — JWT HS256 · 6 rôles · 24h token</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 9: Horizon Fleet -->
+    <div class="slide" id="s9">
+      <div class="s-header">
+        <div class="s-logo">S'TOURS<span>RIHLA</span></div>
+        <div class="s-nav"><div class="s-nav-item active">🚌 Horizon Portal — Fleet & Opérations</div></div>
+      </div>
+      <div class="s-body" style="background:#0a0f2e">
+        <div class="fleet-layout">
+          <div class="fleet-stats">
+            <div class="fleet-stat" style="background:rgba(0,200,100,0.12);border:1px solid rgba(0,200,100,0.2)">
+              <div class="v" style="color:#00C864">18</div><div class="l" style="color:rgba(200,255,200,0.7)">Véhicules actifs</div>
+            </div>
+            <div class="fleet-stat" style="background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.2)">
+              <div class="v" style="color:#FFC800">14</div><div class="l" style="color:rgba(255,240,150,0.7)">Chauffeurs en route</div>
+            </div>
+            <div class="fleet-stat" style="background:rgba(0,140,255,0.12);border:1px solid rgba(0,140,255,0.2)">
+              <div class="v" style="color:#008CFF">142</div><div class="l" style="color:rgba(150,200,255,0.7)">Missions du mois</div>
+            </div>
+            <div class="fleet-stat" style="background:rgba(0,200,100,0.12);border:1px solid rgba(0,200,100,0.2)">
+              <div class="v" style="color:#00C864">98%</div><div class="l" style="color:rgba(200,255,200,0.7)">Taux de service SLA</div>
+            </div>
+          </div>
+          <table class="fleet-table">
+            <thead><tr><th>ID Mission</th><th>Groupe</th><th>Véhicule</th><th>Chauffeur</th><th>Statut</th><th>Route</th><th>Période</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-family:monospace;color:#00C864;font-weight:700">M-771</td>
+                <td style="color:rgba(200,208,255,0.8);font-size:8px">US Adventure Co.</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Sprinter 12A</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Ahmed L.</td>
+                <td><span class="mission-status mis-active">● Actif</span></td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Marrakech → Merzouga</td>
+                <td style="color:rgba(200,208,255,0.5);font-size:7.5px">20 – 30 Avr</td>
+              </tr>
+              <tr>
+                <td style="font-family:monospace;color:#008CFF;font-weight:700">M-775</td>
+                <td style="color:rgba(200,208,255,0.8);font-size:8px">Prestige Tours Paris</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Minibus 05B</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Youssef B.</td>
+                <td><span class="mission-status mis-scheduled">◷ Planifié</span></td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Casa → Chefchaouen</td>
+                <td style="color:rgba(200,208,255,0.5);font-size:7.5px">25 Avr – 2 Mai</td>
+              </tr>
+              <tr>
+                <td style="font-family:monospace;color:rgba(200,208,255,0.5);font-weight:700">M-762</td>
+                <td style="color:rgba(200,208,255,0.8);font-size:8px">Nordic Adventures</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">4x4 Toyota</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Said M.</td>
+                <td><span class="mission-status mis-done">✓ Terminé</span></td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Atlas Trek</td>
+                <td style="color:rgba(200,208,255,0.5);font-size:7.5px">10 – 18 Avr</td>
+              </tr>
+              <tr>
+                <td style="font-family:monospace;color:#FF4444;font-weight:700">M-Maint</td>
+                <td style="color:rgba(200,208,255,0.8);font-size:8px">—</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Sprinter 09C</td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">—</td>
+                <td><span class="mission-status mis-maintenance">⚠ Maintenance</span></td>
+                <td style="color:rgba(200,208,255,0.7);font-size:8px">Garage Service</td>
+                <td style="color:rgba(200,208,255,0.5);font-size:7.5px">22 – 24 Avr</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="s-footer"><p>Horizon Portal — Fleet Management · Temps réel</p><p>RIHLA v0.7</p></div>
+    </div>
+
+    <!-- SLIDE 10: Closing -->
+    <div class="slide" id="s10">
+      <div class="s10-content">
+        <div class="stours-logo-area">
+          <div class="stours-wordmark">S'TOURS</div>
+          <div class="stours-tagline">DESTINATION MANAGEMENT COMPANY</div>
+        </div>
+        <div class="s10-title">RIHLA v0.7</div>
+        <div class="s10-sub">Plateforme SaaS DMC · 100% Propriétaire</div>
+        <div class="s1-line"></div>
+        <div class="s10-grid">
+          <div class="s10-card"><div class="icon">⚡</div><div class="label">Moteur cotation</div><div class="value">41/41 tests ✓</div></div>
+          <div class="s10-card"><div class="icon">🤖</div><div class="label">IA Claude</div><div class="value">FR + EN</div></div>
+          <div class="s10-card"><div class="icon">📄</div><div class="label">Documents</div><div class="value">PDF + PPTX</div></div>
+          <div class="s10-card"><div class="icon">🐳</div><div class="label">Déploiement</div><div class="value">Docker Ready</div></div>
+        </div>
+        <div class="s10-contact">
+          CHAKIR Abdelwahed · <a>a.chakir@stours.ma</a> · (+212) 522 95 40 00<br>
+          Casablanca · Marrakech · © 2026 S'TOURS VOYAGES S.A.R.L
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slide-viewport -->
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="ctrl-btn" id="prevBtn" onclick="prevSlide()" disabled>← Précédent</button>
+    <button class="ctrl-btn play" id="autoBtn" onclick="toggleAuto()">▶ Auto-play</button>
+    <button class="ctrl-btn" id="nextBtn" onclick="nextSlide()">Suivant →</button>
+  </div>
+
+  <!-- Narration -->
+  <div class="narration" id="narration">
+    <div class="icon">🎙</div>
+    <div class="narration-text" id="narrationText"></div>
+  </div>
+
+</div><!-- /demo-shell -->
+
+<script>
+const SLIDES = [
+  {
+    id:'s1', chap:'Intro',
+    narration: `<strong>Bienvenue sur RIHLA</strong> — la plateforme SaaS propriétaire de <strong>S'TOURS DMC Morocco</strong>.
+    En moins de 15 minutes, un travel designer passe du brief client à un devis complet, un programme IA, et une facture PDF prête à envoyer.
+    Stack : Python 3.12 · FastAPI · React 18 · PostgreSQL 16 · Claude AI.`
+  },
+  {
+    id:'s2', chap:'Dashboard',
+    narration: `<strong>Dashboard principal</strong> — vue d'ensemble en temps réel.
+    124 projets actifs, 4.2M MAD de CA, 78% de taux de conversion.
+    Les graphiques révèlent la tendance mensuelle ascendante et la répartition géographique des marchés (France 38%, UK 22%).`
+  },
+  {
+    id:'s3', chap:'Cotation ⚡',
+    narration: `<strong>Le moteur de cotation DMC</strong> — cœur du système. Règle critique : tout calcul utilise le <strong>MIN pax</strong> de la tranche, garantissant que le prix coté ne sous-estime jamais le coût réel.
+    Transport : ceil(min_pax ÷ capacité) × prix × jours. <strong>41/41 tests passants</strong>, zéro dépendance base de données.`
+  },
+  {
+    id:'s4', chap:'IA Claude 🤖',
+    narration: `<strong>L'IA Assistant Claude</strong> d'Anthropic génère les descriptions d'itinéraires en français et en anglais.
+    4 tons de rédaction disponibles : Standard, <strong>Luxe</strong>, Aventure, Famille.
+    Chaque génération logue automatiquement le nombre de tokens et le coût API pour le suivi budgétaire.`
+  },
+  {
+    id:'s5', chap:'Factures 📄',
+    narration: `<strong>Facturation PDF automatique</strong> aux couleurs officielles S'TOURS.
+    Numérotation séquentielle <code>FAC-YYYY-NNNN</code>, calcul automatique de l'acompte 30%, coordonnées bancaires et fiscales intégrées.
+    Un clic : ReportLab génère un PDF professionnel prêt à envoyer au client.`
+  },
+  {
+    id:'s6', chap:'CRM 🤝',
+    narration: `<strong>CRM Agences B2B</strong> — suivi des tour-opérateurs partenaires.
+    3 tiers : <strong>Platinum</strong>, Premium, Standard. KPI par agence : projets, taux de conversion, CA en MAD.
+    24 agences actives, de France, UK, Espagne, USA, Suède et plus.`
+  },
+  {
+    id:'s7', chap:'Reports 📊',
+    narration: `<strong>Report Builder</strong> — tableaux de bord analytiques avec export en <strong>4 formats</strong> :
+    PDF (ReportLab), PPTX (python-pptx), XLSX (openpyxl), CSV.
+    KPI configurables, graphiques d'évolution mensuelle, classement des top agences par performance.`
+  },
+  {
+    id:'s8', chap:'Auth 🔐',
+    narration: `<strong>Authentification RBAC</strong> avec JWT HS256. <strong>6 rôles granulaires</strong> : super_admin → admin → manager → travel_designer → sales_agent → viewer.
+    Tokens 24h, Bcrypt pour les mots de passe, permissions vérifiées endpoint par endpoint via FastAPI Security.`
+  },
+  {
+    id:'s9', chap:'Fleet 🚌',
+    narration: `<strong>Horizon Portal</strong> — dashboard Fleet & Opérations en temps réel.
+    18 véhicules trackés (Sprinters, Minibus, 4×4, Coaches), 14 chauffeurs en route, 142 missions ce mois.
+    Taux de service SLA à <strong>98%</strong>, alertes maintenance automatiques.`
+  },
+  {
+    id:'s10', chap:'Fin 🏁',
+    narration: `RIHLA v0.7 — plateforme complète, propriétaire, opérationnelle.
+    <strong>41/41 tests ✓</strong>, Docker-ready, CI/CD GitHub Actions, monitoring Sentry.
+    Prochaines étapes : v0.6 (PPTX, CRM enrichi), v1.0 (PWA mobile, multi-langues, Whisper).
+    Contact : a.chakir@stours.ma · (+212) 522 95 40 00`
+  },
+];
+
+let current = 0;
+let autoPlay = false;
+let autoTimer = null;
+const DURATION = 6000;
+
+function goTo(idx) {
+  if (idx < 0 || idx >= SLIDES.length) return;
+
+  // Remove active from current
+  document.getElementById(SLIDES[current].id).classList.remove('active');
+  document.querySelectorAll('.chap-dot')[current].classList.remove('active');
+
+  current = idx;
+
+  // Activate new
+  document.getElementById(SLIDES[current].id).classList.add('active');
+  document.querySelectorAll('.chap-dot')[current].classList.add('active');
+
+  // Update UI
+  document.getElementById('slideCounter').textContent = `${current+1} / ${SLIDES.length}`;
+  document.getElementById('progressFill').style.width = `${((current+1)/SLIDES.length)*100}%`;
+  document.getElementById('narrationText').innerHTML = SLIDES[current].narration;
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === SLIDES.length - 1;
+}
+
+function nextSlide() {
+  if (current < SLIDES.length - 1) goTo(current + 1);
+  else if (autoPlay) stopAuto();
+}
+
+function prevSlide() { if (current > 0) goTo(current - 1); }
+
+function toggleAuto() {
+  if (autoPlay) stopAuto();
+  else startAuto();
+}
+
+function startAuto() {
+  autoPlay = true;
+  document.getElementById('autoBtn').textContent = '⏸ Pause';
+  document.getElementById('autoBtn').style.background = '#856A1A';
+  if (current === SLIDES.length - 1) goTo(0);
+  autoTimer = setInterval(() => {
+    if (current < SLIDES.length - 1) nextSlide();
+    else stopAuto();
+  }, DURATION);
+}
+
+function stopAuto() {
+  autoPlay = false;
+  clearInterval(autoTimer);
+  document.getElementById('autoBtn').textContent = '▶ Auto-play';
+  document.getElementById('autoBtn').style.background = 'var(--red)';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+  if (e.key === ' ') { e.preventDefault(); toggleAuto(); }
+});
+
+// Init
+goTo(0);
+</script>
+</body>
+</html>
