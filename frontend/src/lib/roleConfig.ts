@@ -72,7 +72,8 @@ const ALL_GROUPS: NavGroup[] = [
     items: [
       { to: '/sales-pipeline',       icon: 'TrendingUp',      label: '📊 Pipeline Commercial',  shortcut: 'P' },
       { to: '/b2b-hotel-portal',     icon: 'Building2',       label: '🏨 Portail Hôtels B2B',   shortcut: 'H' },
-      { to: '/crm',                  icon: 'Users',           label: 'Gestion Agences B2B',     shortcut: 'V' },
+      { to: '/crm',                  icon: 'Users',           label: 'CRM B2B Clients',         shortcut: 'V' },
+      { to: '/crm/analytics',        icon: 'BarChart3',       label: 'Analytique CRM' },
       { to: '/client-portal',        icon: 'Globe',           label: 'Portail Client B2C' },
       { to: '/email-quotation',      icon: 'Mail',            label: 'Email Devis' },
       { to: '/whatsapp',             icon: 'MessageCircle',   label: 'WhatsApp Hub' },

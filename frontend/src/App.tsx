@@ -151,6 +151,9 @@ const ItineraryBuilderPage  = lazy(() => import('@/pages/ItineraryBuilderPage').
 const OperationsFulfillmentPage = lazy(() => import('@/pages/OperationsFulfillmentPage').then(m => ({ default: m.OperationsFulfillmentPage })))
 const PassengerAppPage      = lazy(() => import('@/pages/PassengerAppPage').then(m => ({ default: m.PassengerAppPage })))
 
+// CRM complet
+const CrmAnalyticsPage      = lazy(() => import('@/pages/CrmAnalyticsPage').then(m => ({ default: m.CrmAnalyticsPage })))
+
 // ── Skeleton loader shown during page transitions ─────────────────
 function PageSkeleton() {
   return (
@@ -358,6 +361,9 @@ export default function App() {
 
                 {/* B2B Hotel Booking Portal */}
                 <Route path="/b2b-hotel-portal" element={<B2BHotelPortalPage />} />
+
+                {/* CRM Analytics */}
+                <Route path="/crm/analytics" element={<CrmAnalyticsPage />} />
 
                 {/* 7 pages nouvellement routées */}
                 <Route path="/ai-assistant" element={<AIAssistantPage />} />
