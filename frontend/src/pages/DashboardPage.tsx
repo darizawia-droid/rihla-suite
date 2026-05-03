@@ -14,6 +14,11 @@ import { fr } from 'date-fns/locale'
 import { clsx } from 'clsx'
 import { InteractiveMoroccoMap } from '@/components/maps/InteractiveMoroccoMap'
 import { GroupItineraryMap } from '@/components/maps/GroupItineraryMap'
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend,
+  AreaChart, Area,
+} from 'recharts'
 
 export function DashboardPage() {
   const { user } = useAuthStore()
@@ -103,6 +108,28 @@ export function DashboardPage() {
     return buckets
   }, [pendingInvoices, today0])
 
+  // ── CHARTS DATA (demo) ──────────────────────────────────────────────
+  const monthlyRevenue = useMemo(() => {
+    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc']
+    const base = [320, 280, 410, 520, 680, 790, 850, 620, 730, 880, 950, 1020]
+    return months.map((m, i) => ({ name: m, ca: base[i], objectif: 700 }))
+  }, [])
+
+  const destinationsData = useMemo(() => [
+    { name: 'Marrakech', value: 34, color: '#b43e20' },
+    { name: 'Fès', value: 22, color: '#d97706' },
+    { name: 'Chefchaouen', value: 15, color: '#059669' },
+    { name: 'Sahara', value: 18, color: '#7c3aed' },
+    { name: 'Essaouira', value: 11, color: '#0ea5e9' },
+  ], [])
+
+  const conversionFunnel = useMemo(() => [
+    { name: 'Leads', value: 248, fill: '#94a3b8' },
+    { name: 'Devis envoyés', value: 142, fill: '#d97706' },
+    { name: 'Confirmés', value: 87, fill: '#059669' },
+    { name: 'Facturés', value: 64, fill: '#b43e20' },
+  ], [])
+
   // Recently updated projects (sorted) for activity feed
   const recentlyUpdated = useMemo(() => {
     return [...(projects ?? [])]
@@ -189,6 +216,75 @@ export function DashboardPage() {
             sparkline={invoicesPendingSpark}
             sparklineColor="rgb(245, 158, 11)"
           />
+        </div>
+
+        {/* ── INTERACTIVE CHARTS ─────────────────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* CA Mensuel — Area Chart */}
+          <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200/80 dark:border-white/5 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-[14px] font-semibold text-slate-900 dark:text-cream flex items-center gap-2">
+                <TrendingUp size={15} className="text-rihla" />
+                Chiffre d'Affaires Mensuel (k MAD)
+              </h3>
+              <span className="text-[11px] text-emerald-600 font-medium">+18% vs N-1</span>
+            </div>
+            <ResponsiveContainer width="100%" height={220}>
+              <AreaChart data={monthlyRevenue}>
+                <defs>
+                  <linearGradient id="colorCa" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#b43e20" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#b43e20" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                <Area type="monotone" dataKey="objectif" stroke="#94a3b8" strokeDasharray="5 5" fillOpacity={0} strokeWidth={1.5} name="Objectif" />
+                <Area type="monotone" dataKey="ca" stroke="#b43e20" fill="url(#colorCa)" strokeWidth={2} name="CA Réalisé" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Destinations — Pie Chart */}
+          <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200/80 dark:border-white/5 p-5">
+            <h3 className="text-[14px] font-semibold text-slate-900 dark:text-cream mb-4">
+              Destinations Populaires
+            </h3>
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie data={destinationsData} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={75} paddingAngle={3} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                  {destinationsData.map((d, i) => (
+                    <Cell key={i} fill={d.color} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Conversion Funnel */}
+        <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200/80 dark:border-white/5 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-[14px] font-semibold text-slate-900 dark:text-cream flex items-center gap-2">
+              <FolderKanban size={15} className="text-slate-400" />
+              Funnel de Conversion
+            </h3>
+            <span className="text-[11px] text-slate-500">Taux global : {Math.round(64/248*100)}%</span>
+          </div>
+          <ResponsiveContainer width="100%" height={120}>
+            <BarChart data={conversionFunnel} layout="vertical" barCategoryGap={8}>
+              <XAxis type="number" hide />
+              <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} width={110} />
+              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+              <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={24}>
+                {conversionFunnel.map((d, i) => (
+                  <Cell key={i} fill={d.fill} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         {/* ── IMMERSIVE MAP CENTERPIECE ──────────────────────────── */}

@@ -235,14 +235,14 @@ export function CotationAdvancedPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-2">
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-700 pb-2">
         {(Object.keys(TAB_META) as Tab[]).map(k => {
           const M = TAB_META[k]; const Icon = M.icon
           const active = tab === k
           return (
             <button key={k} onClick={() => setTab(k)}
               className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm transition ${
-                active ? 'bg-amber-600 text-white shadow' : 'text-slate-600 hover:bg-slate-100'
+                active ? 'bg-amber-600 text-white shadow' : 'text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:bg-slate-800'
               }`}>
               <Icon className="h-4 w-4" />
               <span>{M.label}</span>
@@ -276,14 +276,14 @@ function SummaryCard({ label, value, icon: Icon, color }: { label: string; value
     emerald: 'from-emerald-500 to-emerald-700', rose: 'from-rose-500 to-rose-700',
   }
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4 shadow-sm">
       <div className="flex items-center gap-3">
         <div className={`grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br ${c[color]} text-white`}>
           <Icon className="h-5 w-5" />
         </div>
         <div>
           <div className="text-xs text-slate-500">{label}</div>
-          <div className="text-xl font-bold text-slate-900">{value}</div>
+          <div className="text-xl font-bold text-slate-900 dark:text-white dark:text-white">{value}</div>
         </div>
       </div>
     </div>
@@ -301,7 +301,7 @@ function PricingTab({ view, form, setForm, onRecompute, busy }: {
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       {/* Form */}
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
+      <section className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5 shadow-sm space-y-4">
         <h3 className="text-base font-semibold text-slate-800">Paramètres</h3>
         <div className="grid grid-cols-2 gap-3 text-sm">
           <Field label="Markup %" value={form.markup_pct ?? 0} step={0.1}
@@ -334,19 +334,19 @@ function PricingTab({ view, form, setForm, onRecompute, busy }: {
       </section>
 
       {/* Grid output */}
-      <section className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5 shadow-sm">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-base font-semibold text-slate-800">Grille PAX scaling</h3>
           {view && <span className="text-xs text-slate-500">{view.brackets.length} bracket(s) · {view.quotation.currency}</span>}
         </div>
         {!view || view.brackets.length === 0 ? (
-          <div className="rounded-md bg-slate-50 p-4 text-sm text-slate-500">
+          <div className="rounded-md bg-slate-50 dark:bg-slate-950 p-4 text-sm text-slate-500">
             Aucun bracket — clique sur « Recalculer la grille » pour générer 10/15/20/25/30/35 PAX.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500">
+              <thead className="border-b border-slate-200 dark:border-slate-700 text-left text-xs uppercase tracking-wide text-slate-500">
                 <tr>
                   <th className="px-2 py-2">PAX</th>
                   <th className="px-2 py-2">FOC</th>
@@ -375,7 +375,7 @@ function PricingTab({ view, form, setForm, onRecompute, busy }: {
                       <td className="px-2 py-2 text-slate-600">{Number(bd.bus || 0).toFixed(0)}</td>
                       <td className="px-2 py-2 text-slate-600">{Number(bd.tour_leader || 0).toFixed(0)}</td>
                       <td className="px-2 py-2 text-slate-600">{Number(bd.guide || 0).toFixed(0)}</td>
-                      <td className="px-2 py-2 font-medium text-slate-700">{Number(bd.subtotal || 0).toFixed(0)}</td>
+                      <td className="px-2 py-2 font-medium text-slate-700 dark:text-slate-300 dark:text-slate-300">{Number(bd.subtotal || 0).toFixed(0)}</td>
                       <td className="px-2 py-2 text-right text-amber-700">+{Number(bd.markup || 0).toFixed(0)}</td>
                       <td className="px-2 py-2 text-right font-bold text-amber-700">{b.price_per_pax.toFixed(2)}</td>
                       <td className="px-2 py-2 text-right text-slate-500">{b.single_supplement.toFixed(0)}</td>
@@ -416,7 +416,7 @@ function TermsTab({ view, onSeed, busy }: { view: CotationFullView | null; onSee
         </button>
       </div>
       {!view || view.terms.length === 0 ? (
-        <div className="rounded-md bg-slate-50 p-4 text-sm text-slate-500">
+        <div className="rounded-md bg-slate-50 dark:bg-slate-950 p-4 text-sm text-slate-500">
           Aucune section. Clique sur le bouton ci-dessus pour charger les 13 sections type S'TOURS
           (validity, paiement, acompte 20%, annulation, modifications, rooming list, force majeure,
           substitution hôtel, véhicules, services hôteliers, responsabilité, processus de réservation).
@@ -424,7 +424,7 @@ function TermsTab({ view, onSeed, busy }: { view: CotationFullView | null; onSee
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
           {view.terms.map(t => (
-            <article key={t.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <article key={t.id} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4 shadow-sm">
               <div className="mb-1 flex items-center gap-2">
                 <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">{t.section}</span>
                 <h4 className="text-sm font-semibold text-slate-800">{t.title || t.section}</h4>
@@ -451,7 +451,7 @@ function VehiclesTab({ vehicles, onSeed, busy }: { vehicles: VehicleT[]; onSeed:
         </button>
       </div>
       {vehicles.length === 0 ? (
-        <div className="rounded-md bg-slate-50 p-4 text-sm text-slate-500">
+        <div className="rounded-md bg-slate-50 dark:bg-slate-950 p-4 text-sm text-slate-500">
           Aucun véhicule. Clique pour seeder Berline, Mini-van 4-7, Mini-bus 11/26 PAX, Autocar 39-48/54 PAX, 4×4 Land Cruiser.
         </div>
       ) : (
@@ -459,7 +459,7 @@ function VehiclesTab({ vehicles, onSeed, busy }: { vehicles: VehicleT[]; onSeed:
           {vehicles.map(v => {
             const Icon = v.type === 'sedan' ? Car : v.type === '4wd' ? Truck : Bus
             return (
-              <article key={v.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <article key={v.id} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4 shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-blue-700 text-white">
                     <Icon className="h-5 w-5" />
@@ -473,15 +473,15 @@ function VehiclesTab({ vehicles, onSeed, busy }: { vehicles: VehicleT[]; onSeed:
                   <p className="mt-2 text-xs italic text-slate-500">{v.brand_models}</p>
                 )}
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                  <span>tarif/km <b className="text-slate-700">{v.rate_per_km} {v.currency}</b></span>
+                  <span>tarif/km <b className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{v.rate_per_km} {v.currency}</b></span>
                   {v.rate_per_day != null && (
-                    <span>tarif/jour <b className="text-slate-700">{v.rate_per_day} {v.currency}</b></span>
+                    <span>tarif/jour <b className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{v.rate_per_day} {v.currency}</b></span>
                   )}
                 </div>
                 {v.specs && (
                   <div className="mt-3 flex flex-wrap gap-1">
                     {Object.entries(v.specs).slice(0, 6).map(([k, val]) => (
-                      <span key={k} className="rounded bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">
+                      <span key={k} className="rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[10px] text-slate-600">
                         {k}: {String(val)}
                       </span>
                     ))}
@@ -501,15 +501,15 @@ function LinesTab({ view }: { view: CotationFullView | null }) {
   if (!view) return null
   if (view.lines.length === 0) {
     return (
-      <div className="rounded-md bg-slate-50 p-6 text-center text-sm text-slate-500">
+      <div className="rounded-md bg-slate-50 dark:bg-slate-950 p-6 text-center text-sm text-slate-500">
         Aucune ligne sur cette cotation. Ajoute des lignes via la console de cotation classique.
       </div>
     )
   }
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white shadow-sm">
       <table className="w-full text-sm">
-        <thead className="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+        <thead className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-left text-xs uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-3 py-2">Jour</th>
             <th className="px-3 py-2">Catégorie</th>

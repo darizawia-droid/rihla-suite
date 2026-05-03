@@ -24,21 +24,21 @@ const CAT_ICONS: Record<string, React.ElementType> = {
 }
 
 const PR_STATUS_LABEL: Record<string, { label: string; cls: string }> = {
-  draft:     { label: 'Brouillon', cls: 'bg-slate-100 text-slate-700' },
+  draft:     { label: 'Brouillon', cls: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-300' },
   submitted: { label: 'Soumise',   cls: 'bg-blue-100 text-blue-700' },
   approved:  { label: 'Approuvée', cls: 'bg-emerald-100 text-emerald-700' },
   rejected:  { label: 'Rejetée',   cls: 'bg-rose-100 text-rose-700' },
   sourced:   { label: 'Commandée', cls: 'bg-violet-100 text-violet-700' },
-  cancelled: { label: 'Annulée',   cls: 'bg-slate-100 text-slate-600' },
+  cancelled: { label: 'Annulée',   cls: 'bg-slate-100 dark:bg-slate-800 text-slate-600' },
 }
 
 const PO_STATUS_LABEL: Record<string, { label: string; cls: string }> = {
-  draft:               { label: 'Brouillon',      cls: 'bg-slate-100 text-slate-700' },
+  draft:               { label: 'Brouillon',      cls: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-300' },
   sent:                { label: 'Envoyé',         cls: 'bg-blue-100 text-blue-700' },
   acknowledged:        { label: 'Confirmé',       cls: 'bg-cyan-100 text-cyan-700' },
   partially_received:  { label: 'Réception part.', cls: 'bg-amber-100 text-amber-700' },
   received:            { label: 'Reçu',           cls: 'bg-emerald-100 text-emerald-700' },
-  closed:              { label: 'Clôturé',        cls: 'bg-slate-100 text-slate-700' },
+  closed:              { label: 'Clôturé',        cls: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-300' },
   cancelled:           { label: 'Annulé',         cls: 'bg-rose-100 text-rose-700' },
 }
 
@@ -46,7 +46,7 @@ const MATCH_STATUS_LABEL: Record<string, { label: string; cls: string; icon: Rea
   matched:     { label: '3-Way Match OK',  cls: 'bg-emerald-50 border-emerald-200 text-emerald-700', icon: CheckCircle2 },
   partial:     { label: 'Match partiel',   cls: 'bg-amber-50 border-amber-200 text-amber-700',       icon: Circle },
   discrepancy: { label: 'Écart détecté',   cls: 'bg-rose-50 border-rose-200 text-rose-700',          icon: AlertTriangle },
-  unmatched:   { label: 'Non rapproché',   cls: 'bg-slate-50 border-slate-200 text-slate-600',       icon: Circle },
+  unmatched:   { label: 'Non rapproché',   cls: 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-700 text-slate-600',       icon: Circle },
 }
 
 function fmtMoney(n: number, cur = 'EUR'): string {
@@ -141,7 +141,7 @@ export function P2PHubPage() {
           <button
             onClick={seed}
             disabled={seeding}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-50 disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 disabled:opacity-50"
             title="Re-seed les données de démo"
           >
             {seeding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
@@ -149,7 +149,7 @@ export function P2PHubPage() {
           </button>
           <button
             onClick={refresh}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950"
           >
             <RefreshCw className="w-4 h-4" /> Actualiser
           </button>
@@ -167,7 +167,7 @@ export function P2PHubPage() {
       )}
 
       {/* Tabs */}
-      <div className="border-b border-slate-200 flex gap-1 overflow-x-auto">
+      <div className="border-b border-slate-200 dark:border-slate-700 flex gap-1 overflow-x-auto">
         {TABS.map(t => {
           const Icon = t.icon
           const active = tab === t.id
@@ -188,7 +188,7 @@ export function P2PHubPage() {
       {/* OVERVIEW */}
       {tab === 'overview' && analytics && (
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <h3 className="font-semibold flex items-center gap-2 mb-4"><GitMerge className="w-4 h-4 text-amber-600" /> Santé du rapprochement (3-way match)</h3>
             <div className="space-y-3">
               <BarRow label="Match parfait"  pct={analytics.matching_health.matched_pct}     color="emerald" />
@@ -202,7 +202,7 @@ export function P2PHubPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <h3 className="font-semibold flex items-center gap-2 mb-4"><Sparkles className="w-4 h-4 text-amber-600" /> Opportunités de négociation</h3>
             {analytics.savings_opportunities.length === 0 ? (
               <p className="text-sm text-slate-500">Aucune opportunité détectée. Continue à construire l'historique d'achats.</p>
@@ -225,13 +225,13 @@ export function P2PHubPage() {
             )}
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-5 lg:col-span-2">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5 lg:col-span-2">
             <h3 className="font-semibold flex items-center gap-2 mb-4"><Package className="w-4 h-4 text-amber-600" /> Répartition par catégorie</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {analytics.by_category.map(c => {
                 const Icon = CAT_ICONS[c.category] ?? Package
                 return (
-                  <div key={c.category} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <div key={c.category} className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 p-3">
                     <div className="flex items-center justify-between">
                       <Icon className="w-4 h-4 text-slate-500" />
                       <span className="text-[10px] uppercase tracking-wider text-slate-500">{c.category}</span>
@@ -258,9 +258,9 @@ export function P2PHubPage() {
             />
             <span className="text-sm text-slate-500">{filteredPRs.length} demande(s)</span>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
+              <thead className="bg-slate-50 dark:bg-slate-950 text-slate-600 text-xs uppercase tracking-wider">
                 <tr>
                   <th className="text-left px-4 py-3">Référence</th>
                   <th className="text-left px-4 py-3">Demande</th>
@@ -277,7 +277,7 @@ export function P2PHubPage() {
                   const s = PR_STATUS_LABEL[pr.status] ?? PR_STATUS_LABEL.draft
                   const Icon = CAT_ICONS[pr.category] ?? Package
                   return (
-                    <tr key={pr.id} className="hover:bg-slate-50">
+                    <tr key={pr.id} className="hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
                       <td className="px-4 py-3 font-mono text-xs">{pr.reference}</td>
                       <td className="px-4 py-3">
                         <div className="font-medium">{pr.title}</div>
@@ -325,9 +325,9 @@ export function P2PHubPage() {
             />
             <span className="text-sm text-slate-500">{filteredPOs.length} bon(s) de commande</span>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
+              <thead className="bg-slate-50 dark:bg-slate-950 text-slate-600 text-xs uppercase tracking-wider">
                 <tr>
                   <th className="text-left px-4 py-3">Référence</th>
                   <th className="text-left px-4 py-3">Fournisseur</th>
@@ -342,7 +342,7 @@ export function P2PHubPage() {
                 {filteredPOs.map(po => {
                   const s = PO_STATUS_LABEL[po.status] ?? PO_STATUS_LABEL.draft
                   return (
-                    <tr key={po.id} className="hover:bg-slate-50">
+                    <tr key={po.id} className="hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
                       <td className="px-4 py-3 font-mono text-xs">{po.reference}</td>
                       <td className="px-4 py-3 font-medium">{po.supplier_name}</td>
                       <td className="px-4 py-3">{po.issue_date ?? '—'}</td>
@@ -379,7 +379,7 @@ export function P2PHubPage() {
                     <Icon className="w-5 h-5 mt-0.5" />
                     <div className="flex-1">
                       <div className="flex items-center gap-3 flex-wrap">
-                        <span className="font-mono text-xs px-2 py-0.5 rounded bg-white">{m.po_reference}</span>
+                        <span className="font-mono text-xs px-2 py-0.5 rounded bg-white dark:bg-slate-900">{m.po_reference}</span>
                         <span className="font-semibold text-sm">{m.supplier_name}</span>
                         <span className="text-xs px-2 py-0.5 rounded bg-white border">{cfg.label}</span>
                       </div>
@@ -408,7 +408,7 @@ export function P2PHubPage() {
               )
             })}
             {matches.length === 0 && (
-              <div className="text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-200">
+              <div className="text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-200 dark:border-slate-700 dark:border-slate-700">
                 Aucun bon de commande à rapprocher. Émettez un PO depuis l'onglet "Demandes d'achat".
               </div>
             )}
@@ -419,7 +419,7 @@ export function P2PHubPage() {
       {/* SPEND ANALYTICS */}
       {tab === 'spend' && analytics && (
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl border border-slate-200 p-5 lg:col-span-2">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5 lg:col-span-2">
             <h3 className="font-semibold flex items-center gap-2 mb-4"><BarChart3 className="w-4 h-4 text-amber-600" /> Top fournisseurs (par montant engagé)</h3>
             <table className="w-full text-sm">
               <thead className="text-xs text-slate-500 uppercase tracking-wider">
@@ -460,7 +460,7 @@ function KPI({ label, value, hint, accent }: { label: string; value: string; hin
     rose:   'from-rose-500/10 to-rose-500/0 text-rose-700',
   }
   return (
-    <div className={`rounded-xl border border-slate-200 bg-gradient-to-br ${accents[accent ?? 'indigo']} p-4`}>
+    <div className={`rounded-xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br ${accents[accent ?? 'indigo']} p-4`}>
       <div className="text-xs uppercase tracking-wider text-slate-500">{label}</div>
       <div className="mt-1 text-2xl font-bold">{value}</div>
       {hint && <div className="text-xs text-slate-500 mt-1">{hint}</div>}
@@ -470,7 +470,7 @@ function KPI({ label, value, hint, accent }: { label: string; value: string; hin
 
 function Stat({ label, value, accent }: { label: string; value: string; accent?: 'amber' }) {
   return (
-    <div className={`rounded-lg border p-3 ${accent === 'amber' ? 'border-amber-200 bg-amber-50' : 'border-slate-200 bg-slate-50'}`}>
+    <div className={`rounded-lg border p-3 ${accent === 'amber' ? 'border-amber-200 bg-amber-50' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 dark:bg-slate-950'}`}>
       <div className="text-[11px] uppercase tracking-wider text-slate-500">{label}</div>
       <div className="font-semibold mt-1">{value}</div>
     </div>
@@ -488,7 +488,7 @@ function BarRow({ label, pct, color }: { label: string; pct: number; color: 'eme
         <span>{label}</span>
         <span className="font-semibold">{pct}%</span>
       </div>
-      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
         <div className={`h-full ${colors[color]}`} style={{ width: `${Math.min(pct, 100)}%` }} />
       </div>
     </div>

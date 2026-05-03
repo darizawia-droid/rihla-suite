@@ -26,7 +26,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900">
       {/* Top header bar */}
       <header className="px-6 sm:px-8 py-5 flex items-center justify-between border-b border-slate-100">
         <img src={rihlaLogoLight} alt="RIHLA" className="h-8 w-auto" />
@@ -41,7 +41,7 @@ export function LoginPage() {
       {/* Centered form */}
       <main className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-[400px]">
-          <h1 className="text-[28px] font-semibold text-slate-900 tracking-tight">
+          <h1 className="text-[28px] font-semibold text-slate-900 dark:text-white tracking-tight">
             RIHLA Suite
           </h1>
           <p className="text-[12px] uppercase tracking-[0.2em] text-rihla mt-1 font-medium">
@@ -50,7 +50,7 @@ export function LoginPage() {
           <p className="text-[13px] text-slate-500 mt-3">
             O2C · P2P · Itinerary Studio · Field Ops · Joule Agents
           </p>
-          <p className="text-[14px] text-slate-700 mt-6 font-medium">
+          <p className="text-[14px] text-slate-700 dark:text-slate-300 mt-6 font-medium">
             Connexion à votre espace STOURS VOYAGES.
           </p>
 
@@ -62,7 +62,7 @@ export function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-[12px] font-medium text-slate-700 mb-1.5">
+              <label htmlFor="email" className="block text-[12px] font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                 Adresse e-mail
               </label>
               <div className="relative">
@@ -74,8 +74,8 @@ export function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="vous@stoursvoyages.ma"
-                  className="w-full h-10 pl-9 pr-3 rounded-md border border-slate-200 bg-white text-[14px]
-                             text-slate-900 placeholder:text-slate-400
+                  className="w-full h-10 pl-9 pr-3 rounded-md border border-slate-200 dark:border-slate-700 bg-white text-[14px]
+                             text-slate-900 dark:text-white placeholder:text-slate-400
                              focus:outline-none focus:border-rihla focus:ring-2 focus:ring-rihla/15
                              transition"
                 />
@@ -84,7 +84,7 @@ export function LoginPage() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="password" className="block text-[12px] font-medium text-slate-700">
+                <label htmlFor="password" className="block text-[12px] font-medium text-slate-700 dark:text-slate-300 dark:text-slate-300">
                   Mot de passe
                 </label>
                 <a href="#" className="text-[12px] text-slate-500 hover:text-rihla">
@@ -100,8 +100,8 @@ export function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full h-10 pl-9 pr-3 rounded-md border border-slate-200 bg-white text-[14px]
-                             text-slate-900 placeholder:text-slate-400
+                  className="w-full h-10 pl-9 pr-3 rounded-md border border-slate-200 dark:border-slate-700 bg-white text-[14px]
+                             text-slate-900 dark:text-white placeholder:text-slate-400
                              focus:outline-none focus:border-rihla focus:ring-2 focus:ring-rihla/15
                              transition"
                 />

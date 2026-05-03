@@ -120,7 +120,7 @@ function ConfidenceBadge({ score }: { score: number }) {
         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black" style={{ color }}>{pct}%</span>
       </div>
       <div>
-        <p className="text-xs font-bold text-slate-700">Confiance {label}</p>
+        <p className="text-xs font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">Confiance {label}</p>
         <p className="text-[10px] text-slate-400">Score d'extraction IA</p>
       </div>
     </div>
@@ -201,7 +201,7 @@ export function EmailQuotationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-16">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-16">
 
       {/* Header */}
       <div style={{ background: 'linear-gradient(135deg,#140800 0%,#2a1200 100%)' }} className="px-8 py-6 shadow-xl">
@@ -260,7 +260,7 @@ export function EmailQuotationPage() {
             <div className="bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden">
               <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2">
                 <Mail size={13} className="text-rihla" />
-                <span className="text-xs font-bold text-slate-700">Contenu de l'email client</span>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">Contenu de l'email client</span>
                 {email && (
                   <button onClick={() => { setEmail(''); setResult(null); setError(null) }}
                     className="ml-auto text-[10px] text-slate-400 hover:text-slate-600 flex items-center gap-1">
@@ -272,7 +272,7 @@ export function EmailQuotationPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="Collez ici l'email du client ou du tour-opérateur…"
-                className="w-full h-64 px-4 py-3 text-sm text-slate-700 placeholder:text-slate-300 resize-none focus:outline-none leading-relaxed"
+                className="w-full h-64 px-4 py-3 text-sm text-slate-700 dark:text-slate-300 placeholder:text-slate-300 resize-none focus:outline-none leading-relaxed"
               />
               <div className="px-4 py-3 border-t border-slate-100 flex items-center justify-between">
                 <span className="text-[10px] text-slate-400">{email.length} caractères</span>
@@ -304,7 +304,7 @@ export function EmailQuotationPage() {
           <div className="col-span-7">
             {!result && !error && !loading && (
               <div className="h-full flex flex-col items-center justify-center text-center p-16 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+                <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
                   <Mail size={24} className="text-slate-300" />
                 </div>
                 <p className="text-slate-600 font-bold mb-1">En attente d'un email</p>
@@ -315,7 +315,7 @@ export function EmailQuotationPage() {
             {loading && (
               <div className="h-full flex flex-col items-center justify-center p-16 bg-white rounded-2xl border border-slate-100 shadow-sm">
                 <Loader2 size={32} className="text-rihla animate-spin mb-4" />
-                <p className="font-bold text-slate-700">Claude analyse l'email…</p>
+                <p className="font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">Claude analyse l'email…</p>
                 <p className="text-xs text-slate-400 mt-1">Extraction des entités, dates, villes et services</p>
               </div>
             )}
@@ -368,7 +368,7 @@ export function EmailQuotationPage() {
                       </div>
                       <div>
                         <p className="text-[10px] text-slate-400">Arrivée → Départ</p>
-                        <p className="text-sm font-bold text-slate-700">
+                        <p className="text-sm font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">
                           {result.arrival_date ?? '?'} → {result.departure_date ?? '?'}
                         </p>
                         <p className="text-[10px] text-slate-400">{result.duration_nights ?? '?'} nuits</p>
@@ -388,7 +388,7 @@ export function EmailQuotationPage() {
                       ].map(s => {
                         const active = result.services?.[s.key as keyof typeof result.services]
                         return (
-                          <div key={s.key} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all ${active ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-50 text-slate-400 border border-slate-100'}`}>
+                          <div key={s.key} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all ${active ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-50 dark:bg-slate-950 text-slate-400 border border-slate-100'}`}>
                             <s.icon size={12} />
                             {s.label}
                             {active ? <CheckCircle2 size={10} className="ml-auto" /> : <span className="ml-auto opacity-40">—</span>}
@@ -405,7 +405,7 @@ export function EmailQuotationPage() {
                     <p className="text-[10px] uppercase font-bold text-slate-400 mb-3">Villes du Circuit</p>
                     <div className="flex flex-wrap gap-2">
                       {result.cities.map((city, i) => (
-                        <div key={city} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-100 text-xs font-bold text-slate-700">
+                        <div key={city} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-950 rounded-full border border-slate-100 text-xs font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">
                           <MapPin size={10} className="text-rihla" />
                           {city}
                           {i < result.cities.length - 1 && <ArrowRight size={9} className="text-slate-300 ml-1" />}
@@ -420,7 +420,7 @@ export function EmailQuotationPage() {
                   {result.hotel_category && (
                     <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
                       <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Catégorie Hôtel</p>
-                      <p className="font-bold text-slate-700 flex items-center gap-1">
+                      <p className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
                         <Hotel size={13} className="text-amber-500" />
                         {result.hotel_category}
                       </p>
@@ -437,12 +437,12 @@ export function EmailQuotationPage() {
                 {/* CTA: Create quotation */}
                 <div className="bg-white rounded-xl border border-slate-100 p-4 shadow-sm flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-slate-700 text-sm">Prêt à créer la cotation ?</p>
+                    <p className="font-bold text-slate-700 dark:text-slate-300 text-sm">Prêt à créer la cotation ?</p>
                     <p className="text-xs text-slate-400 mt-0.5">Ces données peuvent pré-remplir un nouveau projet</p>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={copyJson}
-                      className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
+                      className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 transition-colors">
                       {copied ? <Check size={12} /> : <Copy size={12} />}
                       JSON
                     </button>

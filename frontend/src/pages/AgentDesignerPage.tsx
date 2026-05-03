@@ -33,7 +33,7 @@ const COLOR_SWATCH: Record<string, string> = {
 
 function nodeColor(type: string): string {
   const cat = type.split('.')[0]
-  return CATEGORY_META[cat]?.color ?? 'bg-slate-100 text-slate-700'
+  return CATEGORY_META[cat]?.color ?? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-300'
 }
 
 export function AgentDesignerPage() {
@@ -101,7 +101,7 @@ export function AgentDesignerPage() {
         </div>
         <div className="flex gap-2">
           <button onClick={seed} disabled={seeding}
-                  className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-50 disabled:opacity-50">
+                  className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg border border-slate-300 hover:bg-slate-50 dark:bg-slate-950 disabled:opacity-50">
             {seeding ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             Charger les templates
           </button>
@@ -126,19 +126,19 @@ export function AgentDesignerPage() {
       {agents.length > 0 && (
         <div className="grid lg:grid-cols-[260px_1fr_300px] gap-6">
           {/* Agent list */}
-          <aside className="bg-white rounded-xl border border-slate-200 p-3 space-y-1">
+          <aside className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-3 space-y-1">
             <div className="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Mes agents</div>
             {agents.map(a => (
               <button key={a.id}
                       onClick={() => { setActiveId(a.id); setRunResult(null) }}
-                      className={`w-full text-left px-3 py-2.5 rounded-lg flex items-center gap-2 ${activeId === a.id ? 'bg-violet-50 border border-violet-200' : 'hover:bg-slate-50'}`}>
+                      className={`w-full text-left px-3 py-2.5 rounded-lg flex items-center gap-2 ${activeId === a.id ? 'bg-violet-50 border border-violet-200' : 'hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950'}`}>
                 <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${COLOR_SWATCH[a.color ?? 'violet']} flex items-center justify-center shrink-0`}>
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-sm truncate">{a.name}</div>
                   <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                    <span className={`px-1.5 rounded ${a.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100'}`}>{a.status}</span>
+                    <span className={`px-1.5 rounded ${a.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 dark:bg-slate-800 dark:bg-slate-800'}`}>{a.status}</span>
                     <span>·</span>
                     <span>{a.trigger}</span>
                     <span>·</span>
@@ -150,7 +150,7 @@ export function AgentDesignerPage() {
           </aside>
 
           {/* DAG canvas */}
-          <main className="bg-white rounded-xl border border-slate-200 p-6">
+          <main className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-6">
             {active && <AgentDAG agent={active} runResult={runResult} />}
             {active && (
               <div className="mt-6 pt-6 border-t border-slate-100 flex items-center gap-3">
@@ -176,7 +176,7 @@ export function AgentDesignerPage() {
           {/* Right: catalog + run history */}
           <aside className="space-y-4">
             {catalog && (
-              <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-4">
                 <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-violet-600" />
                   Palette de nœuds
@@ -191,7 +191,7 @@ export function AgentDesignerPage() {
                         {items.map(n => {
                           const Icon = TYPE_ICON[n.type] ?? Bot
                           return (
-                            <li key={n.type} className="flex items-center gap-2 text-xs text-slate-700">
+                            <li key={n.type} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 dark:text-slate-300">
                               <Icon className="w-3 h-3 text-slate-500 shrink-0" />
                               <span className="truncate" title={n.description}>{n.label}</span>
                             </li>
@@ -204,7 +204,7 @@ export function AgentDesignerPage() {
               </div>
             )}
 
-            <div className="bg-white rounded-xl border border-slate-200 p-4">
+            <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-4">
               <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-slate-600" />
                 Historique des runs
@@ -243,9 +243,9 @@ function AgentDAG({ agent, runResult }: { agent: Agent; runResult: AgentRun | nu
           <h2 className="text-xl font-bold">{agent.name}</h2>
           <p className="text-sm text-slate-500 mt-0.5">{agent.description}</p>
           <div className="mt-2 flex items-center gap-2 text-xs">
-            <span className="px-2 py-0.5 bg-slate-100 rounded">{agent.trigger}</span>
-            <span className="px-2 py-0.5 bg-slate-100 rounded">{agent.nodes.length} étapes</span>
-            <span className={`px-2 py-0.5 rounded ${agent.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100'}`}>{agent.status}</span>
+            <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">{agent.trigger}</span>
+            <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">{agent.nodes.length} étapes</span>
+            <span className={`px-2 py-0.5 rounded ${agent.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 dark:bg-slate-800 dark:bg-slate-800'}`}>{agent.status}</span>
           </div>
         </div>
       </div>
@@ -256,7 +256,7 @@ function AgentDAG({ agent, runResult }: { agent: Agent; runResult: AgentRun | nu
           const trace = traceById[node.id]
           const stateClass = trace
             ? (trace.status === 'success' ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50')
-            : 'border-slate-200 bg-white'
+            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900'
           const isLast = idx === agent.nodes.length - 1
           return (
             <div key={node.id}>

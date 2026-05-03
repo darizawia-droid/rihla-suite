@@ -80,7 +80,9 @@ export default defineConfig({
         manualChunks(id) {
           // Vendor splitting — keep large deps in separate cached chunks
           if (id.includes('node_modules')) {
-            if (id.includes('react-dom'))       return 'vendor-react'
+            // Keep react + react-dom + scheduler together
+            if (id.includes('/react-dom/') || id.includes('/react/') || id.includes('/scheduler/'))
+              return 'vendor-react'
             if (id.includes('react-router'))    return 'vendor-router'
             if (id.includes('@tanstack'))        return 'vendor-query'
             if (id.includes('lucide-react'))     return 'vendor-icons'

@@ -205,7 +205,7 @@ export function ProjectCreatePage() {
                   <button type="button" onClick={() => setIsRecording(!isRecording)}
                     className={clsx("flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all",
                       isRecording ? "bg-red-500 text-white animate-pulse" : "bg-white/10 text-white hover:bg-white/20")}>
-                    <div className={clsx("w-2 h-2 rounded-full", isRecording ? "bg-white" : "bg-red-500")} />
+                    <div className={clsx("w-2 h-2 rounded-full", isRecording ? "bg-white dark:bg-slate-900" : "bg-red-500")} />
                     {isRecording ? 'Écoute...' : 'Dicter'}
                   </button>
                   <button type="button" onClick={() => setShowBriefInput(!showBriefInput)}

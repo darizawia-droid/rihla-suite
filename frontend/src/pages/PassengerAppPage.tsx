@@ -199,15 +199,3 @@ export function PassengerAppPage() {
     </div>
   )
 }
- scale-105" : "text-white/40"
-              )}
-            >
-              <Zap size={18} />
-              <span className="text-[9px] font-black uppercase tracking-tighter">VIP Plus</span>
-            </button>
-         </div>
-      </nav>
-
-    </div>
-  )
-}

@@ -107,7 +107,7 @@ export function IntegrationsPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-50">
+    <div className="min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
       <div className="max-w-[1200px] mx-auto px-8 py-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export function IntegrationsPage() {
               <Plug className="w-5 h-5 text-rihla" />
             </div>
             <div>
-              <h1 className="text-[22px] font-semibold text-slate-900">Intégrations</h1>
+              <h1 className="text-[22px] font-semibold text-slate-900 dark:text-white dark:text-white">Intégrations</h1>
               <p className="text-xs text-slate-500">
                 Connectez Claude, Stripe + CMI et Microsoft Outlook
               </p>
@@ -123,7 +123,7 @@ export function IntegrationsPage() {
           </div>
           <button
             onClick={refresh}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-white border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950"
           >
             <RefreshCw size={12} /> Rafraîchir
           </button>
@@ -144,14 +144,14 @@ export function IntegrationsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* A2 — Claude */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-violet-50 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-violet-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-slate-900">Anthropic Claude</h3>
+                  <h3 className="text-base font-semibold text-slate-900 dark:text-white dark:text-white">Anthropic Claude</h3>
                   <p className="text-[11px] text-slate-500">Proposition IA · {ai?.model}</p>
                 </div>
               </div>
@@ -162,9 +162,9 @@ export function IntegrationsPage() {
               les données de chaque dossier.
             </p>
             {!ai?.configured && (
-              <div className="text-[11px] text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-100">
+              <div className="text-[11px] text-slate-500 bg-slate-50 dark:bg-slate-950 rounded-lg p-3 border border-slate-100">
                 Pour activer : configurer la variable d'environnement{' '}
-                <code className="bg-white px-1.5 py-0.5 rounded text-[10px] border border-slate-200">
+                <code className="bg-white px-1.5 py-0.5 rounded text-[10px] border border-slate-200 dark:border-slate-700 dark:border-slate-700">
                   ANTHROPIC_API_KEY
                 </code>{' '}
                 puis redémarrer le backend.
@@ -179,14 +179,14 @@ export function IntegrationsPage() {
           </div>
 
           {/* B5 — Stripe + CMI */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center">
                   <CreditCard className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-slate-900">
+                  <h3 className="text-base font-semibold text-slate-900 dark:text-white dark:text-white">
                     Paiements en ligne
                   </h3>
                   <p className="text-[11px] text-slate-500">Stripe + CMI Maroc</p>
@@ -197,11 +197,11 @@ export function IntegrationsPage() {
               <Row label="Stripe (carte internationale)" ok={!!pay?.stripe_configured} />
               <Row label="CMI Maroc (carte domestique MAD)" ok={!!pay?.cmi_configured} />
             </div>
-            <div className="mt-4 text-[11px] text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-100">
+            <div className="mt-4 text-[11px] text-slate-500 bg-slate-50 dark:bg-slate-950 rounded-lg p-3 border border-slate-100">
               Variables nécessaires :{' '}
-              <code className="bg-white px-1 rounded border border-slate-200">STRIPE_SECRET_KEY</code>,{' '}
-              <code className="bg-white px-1 rounded border border-slate-200">CMI_MERCHANT_ID</code>,{' '}
-              <code className="bg-white px-1 rounded border border-slate-200">CMI_STORE_KEY</code>.
+              <code className="bg-white px-1 rounded border border-slate-200 dark:border-slate-700 dark:border-slate-700">STRIPE_SECRET_KEY</code>,{' '}
+              <code className="bg-white px-1 rounded border border-slate-200 dark:border-slate-700 dark:border-slate-700">CMI_MERCHANT_ID</code>,{' '}
+              <code className="bg-white px-1 rounded border border-slate-200 dark:border-slate-700 dark:border-slate-700">CMI_STORE_KEY</code>.
               Endpoints disponibles dès maintenant en mode demo.
             </div>
             <a
@@ -213,14 +213,14 @@ export function IntegrationsPage() {
           </div>
 
           {/* B7 — Microsoft Outlook */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5 lg:col-span-2">
+          <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5 lg:col-span-2">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-sky-50 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-sky-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-slate-900">
+                  <h3 className="text-base font-semibold text-slate-900 dark:text-white dark:text-white">
                     Microsoft Outlook Calendar
                   </h3>
                   <p className="text-[11px] text-slate-500">
@@ -234,7 +234,7 @@ export function IntegrationsPage() {
                   <button
                     onClick={handleDisconnect}
                     disabled={loading === 'ms'}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-white border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950"
                   >
                     {loading === 'ms' ? <Loader2 size={12} className="animate-spin" /> : <Unplug size={12} />}
                     Déconnecter
@@ -266,7 +266,7 @@ export function IntegrationsPage() {
                 <select
                   value={previewProject}
                   onChange={(e) => setPreviewProject(e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white"
+                  className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900"
                 >
                   {projects.map((p) => (
                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -285,7 +285,7 @@ export function IntegrationsPage() {
                 <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1 block">
                   Événements générés ({preview.length})
                 </label>
-                <div className="max-h-[260px] overflow-y-auto bg-slate-50 rounded-lg border border-slate-100 divide-y divide-slate-100">
+                <div className="max-h-[260px] overflow-y-auto bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 divide-y divide-slate-100">
                   {preview.length === 0 && (
                     <div className="text-xs text-slate-400 px-3 py-6 text-center">
                       Aucun événement (le dossier n'a pas d'itinéraire détaillé)
@@ -295,7 +295,7 @@ export function IntegrationsPage() {
                     <div key={i} className="px-3 py-2 flex items-start gap-3 text-xs">
                       <CategoryBadge cat={e.category} />
                       <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-slate-900 truncate">{e.subject}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white truncate">{e.subject}</div>
                         <div className="text-[11px] text-slate-500">
                           {new Date(e.start).toLocaleString('fr-FR', {
                             day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
@@ -331,7 +331,7 @@ function Badge({ configured, connected }: { configured: boolean; connected?: boo
     )
   }
   return (
-    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 border border-slate-200 dark:border-slate-700 dark:border-slate-700">
       Configuré
     </span>
   )
@@ -340,7 +340,7 @@ function Badge({ configured, connected }: { configured: boolean; connected?: boo
 function Row({ label, ok }: { label: string; ok: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-slate-700">{label}</span>
+      <span className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{label}</span>
       {ok ? (
         <span className="flex items-center gap-1 text-emerald-700 font-semibold">
           <Check size={12} /> Configuré
@@ -361,7 +361,7 @@ function CategoryBadge({ cat }: { cat: string }) {
     briefing: { bg: 'bg-violet-100', text: 'text-violet-700', label: 'BR' },
     activity: { bg: 'bg-sky-100', text: 'text-sky-700', label: 'AC' },
   }
-  const m = map[cat] || { bg: 'bg-slate-100', text: 'text-slate-700', label: '••' }
+  const m = map[cat] || { bg: 'bg-slate-100 dark:bg-slate-800 dark:bg-slate-800', text: 'text-slate-700 dark:text-slate-300 dark:text-slate-300', label: '••' }
   return (
     <span
       className={`flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-md ${m.bg} ${m.text} text-[10px] font-black`}

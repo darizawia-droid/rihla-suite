@@ -78,7 +78,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   monument:   'bg-purple-50 text-purple-700 border-purple-200',
   transport:  'bg-emerald-50 text-emerald-700 border-emerald-200',
   guide:      'bg-cyan-50 text-cyan-700 border-cyan-200',
-  tax:        'bg-slate-50 text-slate-600 border-slate-200',
+  tax:        'bg-slate-50 dark:bg-slate-950 text-slate-600 border-slate-200 dark:border-slate-700 dark:border-slate-700',
   water:      'bg-sky-50 text-sky-700 border-sky-200',
   misc:       'bg-rose-50 text-rose-700 border-rose-200',
 }
@@ -267,13 +267,13 @@ function DayEditorRow({ d, isExpanded, onToggle, onChange, onDelete, onDuplicate
 
         <div className="flex items-center gap-2 flex-shrink-0">
           {d.formula !== '—' && (
-            <span className="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-black uppercase">
+            <span className="text-[9px] bg-slate-100 dark:bg-slate-800 text-slate-600 px-2 py-0.5 rounded-full font-black uppercase">
               {d.formula}
             </span>
           )}
           <span className={clsx(
             'text-[11px] font-bold tabular-nums',
-            cost > 0 ? 'text-slate-700' : 'text-slate-300',
+            cost > 0 ? 'text-slate-700 dark:text-slate-300 dark:text-slate-300' : 'text-slate-300',
           )}>
             {cost > 0 ? fmt(cost) : '—'}
           </span>
@@ -375,7 +375,7 @@ function DayEditorRow({ d, isExpanded, onToggle, onChange, onDelete, onDuplicate
             <div className="flex gap-2">
               <button
                 onClick={onDuplicate}
-                className="flex items-center gap-1 px-3 py-1.5 text-[10px] font-bold text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 text-[10px] font-bold text-slate-500 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:bg-slate-950 transition-colors"
               >
                 <Copy size={10} /> Dupliquer
               </button>
@@ -386,7 +386,7 @@ function DayEditorRow({ d, isExpanded, onToggle, onChange, onDelete, onDuplicate
                 <Trash2 size={10} /> Supprimer
               </button>
             </div>
-            <div className="text-sm font-black text-slate-700">
+            <div className="text-sm font-black text-slate-700 dark:text-slate-300 dark:text-slate-300">
               Total jour : <span className="text-amber-600">{fmt(cost)}</span>
             </div>
           </div>
@@ -470,7 +470,7 @@ function LivePricingGrid({ grid, loading, source, singleSupp }: {
       <div className="overflow-x-auto">
         <table className="w-full text-[11px]">
           <thead>
-            <tr className="border-b border-slate-200 bg-slate-50">
+            <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
               {['PAX', 'Coût/pax', 'Vente/pax', 'Marge/pax', 'USD/pax', 'Total Groupe'].map(h => (
                 <th key={h} className="text-right py-2.5 px-4 text-[10px] font-black uppercase text-slate-400 first:text-left">
                   {h}
@@ -490,7 +490,7 @@ function LivePricingGrid({ grid, loading, source, singleSupp }: {
                     <div className="flex items-center gap-2">
                       <div className={clsx(
                         'w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black',
-                        isRef ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-600',
+                        isRef ? 'bg-amber-500 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600',
                       )}>
                         {row.pax}
                       </div>
@@ -594,14 +594,14 @@ function CostBreakdownLive({ days, vars, refPax }: {
             <div key={c.label} className="flex items-center gap-2 text-[11px]">
               <div className={clsx('w-2 h-2 rounded-full flex-shrink-0', c.bg)} />
               <span className="text-slate-500 flex-1">{c.label}</span>
-              <span className="font-bold text-slate-700 tabular-nums">{fmt(c.value)}</span>
+              <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{fmt(c.value)}</span>
               <span className="text-slate-400 w-8 text-right font-mono">{pct}%</span>
             </div>
           )
         })}
       </div>
 
-      <div className="flex justify-between items-center pt-2 border-t border-slate-200 text-[11px]">
+      <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700 text-[11px]">
         <span className="font-bold text-slate-400 uppercase text-[10px]">
           Total coût / pax ({refPax} pax)
         </span>
@@ -668,7 +668,7 @@ function SimControls({
                 'w-9 h-9 rounded-lg text-xs font-black transition-all',
                 paxTiers.includes(t)
                   ? 'bg-amber-500 text-white shadow-md'
-                  : 'bg-slate-100 text-slate-400 hover:bg-slate-200',
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 hover:bg-slate-200',
               )}
             >
               {t}
@@ -791,7 +791,7 @@ export function TravelDesignerPage() {
     <div className="min-h-full bg-slate-50/30">
 
       {/* ══ Header ═══════════════════════════════════════════════════════════ */}
-      <div className="bg-white border-b border-slate-200 px-6 py-5">
+      <div className="bg-white border-b border-slate-200 dark:border-slate-700 px-6 py-5">
         <div className="max-w-7xl mx-auto">
 
           {/* Title row */}
@@ -804,7 +804,7 @@ export function TravelDesignerPage() {
                 <input
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  className="text-xl font-black text-slate-900 tracking-tight bg-transparent border-none focus:outline-none focus:underline"
+                  className="text-xl font-black text-slate-900 dark:text-white tracking-tight bg-transparent border-none focus:outline-none focus:underline"
                 />
                 <div className="flex items-center gap-3 mt-0.5">
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
@@ -825,7 +825,7 @@ export function TravelDesignerPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => { setDays(initDays()); setVars(initVars()); setMargin(XLS_MARGIN_PCT) }}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-500 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:bg-slate-950 transition-colors"
               >
                 <RefreshCw size={12} /> Réinitialiser
               </button>
@@ -846,7 +846,7 @@ export function TravelDesignerPage() {
               { label: `Vente @${refPax}pax`, value: refRow ? fmt(refRow.sell) : '—'                             },
               { label: 'Marge',         value: `${margin}%`                                                       },
             ].map(k => (
-              <div key={k.label} className="bg-slate-50 rounded-lg px-3 py-2">
+              <div key={k.label} className="bg-slate-50 dark:bg-slate-950 rounded-lg px-3 py-2">
                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{k.label}</p>
                 <p className="text-sm font-bold text-slate-800 tabular-nums">{k.value}</p>
               </div>
@@ -869,7 +869,7 @@ export function TravelDesignerPage() {
                   'flex items-center gap-2 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all rounded-lg',
                   active
                     ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100',
+                    : 'text-slate-400 hover:text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-800 dark:bg-slate-800',
                 )}
               >
                 <Icon size={13} /> {t.label}
@@ -908,7 +908,7 @@ export function TravelDesignerPage() {
                 {/* Add day button */}
                 <button
                   onClick={addDay}
-                  className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 text-xs font-bold hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50/30 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl text-slate-400 text-xs font-bold hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50/30 transition-all flex items-center justify-center gap-2"
                 >
                   <Plus size={14} /> Ajouter un jour
                 </button>
@@ -930,8 +930,8 @@ export function TravelDesignerPage() {
                   </h3>
                   <div className="space-y-2 text-[11px]">
                     {[
-                      ['Coûts fixes/pax',   fmt(fixedPerPax),                           'text-slate-700'],
-                      ['Coûts variables',    fmt(varTotal),                              'text-slate-700'],
+                      ['Coûts fixes/pax',   fmt(fixedPerPax),                           'text-slate-700 dark:text-slate-300 dark:text-slate-300'],
+                      ['Coûts variables',    fmt(varTotal),                              'text-slate-700 dark:text-slate-300 dark:text-slate-300'],
                       ['Supp. Single',       fmt(singleSupp),                            'text-amber-600'],
                     ].map(([label, val, cls]) => (
                       <div key={label as string} className="flex justify-between">
@@ -1021,7 +1021,7 @@ export function TravelDesignerPage() {
 
                 <div className="divide-y divide-slate-50 max-h-72 overflow-y-auto">
                   {vars.map(v => (
-                    <div key={v.id} className="px-4 py-3 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
+                    <div key={v.id} className="px-4 py-3 flex items-center gap-3 hover:bg-slate-50 dark:bg-slate-950 transition-colors group">
                       <select
                         value={v.type}
                         onChange={e => updateVar(v.id, 'type', e.target.value)}
@@ -1036,7 +1036,7 @@ export function TravelDesignerPage() {
                         <input
                           value={v.label}
                           onChange={e => updateVar(v.id, 'label', e.target.value)}
-                          className="w-full text-[11px] font-bold text-slate-700 bg-transparent border-none focus:outline-none truncate"
+                          className="w-full text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-transparent border-none focus:outline-none truncate"
                         />
                         <input
                           value={v.sub}
@@ -1049,7 +1049,7 @@ export function TravelDesignerPage() {
                         type="number" min="0"
                         value={v.total || ''}
                         onChange={e => updateVar(v.id, 'total', +e.target.value || 0)}
-                        className="w-28 text-right font-mono text-[11px] bg-slate-50 border border-slate-100 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-amber-300"
+                        className="w-28 text-right font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-100 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-amber-300"
                         placeholder="0"
                       />
                       <span className="text-[10px] text-slate-400">MAD</span>
@@ -1063,7 +1063,7 @@ export function TravelDesignerPage() {
                   ))}
                 </div>
 
-                <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex justify-between text-[11px]">
+                <div className="px-5 py-3 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 flex justify-between text-[11px]">
                   <span className="font-bold text-slate-500 uppercase text-[10px]">Total Variable Groupe</span>
                   <span className="font-black text-slate-800 tabular-nums">{fmt(varTotal)}</span>
                 </div>
@@ -1134,7 +1134,7 @@ function XlsParityCheck({ days, vars, margin }: {
         <div className="overflow-x-auto">
           <table className="w-full text-[11px]">
             <thead>
-              <tr className="border-b border-slate-200">
+              <tr className="border-b border-slate-200 dark:border-slate-700 dark:border-slate-700">
                 {['PAX', 'XLS Coût', 'RIHLA Coût', 'Δ Coût', 'XLS Vente', 'RIHLA Vente', 'Δ Vente', 'Statut'].map(h => (
                   <th key={h} className="text-left py-2 px-3 text-[10px] font-black uppercase text-slate-400">{h}</th>
                 ))}
@@ -1149,7 +1149,7 @@ function XlsParityCheck({ days, vars, margin }: {
                 const dSell    = rihlaSell - ref.sell
                 const ok       = Math.abs(dSell) < 300
                 return (
-                  <tr key={pax} className="border-b border-slate-100 hover:bg-slate-50">
+                  <tr key={pax} className="border-b border-slate-100 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
                     <td className="py-2.5 px-3 font-black">{pax} PAX</td>
                     <td className="py-2.5 px-3 tabular-nums">{fmt(ref.cost)}</td>
                     <td className="py-2.5 px-3 tabular-nums">{fmt(rihlaCost)}</td>

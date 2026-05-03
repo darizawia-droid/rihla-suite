@@ -112,7 +112,7 @@ Nous avons le plaisir de vous présenter notre proposition détaillée pour votr
 * **Durée** : ${selected?.duration_days || 7} jours exceptionnels.
 * **Flotte** : Transferts exclusifs en minibus VIP *Mercedes Sprinter*.
 
-${extra ? \`\\n> *Note concernant vos requêtes spécifiques :* ${extra}\\n\` : ''}
+${extra ? '\n> *Note concernant vos requêtes spécifiques :* ' + extra + '\n' : ''}
 
 Nous restons à votre entière disposition pour affiner ce projet.
 L'équipe S'TOURS.`,
@@ -137,7 +137,7 @@ L'équipe S'TOURS.`,
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-50">
+    <div className="min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
       <div className="max-w-[1400px] mx-auto px-8 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -146,7 +146,7 @@ L'équipe S'TOURS.`,
               <Sparkles className="w-5 h-5 text-rihla" />
             </div>
             <div>
-              <h1 className="text-[22px] font-semibold text-slate-900">
+              <h1 className="text-[22px] font-semibold text-slate-900 dark:text-white dark:text-white">
                 Proposition IA
               </h1>
               <p className="text-xs text-slate-500">
@@ -174,14 +174,14 @@ L'équipe S'TOURS.`,
           {/* Left controls */}
           <div className="col-span-4 space-y-4">
             {/* Project selector */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 block">
                 Dossier source
               </label>
               <select
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-rihla/20 focus:border-rihla"
+                className="w-full px-3 py-2.5 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-rihla/20 focus:border-rihla"
               >
                 {projects.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -192,15 +192,15 @@ L'équipe S'TOURS.`,
               </select>
               {selected && (
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="bg-slate-50 rounded-lg px-3 py-2">
+                  <div className="bg-slate-50 dark:bg-slate-950 rounded-lg px-3 py-2">
                     <div className="text-slate-400">Destination</div>
-                    <div className="font-semibold text-slate-700 truncate">
+                    <div className="font-semibold text-slate-700 dark:text-slate-300 truncate">
                       {selected.destination || '—'}
                     </div>
                   </div>
-                  <div className="bg-slate-50 rounded-lg px-3 py-2">
+                  <div className="bg-slate-50 dark:bg-slate-950 rounded-lg px-3 py-2">
                     <div className="text-slate-400">PAX / Durée</div>
-                    <div className="font-semibold text-slate-700">
+                    <div className="font-semibold text-slate-700 dark:text-slate-300 dark:text-slate-300">
                       {selected.pax_count ?? '—'} / {selected.duration_days ?? '—'}j
                     </div>
                   </div>
@@ -209,7 +209,7 @@ L'équipe S'TOURS.`,
             </div>
 
             {/* Language */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
                 <Languages size={11} /> Langue
               </label>
@@ -221,7 +221,7 @@ L'équipe S'TOURS.`,
                     className={`px-3 py-2.5 rounded-lg text-xs font-semibold border transition-all ${
                       language === l.id
                         ? 'bg-rihla text-white border-rihla shadow-sm'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
+                        : 'bg-white text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-slate-300'
                     }`}
                   >
                     <span className="mr-1">{l.flag}</span> {l.label}
@@ -231,7 +231,7 @@ L'équipe S'TOURS.`,
             </div>
 
             {/* Tone */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
                 <Mic size={11} /> Ton
               </label>
@@ -243,10 +243,10 @@ L'équipe S'TOURS.`,
                     className={`w-full text-left px-3 py-2.5 rounded-lg border transition-all ${
                       tone === t.id
                         ? 'bg-rihla/5 border-rihla'
-                        : 'bg-white border-slate-200 hover:border-slate-300'
+                        : 'bg-white border-slate-200 dark:border-slate-700 hover:border-slate-300'
                     }`}
                   >
-                    <div className="text-xs font-semibold text-slate-900">{t.label}</div>
+                    <div className="text-xs font-semibold text-slate-900 dark:text-white dark:text-white">{t.label}</div>
                     <div className="text-[11px] text-slate-500">{t.desc}</div>
                   </button>
                 ))}
@@ -254,7 +254,7 @@ L'équipe S'TOURS.`,
             </div>
 
             {/* Extra instructions */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 p-5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 block">
                 Instructions additionnelles (optionnel)
               </label>
@@ -263,7 +263,7 @@ L'équipe S'TOURS.`,
                 onChange={(e) => setExtra(e.target.value)}
                 rows={3}
                 placeholder="Ex: insister sur le SPA, mentionner la loterie privée hammam, ton plus formel…"
-                className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-rihla/20 focus:border-rihla"
+                className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-rihla/20 focus:border-rihla"
               />
             </div>
 
@@ -286,19 +286,19 @@ L'équipe S'TOURS.`,
 
           {/* Right preview */}
           <div className="col-span-8">
-            <div className="bg-white rounded-xl border border-slate-200 min-h-[600px]">
+            <div className="bg-white rounded-xl border border-slate-200 dark:border-slate-700 min-h-[600px]">
               {/* toolbar */}
               <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100">
                 <div className="flex items-center gap-2 text-[11px] text-slate-500">
                   {result && (
                     <>
-                      <span className="px-2 py-0.5 rounded-full bg-slate-100 font-semibold">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-semibold">
                         {result.word_count} mots
                       </span>
-                      <span className="px-2 py-0.5 rounded-full bg-slate-100 font-semibold">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-semibold">
                         {result.duration_ms} ms
                       </span>
-                      <span className="px-2 py-0.5 rounded-full bg-slate-100 font-semibold uppercase">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-semibold uppercase">
                         {result.provider}
                       </span>
                       {result.cost_estimate_usd != null && result.cost_estimate_usd > 0 && (
@@ -312,7 +312,7 @@ L'équipe S'TOURS.`,
                 <button
                   onClick={handleCopy}
                   disabled={!result?.content}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-lg disabled:opacity-40 transition"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:bg-slate-800 rounded-lg disabled:opacity-40 transition"
                 >
                   {copied ? (
                     <>
@@ -339,7 +339,7 @@ L'équipe S'TOURS.`,
                     <div className="w-14 h-14 rounded-2xl bg-rihla/5 flex items-center justify-center mb-4">
                       <Sparkles className="w-6 h-6 text-rihla" />
                     </div>
-                    <h3 className="text-base font-semibold text-slate-900 mb-1">
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
                       Sélectionnez un dossier puis lancez la rédaction
                     </h3>
                     <p className="text-sm text-slate-500 max-w-md">
@@ -353,7 +353,7 @@ L'équipe S'TOURS.`,
                     {[...Array(8)].map((_, i) => (
                       <div
                         key={i}
-                        className="h-3 bg-slate-100 rounded"
+                        className="h-3 bg-slate-100 dark:bg-slate-800 rounded"
                         style={{ width: `${60 + Math.random() * 40}%` }}
                       />
                     ))}

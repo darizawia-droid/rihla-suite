@@ -91,7 +91,7 @@ export default function SubAgentPortalPage() {
               <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: primary }}>
                 Portail revendeur · {identity.branding.company_name}
               </div>
-              <h1 className="text-lg font-bold text-slate-900">
+              <h1 className="text-lg font-bold text-slate-900 dark:text-white dark:text-white">
                 Bonjour {identity.full_name || identity.email}
               </h1>
             </div>
@@ -110,7 +110,7 @@ export default function SubAgentPortalPage() {
           ] as [Tab, string, React.ReactNode][]).map(([k, label, icon]) => (
             <button key={k} onClick={() => setTab(k)}
                     className={`flex items-center gap-2 border-b-2 px-3 py-2 text-sm font-medium transition ${
-                      tab === k ? '' : 'border-transparent text-slate-600 hover:text-slate-900'
+                      tab === k ? '' : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-white dark:text-white'
                     }`}
                     style={tab === k ? { borderColor: primary, color: primary } : undefined}>
               {icon}{label}
@@ -135,9 +135,9 @@ function ProjectsList({ projects, primary }: { projects: PortalProject[]; primar
     return <div className="text-sm text-slate-500">Aucun dossier pour l'instant. Créez une nouvelle demande.</div>
   }
   return (
-    <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+    <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
       <table className="min-w-full text-sm">
-        <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-slate-50 dark:bg-slate-950 text-xs uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-3 py-2 text-left">Réf.</th>
             <th className="px-3 py-2 text-left">Dossier</th>
@@ -156,7 +156,7 @@ function ProjectsList({ projects, primary }: { projects: PortalProject[]; primar
               <td className="px-3 py-2 text-slate-600">{p.destination || '—'}</td>
               <td className="px-3 py-2">{p.pax_count ?? '—'}</td>
               <td className="px-3 py-2 text-xs">
-                <span className="rounded bg-slate-100 px-1.5 py-0.5">{p.status}</span>
+                <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5">{p.status}</span>
               </td>
             </tr>
           ))}
@@ -174,7 +174,7 @@ function CatalogList({ items, primary }: { items: CatalogItem[]; primary: string
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
       {items.map((c) => (
         <article key={c.id}
-                 className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                 className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-white shadow-sm">
           {c.cover_image_url && (
             <img src={c.cover_image_url} alt={c.name} className="h-36 w-full object-cover" loading="lazy" />
           )}
@@ -183,7 +183,7 @@ function CatalogList({ items, primary }: { items: CatalogItem[]; primary: string
               {c.duration_days && <span>{c.duration_days} jours</span>}
               {c.destination && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{c.destination}</span>}
             </div>
-            <h3 className="mt-1 text-base font-semibold text-slate-900">{c.name}</h3>
+            <h3 className="mt-1 text-base font-semibold text-slate-900 dark:text-white dark:text-white">{c.name}</h3>
             {c.highlights.length > 0 && (
               <ul className="mt-2 list-inside list-disc text-xs text-slate-600">
                 {c.highlights.slice(0, 3).map((h, i) => <li key={i}>{h}</li>)}
@@ -238,7 +238,7 @@ function NewQuoteForm({ primary, onCreated }: {
 
   return (
     <div className="mx-auto max-w-2xl space-y-3">
-      <h2 className="text-base font-semibold text-slate-900">Nouvelle demande de devis</h2>
+      <h2 className="text-base font-semibold text-slate-900 dark:text-white dark:text-white">Nouvelle demande de devis</h2>
       <p className="text-sm text-slate-600">
         Renseignez les besoins de votre client. L'équipe revient vers vous avec un devis sous 24 h.
       </p>

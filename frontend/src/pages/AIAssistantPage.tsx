@@ -138,7 +138,7 @@ export function AIAssistantPage() {
         subtitle="Générez du contenu, calculez, traduisez — propulsé par Claude & Ollama"
         actions={
           <div className="flex items-center gap-3">
-            <div className="flex bg-slate-100 p-1 rounded-brand border border-line">
+            <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-brand border border-line">
               <button
                 onClick={() => setProvider('anthropic')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-pill text-[10px] font-bold transition-all ${provider === 'anthropic' ? 'bg-ink text-cream shadow-sm' : 'text-slate hover:text-ink'}`}

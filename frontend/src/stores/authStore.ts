@@ -54,6 +54,17 @@ export const useAuthStore = create<AuthState>()(
       },
 
       fetchMe: async () => {
+        // Demo mode: skip API call entirely, use mock user
+        if (localStorage.getItem('stours_demo') === 'true') {
+          set({ user: {
+            id: 'demo-user',
+            email: 'demo@rihla.ma',
+            full_name: 'Demo Admin',
+            role: { name: 'super_admin' },
+            permissions: ['*'],
+          }})
+          return
+        }
         try {
           const { data } = await authApi.me()
           set({ user: data })
@@ -69,6 +80,8 @@ export const useAuthStore = create<AuthState>()(
 // Clear store state when the api interceptor detects an expired/invalid token
 if (typeof window !== 'undefined') {
   window.addEventListener('auth:unauthorized', () => {
-    useAuthStore.getState().logout()
+    if (localStorage.getItem('stours_demo') !== 'true') {
+      useAuthStore.getState().logout()
+    }
   })
 }

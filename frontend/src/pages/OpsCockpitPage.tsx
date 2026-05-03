@@ -52,7 +52,7 @@ function severityClasses(sev: string) {
     case 'critical': return 'bg-red-100 text-red-800 border-red-200'
     case 'high':     return 'bg-orange-100 text-orange-800 border-orange-200'
     case 'warning':  return 'bg-amber-100 text-amber-800 border-amber-200'
-    default:         return 'bg-slate-100 text-slate-700 border-slate-200'
+    default:         return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 dark:border-slate-700'
   }
 }
 
@@ -60,7 +60,7 @@ function statusClasses(st: string) {
   switch (st) {
     case 'in_progress': return 'bg-blue-100 text-blue-800'
     case 'completed':   return 'bg-emerald-100 text-emerald-800'
-    case 'cancelled':   return 'bg-slate-100 text-slate-600'
+    case 'cancelled':   return 'bg-slate-100 dark:bg-slate-800 text-slate-600'
     default:            return 'bg-amber-100 text-amber-800'
   }
 }
@@ -96,14 +96,14 @@ export default function OpsCockpitPage() {
     <div className="space-y-4 p-4 md:p-6">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Live Ops Cockpit</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white dark:text-white">Live Ops Cockpit</h1>
           <p className="text-sm text-slate-500">
             Vue temps réel · {snap && `Dernière maj ${new Date(snap.generated_at).toLocaleTimeString('fr-FR')}`}
             {' · '}{now.toLocaleTimeString('fr-FR')}
           </p>
         </div>
         <button onClick={load}
-                className="flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm hover:bg-slate-50">
+                className="flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
           <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} /> Rafraîchir
         </button>
       </header>
@@ -165,22 +165,22 @@ export default function OpsCockpitPage() {
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
               {snap.active_projects.map((p) => (
                 <Link key={p.id} to={`/projects/${p.id}`}
-                      className="block rounded-lg border border-slate-200 bg-white p-3 hover:border-indigo-300 hover:shadow-sm">
+                      className="block rounded-lg border border-slate-200 dark:border-slate-700 bg-white p-3 hover:border-indigo-300 hover:shadow-sm">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold text-slate-900">{p.name}</div>
+                      <div className="truncate text-sm font-semibold text-slate-900 dark:text-white dark:text-white">{p.name}</div>
                       <div className="truncate text-xs text-slate-500">
                         {p.client_name || '—'}{p.destination && ` · ${p.destination}`}
                       </div>
                     </div>
                     {p.pax_count != null && (
-                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium">
+                      <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-xs font-medium">
                         {p.pax_count} pax
                       </span>
                     )}
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded bg-slate-100 px-1.5 py-0.5">{p.open_tasks} tâches</span>
+                    <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5">{p.open_tasks} tâches</span>
                     {p.open_incidents > 0 && (
                       <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-800">
                         {p.open_incidents} incidents
@@ -205,9 +205,9 @@ export default function OpsCockpitPage() {
             <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
               Tâches terrain ({snap.tasks.length})
             </h2>
-            <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+            <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
               <table className="min-w-full text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                <thead className="bg-slate-50 dark:bg-slate-950 text-xs uppercase tracking-wide text-slate-500">
                   <tr>
                     <th className="px-3 py-2 text-left">Heure</th>
                     <th className="px-3 py-2 text-left">Type</th>
@@ -223,10 +223,10 @@ export default function OpsCockpitPage() {
                     <tr key={t.id} className="border-t border-slate-100">
                       <td className="px-3 py-2 text-slate-600">{t.start_time || '—'}</td>
                       <td className="px-3 py-2 text-xs">
-                        <span className="rounded bg-slate-100 px-1.5 py-0.5">{t.task_type}</span>
+                        <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5">{t.task_type}</span>
                       </td>
                       <td className="px-3 py-2">
-                        <div className="font-medium text-slate-900">{t.title}</div>
+                        <div className="font-medium text-slate-900 dark:text-white dark:text-white">{t.title}</div>
                         {t.project_name && <div className="text-xs text-slate-500">{t.project_name}</div>}
                       </td>
                       <td className="px-3 py-2">{t.staff_name || '—'}</td>
@@ -287,11 +287,11 @@ function Kpi({
   hint?: string; tone?: 'default' | 'red';
 }) {
   return (
-    <div className={`rounded-lg border bg-white p-3 shadow-sm ${tone === 'red' ? 'border-red-200' : 'border-slate-200'}`}>
+    <div className={`rounded-lg border bg-white p-3 shadow-sm ${tone === 'red' ? 'border-red-200' : 'border-slate-200 dark:border-slate-700 dark:border-slate-700'}`}>
       <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-slate-500">
         {icon}<span>{label}</span>
       </div>
-      <div className={`mt-1 text-2xl font-bold ${tone === 'red' ? 'text-red-700' : 'text-slate-900'}`}>{value}</div>
+      <div className={`mt-1 text-2xl font-bold ${tone === 'red' ? 'text-red-700' : 'text-slate-900 dark:text-white dark:text-white'}`}>{value}</div>
       {hint && <div className="text-xs text-slate-500">{hint}</div>}
     </div>
   )

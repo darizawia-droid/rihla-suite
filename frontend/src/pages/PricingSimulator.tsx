@@ -181,31 +181,31 @@ export function PricingSimulator() {
                   <div key={d.day}>
                     <button
                       onClick={() => setExpandDay(expandDay === d.day ? null : d.day)}
-                      className="w-full px-5 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors text-left group"
+                      className="w-full px-5 py-3 flex items-center justify-between hover:bg-slate-50 dark:bg-slate-950 transition-colors text-left group"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-7 h-7 rounded-full bg-rihla/10 flex items-center justify-center text-rihla text-[11px] font-black flex-shrink-0">{d.day}</div>
                         <div>
                           <p className="text-xs font-bold text-slate-800">
                             {d.hotel}
-                            <span className={`ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded ${d.formula === 'HB' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{d.formula}</span>
+                            <span className={`ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded ${d.formula === 'HB' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>{d.formula}</span>
                           </p>
                           <p className="text-[10px] text-slate-400">{d.date} · {d.cities}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-black text-slate-700">{fmt(d.halfDbl)} MAD</span>
+                        <span className="text-sm font-black text-slate-700 dark:text-slate-300 dark:text-slate-300">{fmt(d.halfDbl)} MAD</span>
                         {expandDay === d.day ? <ChevronUp size={13} className="text-slate-300" /> : <ChevronDown size={13} className="text-slate-300" />}
                       </div>
                     </button>
                     {expandDay === d.day && (
-                      <div className="px-5 pb-4 pt-2 bg-slate-50 grid grid-cols-5 gap-2 text-[11px]">
+                      <div className="px-5 pb-4 pt-2 bg-slate-50 dark:bg-slate-950 grid grid-cols-5 gap-2 text-[11px]">
                         <div className="bg-white rounded-lg p-2.5 border border-slate-100 flex flex-col justify-between">
                           <p className="text-[9px] font-bold text-slate-400 mb-1">🏨 Hébergement</p>
                           <select 
                             value={HOTELS.find(h => h.name === selectedHotels[d.day]?.id)?.id || ''}
                             onChange={(e) => handleHotelChange(d.day, e.target.value)}
-                            className="bg-transparent border-0 p-0 text-[10px] font-bold text-slate-700 outline-none cursor-pointer focus:ring-0"
+                            className="bg-transparent border-0 p-0 text-[10px] font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer focus:ring-0"
                           >
                             <option value="">{d.hotel} (Défaut)</option>
                             {HOTELS.map(h => (
@@ -219,7 +219,7 @@ export function PricingSimulator() {
                           <select 
                             value={RESTAURANTS.find(r => r.name === selectedRestos[d.day]?.id)?.id || ''}
                             onChange={(e) => handleRestoChange(d.day, e.target.value)}
-                            className="bg-transparent border-0 p-0 text-[10px] font-bold text-slate-700 outline-none cursor-pointer focus:ring-0"
+                            className="bg-transparent border-0 p-0 text-[10px] font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer focus:ring-0"
                           >
                             <option value="">{d.rest} (Défaut)</option>
                             {RESTAURANTS.map(r => (
@@ -235,7 +235,7 @@ export function PricingSimulator() {
                         ].map(r => (
                           <div key={r.l} className="bg-white rounded-lg p-2.5 border border-slate-100">
                             <p className="text-[9px] font-bold text-slate-400 mb-1">{r.l}</p>
-                            <p className="font-bold text-slate-700 text-[10px] leading-tight">{r.v}</p>
+                            <p className="font-bold text-slate-700 dark:text-slate-300 text-[10px] leading-tight">{r.v}</p>
                             {r.p !== null && r.p !== undefined && <p className="text-rihla font-bold">{r.p} MAD</p>}
                           </div>
                         ))}
@@ -245,7 +245,7 @@ export function PricingSimulator() {
                 ))}
               </div>
 
-              <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 grid grid-cols-4 gap-2 text-center">
+              <div className="px-5 py-3 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 grid grid-cols-4 gap-2 text-center">
                 {[
                   { l: 'Hôtels', v: XLS_FIXED.hotels },
                   { l: 'Restos', v: XLS_FIXED.restaurants },
@@ -262,7 +262,7 @@ export function PricingSimulator() {
 
             {/* Zone 2 Variables */}
             <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-5">
-              <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
                 <Bus size={14} className="text-rihla" />
                 Zone 2 — Variables Groupe
               </h3>
@@ -272,12 +272,12 @@ export function PricingSimulator() {
                   return (
                     <div key={k} className="flex justify-between text-sm items-center py-1 border-b border-slate-50 last:border-0">
                       <span className="text-slate-500">{labels[k] || k}</span>
-                      <span className="font-bold tabular-nums text-slate-700">{fmt(v)} MAD</span>
+                      <span className="font-bold tabular-nums text-slate-700 dark:text-slate-300 dark:text-slate-300">{fmt(v)} MAD</span>
                     </div>
                   );
                 })}
                 <div className="pt-2 flex justify-between font-bold text-base">
-                  <span className="text-slate-700">Total Variables</span>
+                  <span className="text-slate-700 dark:text-slate-300 dark:text-slate-300">Total Variables</span>
                   <span className="text-rihla">{fmt(totalVarGrp)} MAD</span>
                 </div>
               </div>
@@ -298,7 +298,7 @@ export function PricingSimulator() {
               <div className="flex gap-2 mt-3">
                 {[8, 12, 15, 20].map(v => (
                   <button key={v} onClick={() => setMargin(v)}
-                    className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${margin === v ? 'bg-rihla text-white shadow-md' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
+                    className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${margin === v ? 'bg-rihla text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200'}`}>
                     {v}% {v === 8 ? '🔵' : v === 15 ? '⭐' : ''}
                   </button>
                 ))}
@@ -315,7 +315,7 @@ export function PricingSimulator() {
                 Zone 3 — Grille de Prix par Taille de Groupe
               </h2>
               <button onClick={() => setShowXLSRef(!showXLSRef)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${showXLSRef ? 'bg-amber-100 text-amber-700 border border-amber-200' : 'bg-slate-100 text-slate-500'}`}>
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${showXLSRef ? 'bg-amber-100 text-amber-700 border border-amber-200' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>
                 <CheckCircle2 size={11} />
                 Réf. XLS Excel
               </button>
@@ -332,7 +332,7 @@ export function PricingSimulator() {
 
               <table className="w-full">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-bold uppercase text-slate-400">
+                  <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-100 text-[10px] font-bold uppercase text-slate-400">
                     <th className="px-4 py-3 text-left">PAX</th>
                     <th className="px-4 py-3 text-right">Var/Pax</th>
                     <th className="px-4 py-3 text-right">Coût Revient</th>
@@ -350,16 +350,16 @@ export function PricingSimulator() {
                     const varPerPax = totalVarGrp / t.pax;
                     return (
                       <tr key={t.pax} style={isRef ? { background: 'linear-gradient(90deg,#fff5f2,#fffaf9)' } : {}}
-                        className={`border-b border-slate-50 transition-all ${!isRef && i % 2 === 0 ? 'bg-white' : !isRef ? 'bg-slate-50/30' : ''} hover:bg-slate-50`}>
+                        className={`border-b border-slate-50 transition-all ${!isRef && i % 2 === 0 ? 'bg-white dark:bg-slate-900' : !isRef ? 'bg-slate-50/30' : ''} hover:bg-slate-50`}>
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-2">
-                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm ${isRef ? 'bg-rihla text-white shadow-lg shadow-rihla/30' : 'bg-slate-100 text-slate-600'}`}>{t.pax}</div>
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm ${isRef ? 'bg-rihla text-white shadow-lg shadow-rihla/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600'}`}>{t.pax}</div>
                             {isRef && <span className="text-[9px] font-bold text-rihla bg-rihla/10 px-1 py-0.5 rounded">BASE</span>}
                           </div>
                         </td>
                         <td className="px-4 py-4 text-right text-xs font-mono text-slate-400">{fmt(varPerPax)}</td>
                         <td className="px-4 py-4 text-right">
-                          <span className={`text-sm font-bold ${isRef ? 'text-slate-700' : 'text-slate-500'}`}>{fmt(t.cost)}</span>
+                          <span className={`text-sm font-bold ${isRef ? 'text-slate-700 dark:text-slate-300 dark:text-slate-300' : 'text-slate-500'}`}>{fmt(t.cost)}</span>
                           {delta > 0 && showXLSRef && <p className="text-[9px] text-slate-300 font-mono">Δ {fmt(delta)}</p>}
                         </td>
                         {showXLSRef && (
@@ -368,7 +368,7 @@ export function PricingSimulator() {
                           </td>
                         )}
                         <td className="px-4 py-4 text-right">
-                          <span className={`text-xl font-black ${isRef ? 'text-rihla' : 'text-slate-700'}`}>{fmt(t.sell)}</span>
+                          <span className={`text-xl font-black ${isRef ? 'text-rihla' : 'text-slate-700 dark:text-slate-300 dark:text-slate-300'}`}>{fmt(t.sell)}</span>
                         </td>
                         {showXLSRef && (
                           <td className="px-4 py-4 text-right">
@@ -384,7 +384,7 @@ export function PricingSimulator() {
                 </tbody>
               </table>
 
-              <div className="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center gap-2">
+              <div className="px-6 py-3 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 flex items-center gap-2">
                 <Info size={13} className="text-slate-300 flex-shrink-0" />
                 <p className="text-[11px] text-slate-400">
                   Coûts fixes/pax : <strong>{fmt(totalFixed)} MAD</strong> · Variables groupe : <strong>{fmt(totalVarGrp)} MAD</strong> · Supp. single : <strong>{fmt(XLS_SINGLE_SUPPLEMENT)} MAD</strong> (hors grille)

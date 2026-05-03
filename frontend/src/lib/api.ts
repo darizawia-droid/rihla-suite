@@ -1591,12 +1591,11 @@ export interface Vehicle {
   specs?: any
 }
 
-export const cotationApi = {
-  projectsWithQuotations: () => api.get<any[]>('/cotation/projects-with-quotes'),
-  fullView: (id: string) => api.get<CotationFullView>(`/cotation/${id}/full`),
-  vehicles: (all?: boolean) => api.get<Vehicle[]>('/cotation/vehicles', { params: { all } }),
-  recomputeGrid: (id: string, payload: RecomputePayload) => api.post(`/cotation/${id}/recompute`, payload),
-  seedStoursTerms: (id: string) => api.post(`/cotation/${id}/seed-terms`),
-  seedVehicleFleet: () => api.post<{ total: number }>('/cotation/seed-fleet'),
-}
 
+
+// ── Currency / Forex ──────────────────────────────────────────────────
+export const currencyApi = {
+  rates:  () => api.get<any[]>('/currency/rates'),
+  convert: (payload: { from: string; to: string; amount: number }) => api.post<any>('/currency/convert', payload),
+  history: (pair: string) => api.get<any[]>(`/currency/history/${pair}`),
+}

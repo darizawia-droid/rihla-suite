@@ -174,7 +174,7 @@ export function M365HubPage() {
           </span>
           <button
             onClick={refresh}
-            className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 inline-flex items-center gap-1.5"
+            className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950 inline-flex items-center gap-1.5"
           >
             <RefreshCw className="w-3.5 h-3.5" /> Actualiser
           </button>
@@ -188,13 +188,13 @@ export function M365HubPage() {
       )}
 
       {/* Tabs */}
-      <div className="border-b border-slate-200 flex gap-2 overflow-x-auto">
+      <div className="border-b border-slate-200 dark:border-slate-700 flex gap-2 overflow-x-auto">
         {TABS.map(t => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-4 py-2.5 text-sm flex items-center gap-2 border-b-2 transition-colors ${
-              tab === t.id ? 'border-indigo-600 text-indigo-700 font-medium' : 'border-transparent text-slate-500 hover:text-slate-700'
+              tab === t.id ? 'border-indigo-600 text-indigo-700 font-medium' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-300 dark:text-slate-300'
             }`}
           >
             <t.icon className="w-4 h-4" /> {t.label}
@@ -212,7 +212,7 @@ export function M365HubPage() {
             <KPI label="SharePoint" value={dash.sharepoint_configured ? 'Configuré' : 'Démo'} icon={Cloud}
                  accent={dash.sharepoint_configured ? 'emerald' : 'slate'} />
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <div className="text-sm font-medium mb-3 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-indigo-600" /> Activités récentes
             </div>
@@ -237,7 +237,7 @@ export function M365HubPage() {
           </div>
 
           {/* Recent inbox preview */}
-          <div className="md:col-span-3 rounded-xl border border-slate-200 bg-white">
+          <div className="md:col-span-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
             <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
               <div className="text-sm font-medium flex items-center gap-2">
                 <Inbox className="w-4 h-4 text-slate-500" /> Boîte de réception (extrait)
@@ -265,7 +265,7 @@ export function M365HubPage() {
                   key={f}
                   onClick={() => setMailFilter(f)}
                   className={`text-xs px-3 py-1.5 rounded-full ${
-                    mailFilter === f ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    mailFilter === f ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
                   {f === 'all' ? 'Inbox' : f === 'linked' ? 'Liés à un dossier' : 'Envoyés'}
@@ -280,7 +280,7 @@ export function M365HubPage() {
             </button>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
             <ul className="divide-y divide-slate-100">
               {inbox.length === 0 && (
                 <li className="px-5 py-10 text-center text-sm text-slate-500">Aucun message à afficher.</li>
@@ -294,7 +294,7 @@ export function M365HubPage() {
               <div className="bg-white rounded-xl shadow-xl w-full max-w-xl" onClick={e => e.stopPropagation()}>
                 <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
                   <div className="font-medium">Nouvel email</div>
-                  <button onClick={() => setComposing(false)} className="text-slate-400 hover:text-slate-700 text-xl leading-none">×</button>
+                  <button onClick={() => setComposing(false)} className="text-slate-400 hover:text-slate-700 dark:text-slate-300 text-xl leading-none">×</button>
                 </div>
                 <div className="p-5 space-y-3 text-sm">
                   <div>
@@ -302,7 +302,7 @@ export function M365HubPage() {
                     <input
                       value={draft.to}
                       onChange={e => setDraft({ ...draft, to: e.target.value })}
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2"
+                      className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2"
                       placeholder="contact@client.com"
                     />
                   </div>
@@ -311,7 +311,7 @@ export function M365HubPage() {
                     <input
                       value={draft.subject}
                       onChange={e => setDraft({ ...draft, subject: e.target.value })}
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2"
+                      className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2"
                     />
                   </div>
                   <div>
@@ -320,12 +320,12 @@ export function M365HubPage() {
                       value={draft.body}
                       onChange={e => setDraft({ ...draft, body: e.target.value })}
                       rows={6}
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2 font-mono text-xs"
+                      className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 font-mono text-xs"
                     />
                   </div>
                 </div>
                 <div className="px-5 py-3 border-t border-slate-100 flex justify-end gap-2">
-                  <button onClick={() => setComposing(false)} className="text-sm px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">Annuler</button>
+                  <button onClick={() => setComposing(false)} className="text-sm px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">Annuler</button>
                   <button
                     onClick={handleSend}
                     disabled={sending || !draft.to || !draft.subject}
@@ -347,20 +347,20 @@ export function M365HubPage() {
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="text-sm text-slate-500 flex items-center gap-2">
               <Cloud className="w-4 h-4" /> {dash.sharepoint_configured ? 'SharePoint Online · stoursvoyages' : 'SharePoint (démo)'}
-              <code className="ml-2 text-xs bg-slate-100 px-2 py-0.5 rounded">{drivePath}</code>
+              <code className="ml-2 text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">{drivePath}</code>
             </div>
             <div className="flex items-center gap-2">
               {drivePath !== '/RIHLA/Dossiers' && (
                 <button
                   onClick={() => loadDrive(drivePath.split('/').slice(0, -1).join('/') || '/RIHLA/Dossiers')}
-                  className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50"
+                  className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950"
                 >
                   ← Remonter
                 </button>
               )}
               <button
                 onClick={() => loadDrive(drivePath)}
-                className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 inline-flex items-center gap-1"
+                className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950 inline-flex items-center gap-1"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Recharger
               </button>
@@ -372,9 +372,9 @@ export function M365HubPage() {
               <Loader2 className="w-4 h-4 animate-spin" /> Chargement…
             </div>
           ) : (
-            <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+                <thead className="bg-slate-50 dark:bg-slate-950 text-xs uppercase text-slate-500">
                   <tr>
                     <th className="text-left px-4 py-2.5">Nom</th>
                     <th className="text-left px-4 py-2.5">Type</th>
@@ -388,7 +388,7 @@ export function M365HubPage() {
                     <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500">Dossier vide.</td></tr>
                   )}
                   {driveFiles.map(f => (
-                    <tr key={f.id} className="border-t border-slate-100 hover:bg-slate-50">
+                    <tr key={f.id} className="border-t border-slate-100 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
                       <td className="px-4 py-2.5">
                         <div className="flex items-center gap-2">
                           {f.folder
@@ -421,7 +421,7 @@ export function M365HubPage() {
             </div>
           )}
 
-          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 flex items-start gap-3">
+          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 dark:bg-slate-950 p-5 flex items-start gap-3">
             <FolderPlus className="w-5 h-5 text-slate-400 mt-0.5" />
             <div className="text-sm text-slate-600">
               <strong>Provisioning auto :</strong> chaque nouveau dossier RIHLA déclenche la création d'une arborescence SharePoint
@@ -435,7 +435,7 @@ export function M365HubPage() {
       {/* Teams tab */}
       {tab === 'teams' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 space-y-3">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5 space-y-3">
             <h3 className="text-sm font-medium flex items-center gap-2">
               <MessageSquare className="w-4 h-4 text-violet-600" /> Notification de canal
             </h3>
@@ -444,7 +444,7 @@ export function M365HubPage() {
               <input
                 value={teamsDraft.title}
                 onChange={e => setTeamsDraft({ ...teamsDraft, title: e.target.value })}
-                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm"
               />
             </div>
             <div>
@@ -453,7 +453,7 @@ export function M365HubPage() {
                 value={teamsDraft.message}
                 onChange={e => setTeamsDraft({ ...teamsDraft, message: e.target.value })}
                 rows={4}
-                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm"
               />
             </div>
             <button
@@ -470,7 +470,7 @@ export function M365HubPage() {
               </div>
             )}
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-violet-600" /> Triggers automatiques
             </h3>
@@ -506,7 +506,7 @@ export function M365HubPage() {
       {/* Connections tab */}
       {tab === 'connections' && (
         <div className="space-y-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 flex items-start gap-4">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5 flex items-start gap-4">
             <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
               <Plug className="w-5 h-5" />
             </div>
@@ -527,7 +527,7 @@ export function M365HubPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
             <div className="px-5 py-3 border-b border-slate-100 text-sm font-medium">
               Comptes connectés ({dash.connection ? 1 : 0})
             </div>
@@ -561,13 +561,13 @@ function KPI({ label, value, icon: Icon, accent = 'slate' }: {
   label: string, value: string, icon: any, accent?: 'slate' | 'indigo' | 'amber' | 'emerald'
 }) {
   const colors: Record<string, string> = {
-    slate:   'bg-slate-50 text-slate-700',
+    slate:   'bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 dark:text-slate-300',
     indigo:  'bg-indigo-50 text-indigo-700',
     amber:   'bg-amber-50 text-amber-700',
     emerald: 'bg-emerald-50 text-emerald-700',
   }
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4">
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
         <span>{label}</span>
         <span className={`w-7 h-7 rounded-lg flex items-center justify-center ${colors[accent]}`}>
@@ -581,7 +581,7 @@ function KPI({ label, value, icon: Icon, accent = 'slate' }: {
 
 function MailRow({ m }: { m: M365MailMessage }) {
   return (
-    <li className="px-5 py-3 hover:bg-slate-50 cursor-pointer">
+    <li className="px-5 py-3 hover:bg-slate-50 dark:bg-slate-950 cursor-pointer">
       <div className="flex items-start gap-3">
         <div className={`w-1 self-stretch rounded-full ${m.direction === 'in' ? 'bg-blue-400' : 'bg-emerald-400'}`} />
         <div className="flex-1 min-w-0">
@@ -590,7 +590,7 @@ function MailRow({ m }: { m: M365MailMessage }) {
             <div className="text-xs text-slate-400 shrink-0">{fmtRel(m.received_at)}</div>
           </div>
           <div className="text-xs text-slate-500 truncate mt-0.5">
-            {m.direction === 'in' ? 'De' : 'À'} : <span className="text-slate-700">{m.direction === 'in' ? m.sender : m.recipients.join(', ')}</span>
+            {m.direction === 'in' ? 'De' : 'À'} : <span className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{m.direction === 'in' ? m.sender : m.recipients.join(', ')}</span>
           </div>
           <div className="text-xs text-slate-500 mt-1 line-clamp-1">{m.preview}</div>
           {(m.project_id || m.invoice_id) && (

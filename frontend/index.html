@@ -14,6 +14,21 @@
 </head>
 <body>
   <div id="root"></div>
+  <script>
+    // Demo mode: inject auth tokens for static deployment (no backend)
+    localStorage.setItem('stours_token', 'demo-token');
+    localStorage.setItem('stours_demo', 'true');
+    localStorage.setItem('stours-auth', JSON.stringify({
+      state: { token: 'demo-token', refreshToken: 'demo-refresh' },
+      version: 0
+    }));
+    // Unregister stale service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) { r.unregister(); });
+      });
+    }
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Plus, Search, MapPin, Tag, Image as ImageIcon, FileText, Copy, Trash2,
-  X, Check, Globe2, Sparkles,
+  X, Check, Globe2, Sparkles, Package,
 } from 'lucide-react'
 import { mediaLibraryApi } from '@/lib/api'
 import type { MediaAsset } from '@/lib/api'
@@ -15,6 +15,40 @@ const TYPES = [
   { value: 'photo', label: 'Photos',        icon: ImageIcon },
   { value: 'poi',   label: 'Descriptions',  icon: FileText },
 ]
+
+export function MediaLibraryPage() {
+  const qc = useQueryClient()
+  const [type, setType] = useState('')
+  const [city, setCity] = useState('')
+  const [category, setCategory] = useState('')
+  const [q, setQ] = useState('')
+  const [selected, setSelected] = useState<MediaAsset | null>(null)
+  const [showCreate, setShowCreate] = useState(false)
+  const [justCopied, setJustCopied] = useState<string | null>(null)
+
+  const { data: assets, isLoading } = useQuery({
+    queryKey: ['media-assets', type, city, category, q],
+    queryFn: () => mediaLibraryApi.list({ asset_type: type || undefined, city: city || undefined, category: category || undefined, q: q || undefined }).then(r => r.data),
+    staleTime: 30_000,
+  })
+
+  const { data: facets } = useQuery({
+    queryKey: ['media-facets'],
+    queryFn: () => mediaLibraryApi.facets().then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const removeMutation = useMutation({
+    mutationFn: (id: string) => mediaLibraryApi.delete(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['media-assets'] }); setSelected(null) },
+  })
+
+  const handleCopy = async (asset: MediaAsset) => {
+    const text = asset.asset_type === 'photo' ? (asset as any).image_url ?? '' : (asset as any).description ?? ''
+    await navigator.clipboard.writeText(text)
+    setJustCopied(asset.id)
+    setTimeout(() => setJustCopied(null), 2000)
+  }
 
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [isSelectionMode, setIsSelectionMode] = useState(false)

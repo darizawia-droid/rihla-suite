@@ -57,7 +57,7 @@ export function PricingCoachPage() {
             <Brain className="h-5 w-5 text-indigo-600" />
           </div>
           <div>
-            <h1 className="text-[22px] font-semibold text-slate-900">
+            <h1 className="text-[22px] font-semibold text-slate-900 dark:text-white dark:text-white">
               Pricing Coach <span className="text-sm font-normal text-slate-500">— Marge optimale par contexte</span>
             </h1>
             <p className="text-sm text-slate-500">
@@ -78,7 +78,7 @@ export function PricingCoachPage() {
       </div>
 
       {/* Form */}
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
+      <div className="mb-6 rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
         <div className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
           Contexte du nouveau dossier
         </div>
@@ -89,7 +89,7 @@ export function PricingCoachPage() {
               value={destination}
               onChange={e => setDestination(e.target.value)}
               placeholder="Marrakech, Sahara…"
-              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-[#B43E20] focus:outline-none"
+              className="w-full rounded-md border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:border-[#B43E20] focus:outline-none"
             />
           </div>
           <div>
@@ -100,7 +100,7 @@ export function PricingCoachPage() {
               onChange={e => setDuration(parseInt(e.target.value) || 0)}
               min={1}
               max={30}
-              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-[#B43E20] focus:outline-none"
+              className="w-full rounded-md border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:border-[#B43E20] focus:outline-none"
             />
           </div>
           <div>
@@ -110,7 +110,7 @@ export function PricingCoachPage() {
               value={pax}
               onChange={e => setPax(parseInt(e.target.value) || 0)}
               min={1}
-              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-[#B43E20] focus:outline-none"
+              className="w-full rounded-md border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm focus:border-[#B43E20] focus:outline-none"
             />
           </div>
           <div>
@@ -118,7 +118,7 @@ export function PricingCoachPage() {
             <select
               value={month}
               onChange={e => setMonth(parseInt(e.target.value))}
-              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              className="w-full rounded-md border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm"
             >
               {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
             </select>
@@ -153,17 +153,17 @@ export function PricingCoachPage() {
               <div className="mt-3 flex items-center justify-between text-xs">
                 <div>
                   <div className="text-slate-500">Plancher prudent</div>
-                  <div className="font-semibold text-slate-700">{reco.margin_min_safe.toFixed(1)}%</div>
+                  <div className="font-semibold text-slate-700 dark:text-slate-300 dark:text-slate-300">{reco.margin_min_safe.toFixed(1)}%</div>
                 </div>
                 <div className="h-px flex-1 bg-slate-200 mx-3" />
                 <div className="text-right">
                   <div className="text-slate-500">Plafond agressif</div>
-                  <div className="font-semibold text-slate-700">{reco.margin_max_aggressive.toFixed(1)}%</div>
+                  <div className="font-semibold text-slate-700 dark:text-slate-300 dark:text-slate-300">{reco.margin_max_aggressive.toFixed(1)}%</div>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
               <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-slate-500">
                 <BarChart3 className="h-3.5 w-3.5" />
                 Historique pertinent
@@ -171,7 +171,7 @@ export function PricingCoachPage() {
               <div className="mt-2 space-y-2 text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600">Échantillon</span>
-                  <span className="font-medium text-slate-900">{reco.sample_size} cotation(s)</span>
+                  <span className="font-medium text-slate-900 dark:text-white dark:text-white">{reco.sample_size} cotation(s)</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600">Gagnées</span>
@@ -187,12 +187,12 @@ export function PricingCoachPage() {
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 pt-2">
                   <span className="text-slate-600">Taux de conversion</span>
-                  <span className="font-semibold text-slate-900">{reco.win_rate.toFixed(0)}%</span>
+                  <span className="font-semibold text-slate-900 dark:text-white dark:text-white">{reco.win_rate.toFixed(0)}%</span>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
               <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-slate-500">
                 <Target className="h-3.5 w-3.5" />
                 Distribution marges gagnées
@@ -225,12 +225,12 @@ export function PricingCoachPage() {
           )}
 
           {/* Rationale */}
-          <div className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
-            <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
+          <div className="mb-6 rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
+            <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white dark:text-white">
               <Brain className="h-4 w-4 text-indigo-600" />
               Raisonnement du coach
             </h3>
-            <div className="space-y-2 whitespace-pre-line text-sm text-slate-700">
+            <div className="space-y-2 whitespace-pre-line text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300">
               {reco.rationale.split('\n\n').map((para, i) => (
                 <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') }} />
               ))}
@@ -239,8 +239,8 @@ export function PricingCoachPage() {
 
           {/* Samples used */}
           {reco.samples_used.length > 0 && (
-            <div className="mb-6 rounded-xl border border-slate-200 bg-white">
-              <div className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-900">
+            <div className="mb-6 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+              <div className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white dark:text-white">
                 Cotations analysées ({reco.samples_used.length})
               </div>
               <table className="w-full text-sm">
@@ -256,9 +256,9 @@ export function PricingCoachPage() {
                 <tbody className="divide-y divide-slate-100">
                   {reco.samples_used.map(s => (
                     <tr key={s.project_id} className="hover:bg-slate-50/50">
-                      <td className="px-5 py-2 font-medium text-slate-900">{s.project_name || '—'}</td>
+                      <td className="px-5 py-2 font-medium text-slate-900 dark:text-white dark:text-white">{s.project_name || '—'}</td>
                       <td className="px-5 py-2 text-slate-600">{s.destination || '—'}</td>
-                      <td className="px-5 py-2 text-right font-medium text-slate-900">
+                      <td className="px-5 py-2 text-right font-medium text-slate-900 dark:text-white dark:text-white">
                         {s.margin_pct.toFixed(1)}%
                       </td>
                       <td className="px-5 py-2 text-right text-slate-600">
@@ -286,8 +286,8 @@ export function PricingCoachPage() {
 
       {/* Global insights */}
       {insights && insights.total_samples > 0 && (
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white dark:text-white">
             <TrendingUp className="h-4 w-4 text-indigo-600" />
             Vue d'ensemble — {insights.total_samples} cotations dans le pipeline
           </h3>
@@ -299,7 +299,7 @@ export function PricingCoachPage() {
               <div className="space-y-1 text-sm">
                 {insights.by_destination.slice(0, 6).map(d => (
                   <div key={d.key} className="flex items-center justify-between">
-                    <span className="text-slate-700">{d.key}</span>
+                    <span className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{d.key}</span>
                     <span className="text-slate-500">
                       {d.count}× · moy. <strong className="text-slate-800">{d.avg?.toFixed(1)}%</strong>
                     </span>
@@ -314,7 +314,7 @@ export function PricingCoachPage() {
               <div className="space-y-1 text-sm">
                 {insights.by_duration.map(d => (
                   <div key={d.key} className="flex items-center justify-between">
-                    <span className="text-slate-700">{d.key}</span>
+                    <span className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{d.key}</span>
                     <span className="text-slate-500">
                       {d.count}× · moy. <strong className="text-slate-800">{d.avg?.toFixed(1)}%</strong>
                     </span>
@@ -323,7 +323,7 @@ export function PricingCoachPage() {
               </div>
             </div>
           </div>
-          <div className="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
+          <div className="mt-3 rounded-lg bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs text-slate-600">
             <strong>Repère marché DMC MENA</strong> · fourchette pairs anonymisés{' '}
             {insights.peer_band[0]}–{insights.peer_band[1]}% · moyenne {insights.peer_avg}%
           </div>
@@ -340,7 +340,7 @@ function Row({ label, value, highlight, muted }: { label: string, value: number 
       <span className={
         highlight ? 'text-base font-semibold text-indigo-700' :
         muted     ? 'text-slate-400' :
-                    'font-medium text-slate-900'
+                    'font-medium text-slate-900 dark:text-white dark:text-white'
       }>
         {value !== null && value !== undefined ? `${value.toFixed(1)}%` : '—'}
       </span>

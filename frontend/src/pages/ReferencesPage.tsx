@@ -172,7 +172,7 @@ export function ReferencesPage() {
           <div className={`rounded-card border-2 p-5 transition-all duration-300
             ${preview
               ? 'border-bordeaux bg-bordeaux/[0.03]'
-              : 'border-line bg-white'}`}>
+              : 'border-line bg-white dark:bg-slate-900'}`}>
             <p className="text-label text-muted mb-3">Aperçu en temps réel</p>
             {preview ? (
               <>

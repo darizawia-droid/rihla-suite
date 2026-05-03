@@ -96,16 +96,6 @@ export function WhatsAppHubPage() {
 
   const currentConvo = convos.find(c => c.id === selectedId)
 
-  const useTemplate = (template: QuickTemplate) => {
-    setNewMessage(template.text)
-    setShowTemplates(false)
-  }
-
-  const filteredConvos = CONVERSATIONS.filter(c =>
-    c.contactName.toLowerCase().includes(search.toLowerCase()) ||
-    c.projectRef.toLowerCase().includes(search.toLowerCase())
-  )
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
 

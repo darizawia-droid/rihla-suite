@@ -110,14 +110,14 @@ export default function CompanionPage() {
 
   if (loading)
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
         <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
       </div>
     )
 
   if (error || !trip)
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
         <div className="max-w-md rounded-lg border border-red-200 bg-white p-6 text-center">
           <AlertCircle className="mx-auto mb-2 h-8 w-8 text-red-500" />
           <h1 className="text-lg font-semibold">Accès impossible</h1>
@@ -129,9 +129,9 @@ export default function CompanionPage() {
   const primary = trip.branding.primary_color || '#3730a3'
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
       {/* Header */}
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-4">
           {trip.branding.logo_url && (
             <img src={trip.branding.logo_url} alt={trip.branding.company_name}
@@ -141,7 +141,7 @@ export default function CompanionPage() {
             <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
               {trip.branding.company_name}
             </div>
-            <h1 className="text-xl font-bold text-slate-900">{trip.title}</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white dark:text-white">{trip.title}</h1>
             {trip.client_name && (
               <div className="mt-0.5 text-sm text-slate-600">
                 Préparé pour {trip.client_name}
@@ -167,7 +167,7 @@ export default function CompanionPage() {
       {/* Welcome */}
       {trip.branding.welcome_message && (
         <section className="mx-auto mt-4 max-w-3xl px-4">
-          <div className="rounded-lg bg-white p-4 text-sm text-slate-700 shadow-sm">
+          <div className="rounded-lg bg-white p-4 text-sm text-slate-700 dark:text-slate-300 shadow-sm">
             {trip.branding.welcome_message}
           </div>
         </section>
@@ -190,7 +190,7 @@ export default function CompanionPage() {
       <section className="mx-auto mt-6 max-w-3xl space-y-4 px-4">
         {trip.days.map((d) => (
           <article key={d.day_number}
-                   className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                   className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-white shadow-sm">
             {d.image_url && (
               <img src={d.image_url} alt={d.title}
                    className="h-40 w-full object-cover" loading="lazy" />
@@ -210,9 +210,9 @@ export default function CompanionPage() {
                   </span>
                 )}
               </div>
-              <h2 className="mt-2 text-lg font-semibold text-slate-900">{d.title}</h2>
+              <h2 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white dark:text-white">{d.title}</h2>
               {d.subtitle && <p className="text-sm text-slate-600">{d.subtitle}</p>}
-              {d.description && <p className="mt-2 text-sm text-slate-700">{d.description}</p>}
+              {d.description && <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300">{d.description}</p>}
 
               <div className="mt-3 flex flex-wrap gap-3 text-xs text-slate-600">
                 {d.city && (
@@ -233,7 +233,7 @@ export default function CompanionPage() {
               </div>
 
               {d.activities && d.activities.length > 0 && (
-                <ul className="mt-3 list-inside list-disc text-sm text-slate-700">
+                <ul className="mt-3 list-inside list-disc text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300">
                   {d.activities.map((a, i) => <li key={i}>{a}</li>)}
                 </ul>
               )}
@@ -251,9 +251,9 @@ export default function CompanionPage() {
           <div className="space-y-2">
             {trip.contacts.map((c, i) => (
               <div key={i}
-                   className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-3 text-sm">
+                   className="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-white p-3 text-sm">
                 <div>
-                  <div className="font-medium text-slate-900">{c.label}</div>
+                  <div className="font-medium text-slate-900 dark:text-white dark:text-white">{c.label}</div>
                   {c.name && <div className="text-slate-600">{c.name}</div>}
                 </div>
                 {c.phone && (

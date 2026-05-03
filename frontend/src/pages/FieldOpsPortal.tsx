@@ -275,7 +275,7 @@ function IncidentModal({ taskId, onClose }: { taskId: string, onClose: () => voi
                     onClick={() => setSeverity(s)}
                     className={clsx(
                       "flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all",
-                      severity === s ? "bg-white text-slate-900 border-white" : "bg-transparent text-slate-400 border-white/10"
+                      severity === s ? "bg-white text-slate-900 dark:text-white border-white" : "bg-transparent text-slate-400 border-white/10"
                     )}
                   >
                     {s}
@@ -316,13 +316,13 @@ function VoucherModal({ taskId, onClose }: { taskId: string; onClose: () => void
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/90 backdrop-blur-sm" onClick={onClose}>
-      <div className="w-full max-w-md bg-white rounded-[32px] p-7 shadow-2xl animate-in zoom-in-95 duration-200 !text-slate-900" onClick={(e) => e.stopPropagation()} style={{ color: '#0f172a' }}>
+      <div className="w-full max-w-md bg-white rounded-[32px] p-7 shadow-2xl animate-in zoom-in-95 duration-200 !text-slate-900 dark:text-white dark:text-white" onClick={(e) => e.stopPropagation()} style={{ color: '#0f172a' }}>
         <div className="flex items-center justify-between mb-5">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.25em] text-rihla mb-1">Voucher QR</p>
             <h3 className="text-lg font-black">Mission</h3>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X size={16} /></button>
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center"><X size={16} /></button>
         </div>
 
         {isLoading || !data ? (
@@ -334,12 +334,12 @@ function VoucherModal({ taskId, onClose }: { taskId: string; onClose: () => void
             </div>
 
             <div className="space-y-2 text-[12px]">
-              <div className="flex justify-between gap-3"><span className="text-slate-500">Mission</span><span className="font-bold text-slate-900 text-right">{data.title}</span></div>
-              {data.location && <div className="flex justify-between gap-3"><span className="text-slate-500">Lieu</span><span className="font-bold text-slate-900 text-right">{data.location}</span></div>}
-              {data.time && <div className="flex justify-between gap-3"><span className="text-slate-500">Heure</span><span className="font-bold text-slate-900 text-right">{data.time}</span></div>}
-              {data.pax_count != null && <div className="flex justify-between gap-3"><span className="text-slate-500">PAX</span><span className="font-bold text-slate-900 text-right">{data.pax_count}</span></div>}
-              {data.vehicle && <div className="flex justify-between gap-3"><span className="text-slate-500">Véhicule</span><span className="font-bold text-slate-900 text-right">{data.vehicle}</span></div>}
-              <div className="flex justify-between gap-3 pt-2 border-t border-slate-100"><span className="text-slate-500">Validité</span><span className="font-bold text-slate-900 text-right">{data.expires_in_days} jours</span></div>
+              <div className="flex justify-between gap-3"><span className="text-slate-500">Mission</span><span className="font-bold text-slate-900 dark:text-white text-right">{data.title}</span></div>
+              {data.location && <div className="flex justify-between gap-3"><span className="text-slate-500">Lieu</span><span className="font-bold text-slate-900 dark:text-white text-right">{data.location}</span></div>}
+              {data.time && <div className="flex justify-between gap-3"><span className="text-slate-500">Heure</span><span className="font-bold text-slate-900 dark:text-white text-right">{data.time}</span></div>}
+              {data.pax_count != null && <div className="flex justify-between gap-3"><span className="text-slate-500">PAX</span><span className="font-bold text-slate-900 dark:text-white text-right">{data.pax_count}</span></div>}
+              {data.vehicle && <div className="flex justify-between gap-3"><span className="text-slate-500">Véhicule</span><span className="font-bold text-slate-900 dark:text-white text-right">{data.vehicle}</span></div>}
+              <div className="flex justify-between gap-3 pt-2 border-t border-slate-100"><span className="text-slate-500">Validité</span><span className="font-bold text-slate-900 dark:text-white text-right">{data.expires_in_days} jours</span></div>
             </div>
 
             <p className="text-[10px] text-slate-400 mt-4 leading-relaxed">

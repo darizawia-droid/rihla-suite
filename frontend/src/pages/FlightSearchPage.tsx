@@ -67,6 +67,13 @@ export function FlightSearchPage() {
     searchMutation.mutate(params)
   }
 
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
+      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/5 px-8 py-5 mb-8">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Recherche de Vols</h1>
+        <p className="text-sm text-slate-500">Trouvez les meilleurs vols pour vos circuits</p>
+      </div>
+
       {/* ── SEARCH FORM ──────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto mb-8">
         <form onSubmit={handleSearch} className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-white/10 p-6 shadow-sm">

@@ -20,7 +20,7 @@ const TABS = [
 type TabId = typeof TABS[number]['id']
 
 const STAGE_COLORS: Record<string, string> = {
-  lead:     'bg-slate-100 text-slate-700',
+  lead:     'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 dark:text-slate-300',
   quoted:   'bg-blue-100 text-blue-700',
   won:      'bg-violet-100 text-violet-700',
   invoiced: 'bg-amber-100 text-amber-700',
@@ -98,7 +98,7 @@ export function O2CHubPage() {
           </div>
         </div>
         <button onClick={refresh}
-          className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 inline-flex items-center gap-1.5">
+          className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950 inline-flex items-center gap-1.5">
           <RefreshCw className="w-3.5 h-3.5" /> Actualiser
         </button>
       </header>
@@ -120,11 +120,11 @@ export function O2CHubPage() {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-slate-200 flex gap-2 overflow-x-auto">
+      <div className="border-b border-slate-200 dark:border-slate-700 flex gap-2 overflow-x-auto">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
             className={`px-4 py-2.5 text-sm flex items-center gap-2 border-b-2 transition-colors ${
-              tab === t.id ? 'border-violet-600 text-violet-700 font-medium' : 'border-transparent text-slate-500 hover:text-slate-700'
+              tab === t.id ? 'border-violet-600 text-violet-700 font-medium' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-300 dark:text-slate-300'
             }`}>
             <t.icon className="w-4 h-4" /> {t.label}
             {t.id === 'bottlenecks' && bottlenecks.length > 0 && (
@@ -137,7 +137,7 @@ export function O2CHubPage() {
       {/* Overview tab */}
       {tab === 'overview' && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2 rounded-xl border border-slate-200 bg-white p-5">
+          <div className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <h3 className="text-sm font-medium mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-violet-600" /> Pipeline commercial</h3>
             <div className="space-y-3">
               {funnel.stages.map((s, i) => {
@@ -145,10 +145,10 @@ export function O2CHubPage() {
                 return (
                   <div key={s.stage}>
                     <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-medium text-slate-700">{s.label}</span>
+                      <span className="font-medium text-slate-700 dark:text-slate-300 dark:text-slate-300">{s.label}</span>
                       <span className="text-slate-500">{s.count} dossier(s) · {fmtMoney(s.value, cur)}</span>
                     </div>
-                    <div className="relative h-7 bg-slate-100 rounded-lg overflow-hidden">
+                    <div className="relative h-7 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden">
                       <div className={`h-full ${['bg-slate-400','bg-blue-500','bg-violet-500','bg-amber-500','bg-emerald-500'][i]} transition-all`}
                            style={{ width: `${w}%` }} />
                     </div>
@@ -161,7 +161,7 @@ export function O2CHubPage() {
               <span className="font-semibold text-violet-700">{funnel.overall_conversion}%</span>
             </div>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <h3 className="text-sm font-medium mb-4 flex items-center gap-2"><Activity className="w-4 h-4 text-violet-600" /> Indicateurs clés</h3>
             <ul className="space-y-3 text-sm">
               <Stat label="Pipeline ouvert (devis envoyés)" value={fmtMoney(kpis.revenue_pipeline, cur)} />
@@ -178,7 +178,7 @@ export function O2CHubPage() {
 
       {/* Funnel tab */}
       {tab === 'funnel' && (
-        <div className="rounded-xl border border-slate-200 bg-white p-6">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-6">
           <div className="flex items-end justify-between gap-2 h-72">
             {funnel.stages.map((s, i) => {
               const h = Math.max((s.count / maxFunnelCount) * 100, 6)
@@ -198,14 +198,14 @@ export function O2CHubPage() {
                       </div>
                     )}
                   </div>
-                  <div className="text-xs text-slate-700 font-medium text-center">{s.label}</div>
+                  <div className="text-xs text-slate-700 dark:text-slate-300 font-medium text-center">{s.label}</div>
                   <div className="text-[10px] text-slate-500 text-center">{fmtMoney(s.value, cur)}</div>
                 </div>
               )
             })}
           </div>
           <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-            <div className="p-3 rounded-lg bg-slate-50">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
               <div className="text-slate-500 mb-1">Taux de signature</div>
               <div className="text-base font-semibold">
                 {funnel.stages[1].count > 0
@@ -213,7 +213,7 @@ export function O2CHubPage() {
                   : '—'}
               </div>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
               <div className="text-slate-500 mb-1">Taux de facturation</div>
               <div className="text-base font-semibold">
                 {funnel.stages[2].count > 0
@@ -221,7 +221,7 @@ export function O2CHubPage() {
                   : '—'}
               </div>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
               <div className="text-slate-500 mb-1">Taux d'encaissement</div>
               <div className="text-base font-semibold">
                 {funnel.stages[3].count > 0
@@ -245,7 +245,7 @@ export function O2CHubPage() {
               <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
               <input value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Rechercher dossier ou client…"
-                className="w-full text-sm pl-9 pr-3 py-2 border border-slate-200 rounded-lg" />
+                className="w-full text-sm pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg" />
             </div>
             <label className="text-xs flex items-center gap-2 text-slate-600">
               <input type="checkbox" checked={blockedOnly} onChange={e => setBlockedOnly(e.target.checked)} />
@@ -254,9 +254,9 @@ export function O2CHubPage() {
             <span className="text-xs text-slate-400 ml-auto">{filtered.length} dossier(s)</span>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+              <thead className="bg-slate-50 dark:bg-slate-950 text-xs uppercase text-slate-500">
                 <tr>
                   <th className="text-left px-4 py-2.5">Dossier</th>
                   <th className="text-left px-4 py-2.5">Client</th>
@@ -286,7 +286,7 @@ export function O2CHubPage() {
         <div className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {aging.buckets.map(b => (
-              <div key={b.label} className="rounded-xl border border-slate-200 bg-white p-4">
+              <div key={b.label} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4">
                 <div className="text-xs text-slate-500 mb-1">{b.label}</div>
                 <div className="text-xl font-semibold">{fmtMoney(b.amount, cur)}</div>
                 <div className="text-xs text-slate-400 mt-0.5">{b.count} facture(s)</div>
@@ -294,9 +294,9 @@ export function O2CHubPage() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+              <thead className="bg-slate-50 dark:bg-slate-950 text-xs uppercase text-slate-500">
                 <tr>
                   <th className="text-left px-4 py-2.5">N°</th>
                   <th className="text-left px-4 py-2.5">Client</th>
@@ -311,7 +311,7 @@ export function O2CHubPage() {
                   <tr><td colSpan={6} className="px-4 py-10 text-center text-slate-500">Aucun encours client.</td></tr>
                 )}
                 {aging.invoices.map(i => (
-                  <tr key={i.invoice_id} className="border-t border-slate-100 hover:bg-slate-50">
+                  <tr key={i.invoice_id} className="border-t border-slate-100 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
                     <td className="px-4 py-2.5 font-mono text-xs">{i.number}</td>
                     <td className="px-4 py-2.5">{i.client_name || '—'}</td>
                     <td className="px-4 py-2.5 text-xs text-slate-500">{i.due_date || '—'}</td>
@@ -344,7 +344,7 @@ export function O2CHubPage() {
             </div>
           ) : (
             bottlenecks.map(b => (
-              <div key={b.project_id} className="rounded-xl border border-slate-200 bg-white p-4 flex items-start gap-4">
+              <div key={b.project_id} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4 flex items-start gap-4">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                   b.severity === 'critical' ? 'bg-red-100 text-red-600'
                   : b.severity === 'warning' ? 'bg-amber-100 text-amber-600'
@@ -384,13 +384,13 @@ function KPI({ label, value, hint, icon: Icon, accent = 'slate' }: {
   label: string, value: string, hint?: string, icon: any, accent?: 'slate' | 'emerald' | 'amber' | 'violet'
 }) {
   const colors: Record<string, string> = {
-    slate:   'bg-slate-50 text-slate-700',
+    slate:   'bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 dark:text-slate-300',
     emerald: 'bg-emerald-50 text-emerald-700',
     amber:   'bg-amber-50 text-amber-700',
     violet:  'bg-violet-50 text-violet-700',
   }
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-4">
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
         <span>{label}</span>
         <span className={`w-7 h-7 rounded-lg flex items-center justify-center ${colors[accent]}`}>
@@ -405,7 +405,7 @@ function KPI({ label, value, hint, icon: Icon, accent = 'slate' }: {
 
 function Stat({ label, value, accent = 'slate' }: { label: string, value: string, accent?: 'slate'|'amber'|'red'|'emerald' }) {
   const colors: Record<string, string> = {
-    slate: 'text-slate-700', amber: 'text-amber-700',
+    slate: 'text-slate-700 dark:text-slate-300 dark:text-slate-300', amber: 'text-amber-700',
     red: 'text-red-700', emerald: 'text-emerald-700',
   }
   return (
@@ -421,7 +421,7 @@ function RowFragment({ r, expanded, onToggle }: {
 }) {
   return (
     <>
-      <tr className={`border-t border-slate-100 hover:bg-slate-50 cursor-pointer ${r.is_blocked ? 'bg-amber-50/40' : ''}`} onClick={onToggle}>
+      <tr className={`border-t border-slate-100 hover:bg-slate-50 dark:bg-slate-950 cursor-pointer ${r.is_blocked ? 'bg-amber-50/40' : ''}`} onClick={onToggle}>
         <td className="px-4 py-2.5">
           <div className="flex items-center gap-2">
             <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform ${expanded ? 'rotate-90' : ''}`} />
@@ -431,14 +431,14 @@ function RowFragment({ r, expanded, onToggle }: {
             </div>
           </div>
         </td>
-        <td className="px-4 py-2.5 text-slate-700">{r.client_name || '—'}</td>
+        <td className="px-4 py-2.5 text-slate-700 dark:text-slate-300 dark:text-slate-300">{r.client_name || '—'}</td>
         <td className="px-4 py-2.5">
           <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STAGE_COLORS[r.current_stage]}`}>{r.current_stage}</span>
           {r.is_blocked && <AlertTriangle className="w-3 h-3 text-amber-500 inline ml-1.5" />}
         </td>
         <td className="px-4 py-2.5">
           <div className="flex items-center gap-2">
-            <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div className="flex-1 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <div className={`h-full ${r.progress_pct >= 80 ? 'bg-emerald-500' : r.progress_pct >= 40 ? 'bg-violet-500' : 'bg-blue-500'} transition-all`} style={{ width: `${r.progress_pct}%` }} />
             </div>
             <span className="text-[10px] text-slate-500 w-8 text-right">{r.progress_pct}%</span>
@@ -466,7 +466,7 @@ function RowFragment({ r, expanded, onToggle }: {
                   <div className="flex items-start gap-2">
                     <StepIcon status={s.status} />
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium text-slate-700">{s.label}</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 dark:text-slate-300">{s.label}</div>
                       {s.detail && <div className="text-[10px] text-slate-500 truncate">{s.detail}</div>}
                       {s.timestamp && <div className="text-[10px] text-slate-400 mt-0.5">{new Date(s.timestamp).toLocaleDateString('fr-FR')}</div>}
                     </div>

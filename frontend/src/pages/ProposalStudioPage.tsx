@@ -93,10 +93,10 @@ export function ProposalStudioPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
       
       {/* Top Bar */}
-      <div className="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+      <div className="bg-white border-b border-slate-200 dark:border-slate-700 px-8 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-rihla flex items-center justify-center text-white shadow-lg shadow-rihla/20">
             <Sparkles size={20} />
@@ -109,7 +109,7 @@ export function ProposalStudioPage() {
 
         <div className="flex items-center gap-3">
           {/* Format toggle */}
-          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 dark:border-slate-700">
             <button
               onClick={() => setExportFormat('pptx')}
               className={clsx(
@@ -161,7 +161,7 @@ export function ProposalStudioPage() {
         <div className="col-span-3 space-y-6">
           
           {/* Template Selection */}
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 dark:border-slate-700">
             <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
               <Layout size={12} /> Templates
             </h3>
@@ -189,7 +189,7 @@ export function ProposalStudioPage() {
           </div>
 
           {/* Design Controls */}
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 dark:border-slate-700">
             <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
               <Palette size={12} /> Personnalisation
             </h3>
@@ -203,30 +203,30 @@ export function ProposalStudioPage() {
                 </div>
               </div>
               <div className="pt-4 border-t border-slate-50">
-                <button className="w-full flex items-center justify-between text-xs font-bold text-slate-700 hover:text-rihla">
+                <button className="w-full flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-rihla">
                   <span className="flex items-center gap-2"><ImageIcon size={14} /> Bibliothèque Images</span>
                   <ChevronRight size={14} />
                 </button>
               </div>
               <div className="pt-2">
-                <button className="w-full flex items-center justify-between text-xs font-bold text-slate-700 hover:text-rihla">
+                <button className="w-full flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-rihla">
                   <span className="flex items-center gap-2"><Globe size={14} /> Langue d'export</span>
-                  <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-400">ANGLAIS</span>
+                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-400">ANGLAIS</span>
                 </button>
               </div>
             </div>
           </div>
 
           {/* Content Curator */}
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 dark:border-slate-700">
             <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
               <CheckCircle2 size={12} className="text-emerald-500" /> Curateur de Contenu
             </h3>
             <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
               {Array.from({ length: 11 }).map((_, i) => (
-                <label key={i} className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer group">
+                <label key={i} className="flex items-center gap-3 p-2 hover:bg-slate-50 dark:bg-slate-950 rounded-lg cursor-pointer group">
                   <input type="checkbox" defaultChecked className="w-3.5 h-3.5 rounded border-slate-300 text-rihla focus:ring-rihla" />
-                  <span className="text-[11px] font-bold text-slate-600 group-hover:text-slate-900 transition-colors">Jour {i + 1} — Marrakech & Atlas</span>
+                  <span className="text-[11px] font-bold text-slate-600 group-hover:text-slate-900 dark:text-white transition-colors">Jour {i + 1} — Marrakech & Atlas</span>
                 </label>
               ))}
             </div>
@@ -262,7 +262,7 @@ export function ProposalStudioPage() {
 
         {/* RIGHT: Live Preview (The Canvas) */}
         <div className={clsx(
-          "col-span-9 bg-white rounded-[48px] shadow-2xl overflow-hidden border border-slate-200 min-h-[1200px] relative transition-all duration-700",
+          "col-span-9 bg-white rounded-[48px] shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 min-h-[1200px] relative transition-all duration-700",
           selectedTemplate === 'luxury' ? 'font-serif' : 'font-sans'
         )}>
           
@@ -321,14 +321,14 @@ export function ProposalStudioPage() {
           <div className="p-12">
             <div className="flex justify-between items-end mb-12 border-b border-slate-100 pb-8">
               <div>
-                <h3 className="text-3xl font-black text-slate-900 mb-2">The Journey</h3>
+                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-2">The Journey</h3>
                 <p className="text-slate-400 text-sm">A hand-crafted selection of Morocco's finest treasures.</p>
               </div>
               <div className="flex gap-4">
-                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-full border border-slate-100 text-xs font-bold text-slate-600">
+                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-950 rounded-full border border-slate-100 text-xs font-bold text-slate-600">
                   <Calendar size={14} className="text-rihla" /> Nov 01 - Nov 11
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-full border border-slate-100 text-xs font-bold text-slate-600">
+                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-950 rounded-full border border-slate-100 text-xs font-bold text-slate-600">
                   <Hotel size={14} className="text-rihla" /> 4* Premium
                 </div>
               </div>
@@ -358,14 +358,14 @@ export function ProposalStudioPage() {
             </div>
 
             {/* Financial Investment Section */}
-            <div className="mt-20 p-12 bg-slate-50 rounded-[40px] border border-slate-200">
+            <div className="mt-20 p-12 bg-slate-50 dark:bg-slate-950 rounded-[40px] border border-slate-200 dark:border-slate-700 dark:border-slate-700">
               <div className="text-center mb-8">
                 <TrendingUp size={32} className="mx-auto text-rihla mb-4" />
-                <h4 className="text-3xl font-black text-slate-900 mb-2">Financial Investment</h4>
+                <h4 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Financial Investment</h4>
                 <p className="text-slate-500 text-sm">Estimated rates per person based on group size.</p>
               </div>
               
-              <div className="bg-white rounded-[32px] border border-slate-200 overflow-hidden shadow-sm">
+              <div className="bg-white rounded-[32px] border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                 <table className="w-full text-left text-sm">
                   <thead className={clsx(
                     "text-white",
@@ -380,9 +380,9 @@ export function ProposalStudioPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {sim.grid.map((row) => (
-                      <tr key={row.pax} className="hover:bg-slate-50 transition-colors">
+                      <tr key={row.pax} className="hover:bg-slate-50 dark:bg-slate-950 transition-colors">
                         <td className="px-6 py-4 font-black text-slate-800">{row.pax} Pax</td>
-                        <td className="px-6 py-4 text-right font-mono font-bold text-slate-700">{Math.round(row.sell).toLocaleString('fr-FR')} MAD</td>
+                        <td className="px-6 py-4 text-right font-mono font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">{Math.round(row.sell).toLocaleString('fr-FR')} MAD</td>
                         <td className="px-6 py-4 text-right font-mono font-bold text-emerald-600">${Math.round(row.usd).toLocaleString('en-US')}</td>
                       </tr>
                     ))}

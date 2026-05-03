@@ -360,7 +360,7 @@ export function ReportBuilderPage() {
         <div className="flex-1 flex flex-col overflow-hidden">
 
           {/* Sub-tabs */}
-          <div className="flex items-center gap-1 px-4 py-2 border-b border-line bg-white">
+          <div className="flex items-center gap-1 px-4 py-2 border-b border-line bg-white dark:bg-slate-900">
             {(['design', 'filters', 'ai'] as const).map(t => (
               <button
                 key={t}

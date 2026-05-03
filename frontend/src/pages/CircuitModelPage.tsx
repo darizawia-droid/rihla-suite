@@ -28,7 +28,7 @@ export function CircuitModelPage() {
   const activeDays = XLS_DAILY.filter(d => d.formula !== '—');
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 dark:bg-slate-950">
 
       {/* ── HERO COVER ───────────────────────────────────────── */}
       <div className="relative h-72 overflow-hidden" style={{
@@ -68,7 +68,7 @@ export function CircuitModelPage() {
       </div>
 
       {/* ── TABS ─────────────────────────────────────────────── */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+      <div className="bg-white border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10 shadow-sm">
         <div className="max-w-6xl mx-auto px-8 flex gap-1">
           {(['programme','tarifs','inclus'] as const).map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
@@ -98,11 +98,11 @@ export function CircuitModelPage() {
                   const hotel = HOTELS[d.hotel] || { stars: 4, description: d.hotel, highlight: '' };
                   const isOpen = expandDay === d.day;
                   return (
-                    <div key={d.day} className={`bg-white rounded-2xl border transition-all shadow-sm ${isOpen ? 'border-rihla/30 shadow-md' : 'border-slate-100 hover:border-slate-200'}`}>
+                    <div key={d.day} className={`bg-white rounded-2xl border transition-all shadow-sm ${isOpen ? 'border-rihla/30 shadow-md' : 'border-slate-100 hover:border-slate-200 dark:border-slate-700 dark:border-slate-700'}`}>
                       <button className="w-full px-6 py-5 flex items-center gap-4 text-left"
                         onClick={() => setExpandDay(isOpen ? null : d.day)}>
                         {/* Day badge */}
-                        <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center flex-shrink-0 font-black ${isOpen ? 'bg-rihla text-white shadow-lg shadow-rihla/30' : 'bg-slate-100 text-slate-600'}`}>
+                        <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center flex-shrink-0 font-black ${isOpen ? 'bg-rihla text-white shadow-lg shadow-rihla/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-600'}`}>
                           <span className="text-[9px] font-bold opacity-70 uppercase">Jour</span>
                           <span className="text-lg leading-none">{d.day}</span>
                         </div>
@@ -128,7 +128,7 @@ export function CircuitModelPage() {
                         {d.halfDbl > 0 && (
                           <div className="text-right mr-4">
                             <p className="text-[10px] text-slate-400 uppercase font-bold">Chambre/pax</p>
-                            <p className="font-black text-slate-700">{fmt(d.halfDbl)} MAD</p>
+                            <p className="font-black text-slate-700 dark:text-slate-300 dark:text-slate-300">{fmt(d.halfDbl)} MAD</p>
                           </div>
                         )}
                         {isOpen ? <ChevronUp size={16} className="text-slate-300" /> : <ChevronDown size={16} className="text-slate-300" />}
@@ -138,9 +138,9 @@ export function CircuitModelPage() {
                         <div className="px-6 pb-6 border-t border-slate-50">
                           <div className="grid grid-cols-3 gap-4 mt-4">
                             {/* Hotel card */}
-                            <div className="col-span-2 bg-slate-50 rounded-xl p-4 border border-slate-100">
+                            <div className="col-span-2 bg-slate-50 dark:bg-slate-950 rounded-xl p-4 border border-slate-100">
                               <div className="flex items-start gap-3">
-                                <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0">
+                                <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 dark:border-slate-700 flex items-center justify-center flex-shrink-0">
                                   <Hotel size={16} className="text-rihla" />
                                 </div>
                                 <div>
@@ -150,7 +150,7 @@ export function CircuitModelPage() {
                                 </div>
                               </div>
                               {d.rest !== '—' && (
-                                <div className="mt-3 pt-3 border-t border-slate-200 flex items-center gap-2 text-xs text-slate-500">
+                                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center gap-2 text-xs text-slate-500">
                                   <Coffee size={12} className="text-amber-500" />
                                   <span><strong>Dîner :</strong> {d.rest}</span>
                                   <span className="ml-auto font-bold text-rihla">{d.restPrice} MAD/pax</span>
@@ -205,7 +205,7 @@ export function CircuitModelPage() {
                     <div key={d.day} className="flex items-center gap-3 text-sm">
                       <div className={`w-2 h-2 rounded-full flex-shrink-0 ${i === 0 ? 'bg-blue-500' : i === activeDays.length - 1 ? 'bg-rihla' : 'bg-slate-300'}`} />
                       <span className="text-slate-500 font-mono text-[10px] w-12 flex-shrink-0">{d.date}</span>
-                      <span className="text-slate-700 font-medium text-xs truncate">{d.cities.split('›')[d.cities.split('›').length - 1].trim()}</span>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium text-xs truncate">{d.cities.split('›')[d.cities.split('›').length - 1].trim()}</span>
                     </div>
                   ))}
                 </div>
@@ -234,7 +234,7 @@ export function CircuitModelPage() {
               </div>
               <table className="w-full">
                 <thead>
-                  <tr className="bg-slate-50 text-[10px] uppercase font-bold text-slate-400">
+                  <tr className="bg-slate-50 dark:bg-slate-950 text-[10px] uppercase font-bold text-slate-400">
                     <th className="px-6 py-3 text-left">Groupe</th>
                     <th className="px-6 py-3 text-right">Coût Revient</th>
                     <th className="px-6 py-3 text-right">Marge (8%)</th>
@@ -248,12 +248,12 @@ export function CircuitModelPage() {
                     const p = Number(pax);
                     const isRef = p === 20;
                     return (
-                      <tr key={pax} className={`border-b border-slate-50 ${isRef ? 'bg-rihla/5' : i % 2 === 0 ? 'bg-white' : 'bg-slate-50/30'}`}>
+                      <tr key={pax} className={`border-b border-slate-50 ${isRef ? 'bg-rihla/5' : i % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/30'}`}>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm ${isRef ? 'bg-rihla text-white' : 'bg-slate-100 text-slate-600'}`}>{pax}</div>
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm ${isRef ? 'bg-rihla text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600'}`}>{pax}</div>
                             <div>
-                              <p className="text-sm font-bold text-slate-700">{pax} Pax</p>
+                              <p className="text-sm font-bold text-slate-700 dark:text-slate-300 dark:text-slate-300">{pax} Pax</p>
                               {isRef && <p className="text-[9px] text-rihla font-bold">BASE DE RÉFÉRENCE</p>}
                             </div>
                           </div>
@@ -261,7 +261,7 @@ export function CircuitModelPage() {
                         <td className="px-6 py-4 text-right font-mono text-slate-500">{fmt(vals.cost)} MAD</td>
                         <td className="px-6 py-4 text-right font-mono text-emerald-500">+{fmt(vals.sell - vals.cost)} MAD</td>
                         <td className="px-6 py-4 text-right">
-                          <span className={`text-xl font-black ${isRef ? 'text-rihla' : 'text-slate-700'}`}>{fmt(vals.sell)}</span>
+                          <span className={`text-xl font-black ${isRef ? 'text-rihla' : 'text-slate-700 dark:text-slate-300 dark:text-slate-300'}`}>{fmt(vals.sell)}</span>
                           <span className="text-[10px] text-slate-400 ml-1">MAD</span>
                         </td>
                         <td className="px-6 py-4 text-right font-bold text-emerald-600">${fmt(vals.sell / 10.1)}</td>
@@ -310,7 +310,7 @@ export function CircuitModelPage() {
                 <h3 className={`font-bold ${section.color} mb-4`}>{section.title}</h3>
                 <ul className="space-y-2">
                   {section.items.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                    <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300">
                       <span className="mt-0.5 flex-shrink-0">{section.title.includes('✅') ? '•' : '•'}</span>
                       {item}
                     </li>

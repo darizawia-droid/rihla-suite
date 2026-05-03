@@ -55,18 +55,26 @@ const ALL_GROUPS: NavGroup[] = [
   {
     label: 'CONCEPTION & IA',
     items: [
+      { to: '/ai-dmc-engine',        icon: 'Cpu',             label: '🤖 Moteur IA DMC',        shortcut: 'M' },
       { to: '/projects',             icon: 'FolderKanban',    label: 'Dossiers & Projets',      shortcut: '2' },
       { to: '/travel-designer',      icon: 'Compass',         label: 'Travel Designer',         shortcut: 'T' },
       { to: '/proposal-studio',      icon: 'FileText',        label: 'Proposal Studio',         shortcut: 'P' },
       { to: '/circuit-generator',    icon: 'Sparkles',        label: 'Générateur IA',           shortcut: 'G' },
       { to: '/itineraries',          icon: 'MapPin',          label: 'Concepteur Itinéraires',  shortcut: '3' },
+      { to: '/ai-assistant',         icon: 'Bot',             label: 'Assistant IA' },
+      { to: '/circuit-model',        icon: 'Route',           label: 'Modèles Circuits' },
+      { to: '/content-studio',       icon: 'Palette',         label: 'Studio Contenu' },
+      { to: '/itinerary-builder',    icon: 'Map',             label: 'Builder Itinéraire' },
     ],
   },
   {
     label: 'RELATION CLIENT & B2B',
     items: [
+      { to: '/sales-pipeline',       icon: 'TrendingUp',      label: '📊 Pipeline Commercial',  shortcut: 'P' },
+      { to: '/b2b-hotel-portal',     icon: 'Building2',       label: '🏨 Portail Hôtels B2B',   shortcut: 'H' },
       { to: '/crm',                  icon: 'Users',           label: 'Gestion Agences B2B',     shortcut: 'V' },
       { to: '/client-portal',        icon: 'Globe',           label: 'Portail Client B2C' },
+      { to: '/email-quotation',      icon: 'Mail',            label: 'Email Devis' },
       { to: '/whatsapp',             icon: 'MessageCircle',   label: 'WhatsApp Hub' },
       { to: '/operations/concierge', icon: 'Gem',             label: 'Conciergerie VIP',        shortcut: 'J' },
     ],
@@ -74,12 +82,15 @@ const ALL_GROUPS: NavGroup[] = [
   {
     label: 'OPÉRATIONS & LOGISTIQUE',
     items: [
-      { to: '/operations/logistics-tower', icon: 'Navigation',     label: 'Tour de Contrôle Live',   shortcut: 'L' },
+      { to: '/operations/live-tracking',   icon: 'Navigation',      label: '🔴 Suivi Groupes Live',   shortcut: 'N' },
+      { to: '/operations/logistics-tower', icon: 'Activity',      label: 'Tour de Contrôle Live',   shortcut: 'L' },
       { to: '/operations/war-room',      icon: 'Layout',          label: 'War Room Kanban',         shortcut: 'K' },
       { to: '/operations/command-center', icon: 'Radio',           label: 'Transport Radar',         shortcut: 'R' },
       { to: '/fleet-optimizer',          icon: 'Truck',           label: 'Flotte & Capacité',       shortcut: 'F' },
       { to: '/operations/rooming',       icon: 'Bed',             label: 'Rooming Lists',           shortcut: 'B' },
       { to: '/operations/catering',      icon: 'Utensils',        label: 'Catering Plan',           shortcut: 'U' },
+      { to: '/operations/fulfillment', icon: 'ClipboardCheck', label: 'Fulfillment Ops' },
+      { to: '/passenger-app',        icon: 'Users',           label: 'App Passagers' },
     ],
   },
   {
@@ -110,13 +121,13 @@ const ROLE_GROUPS: Record<string, string[]> = {
     'RELATION CLIENT & B2B',
     'OPÉRATIONS & LOGISTIQUE',
     'RESEAU & INVENTAIRE',
-    'FINANCE & PERFORMANCE',
+    'FINANCE & ERP',
   ],
   sales_director: [
     'STRATÉGIE & PILOTAGE',
     'RELATION CLIENT & B2B',
     'OPÉRATIONS & LOGISTIQUE',
-    'FINANCE & PERFORMANCE',
+    'FINANCE & ERP',
   ],
   travel_designer: [
     'CONCEPTION & IA',
@@ -126,7 +137,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
   ],
   quotation_officer: [
     'CONCEPTION & IA',
-    'FINANCE & PERFORMANCE',
+    'FINANCE & ERP',
   ],
   data_operator: [
     'RESEAU & INVENTAIRE',
@@ -134,6 +145,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
   sales_agent: [
     'RELATION CLIENT & B2B',
     'CONCEPTION & IA',
+    'STRATÉGIE & PILOTAGE',
   ],
   guide: [],
   client: [],

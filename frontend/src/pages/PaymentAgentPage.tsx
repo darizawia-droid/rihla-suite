@@ -89,7 +89,7 @@ export function PaymentAgentPage() {
             <Bot className="h-5 w-5 text-violet-600" />
           </div>
           <div>
-            <h1 className="text-[22px] font-semibold text-slate-900">
+            <h1 className="text-[22px] font-semibold text-slate-900 dark:text-white dark:text-white">
               Agent Acompte <span className="text-sm font-normal text-slate-500">— Copilot autonome</span>
             </h1>
             <p className="text-sm text-slate-500">
@@ -101,7 +101,7 @@ export function PaymentAgentPage() {
           <button
             disabled={running}
             onClick={() => runAgent(false)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:bg-slate-950 disabled:opacity-50"
           >
             {running ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
             Lancer le cron
@@ -144,11 +144,11 @@ export function PaymentAgentPage() {
       {/* Stats KPIs */}
       {stats && (
         <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <div className="text-xs font-medium uppercase tracking-wider text-slate-500">
               File d'attente
             </div>
-            <div className="mt-1 text-3xl font-semibold text-slate-900">{stats.queue_size}</div>
+            <div className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white dark:text-white">{stats.queue_size}</div>
             <div className="mt-1 text-xs text-slate-500">
               {stats.paused} en pause manuelle
             </div>
@@ -157,7 +157,7 @@ export function PaymentAgentPage() {
             <div className="text-xs font-medium uppercase tracking-wider text-rose-700">
               Encours à risque
             </div>
-            <div className="mt-1 text-3xl font-semibold text-slate-900">
+            <div className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white dark:text-white">
               {stats.total_at_risk.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}
             </div>
             <div className="mt-1 text-xs text-slate-600">
@@ -168,7 +168,7 @@ export function PaymentAgentPage() {
               ))}
             </div>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <div className="text-xs font-medium uppercase tracking-wider text-slate-500">
               Niveau atteint
             </div>
@@ -181,7 +181,7 @@ export function PaymentAgentPage() {
                     <span className={`inline-flex items-center rounded-md border px-1.5 py-0.5 ${LEVEL_COLORS[i]}`}>
                       {lbl}
                     </span>
-                    <span className="font-medium text-slate-700">{cnt}</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300 dark:text-slate-300">{cnt}</span>
                   </div>
                 )
               })}
@@ -190,7 +190,7 @@ export function PaymentAgentPage() {
               )}
             </div>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white p-5">
             <div className="text-xs font-medium uppercase tracking-wider text-slate-500">
               Cadence configurée
             </div>
@@ -205,9 +205,9 @@ export function PaymentAgentPage() {
       )}
 
       {/* Queue table */}
-      <div className="rounded-xl border border-slate-200 bg-white">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
         <div className="border-b border-slate-100 px-5 py-3">
-          <h3 className="text-sm font-semibold text-slate-900">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white dark:text-white">
             Factures suivies par l'agent ({queue.length})
           </h3>
         </div>
@@ -237,18 +237,18 @@ export function PaymentAgentPage() {
                   <td className="px-5 py-3">
                     <button
                       onClick={() => openTimeline(q.invoice_id)}
-                      className="font-medium text-slate-900 hover:text-[#B43E20]"
+                      className="font-medium text-slate-900 dark:text-white hover:text-[#B43E20]"
                     >
                       {q.invoice_number}
                     </button>
                     <div className="text-xs text-slate-500">{q.days_overdue}j depuis émission</div>
                   </td>
                   <td className="px-5 py-3">
-                    <div className="text-slate-700">{q.client_name || '—'}</div>
+                    <div className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{q.client_name || '—'}</div>
                     <div className="text-xs text-slate-500">{q.client_email || '—'}</div>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <div className="font-medium text-slate-900">
+                    <div className="font-medium text-slate-900 dark:text-white dark:text-white">
                       {q.total.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} {q.currency}
                     </div>
                     <div className="text-xs text-slate-500">
@@ -261,7 +261,7 @@ export function PaymentAgentPage() {
                     ) : (
                       <span
                         className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-xs ${
-                          LEVEL_COLORS[q.last_level] || 'bg-slate-50 text-slate-700 border-slate-200'
+                          LEVEL_COLORS[q.last_level] || 'bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 dark:border-slate-700'
                         }`}
                       >
                         {LEVEL_LABELS[q.last_level] || `Niveau ${q.last_level}`}
@@ -273,7 +273,7 @@ export function PaymentAgentPage() {
                       <span className="text-xs text-rose-700 font-medium">Escalade complète</span>
                     ) : (
                       <div className="text-xs">
-                        <div className="text-slate-700">{LEVEL_LABELS[q.next_level]}</div>
+                        <div className="text-slate-700 dark:text-slate-300 dark:text-slate-300">{LEVEL_LABELS[q.next_level]}</div>
                         <div className="text-slate-400">
                           <Clock className="mr-1 inline h-3 w-3" />
                           {q.next_due_at
@@ -291,7 +291,7 @@ export function PaymentAgentPage() {
                       <button
                         onClick={() => triggerOne(q.invoice_id)}
                         disabled={q.next_level === null || q.is_paused}
-                        className="rounded-md border border-slate-200 bg-white p-1.5 text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                        className="rounded-md border border-slate-200 dark:border-slate-700 bg-white p-1.5 text-slate-600 hover:bg-slate-50 dark:bg-slate-950 disabled:opacity-30"
                         title="Déclencher la relance suivante"
                       >
                         <Send className="h-3.5 w-3.5" />
@@ -301,7 +301,7 @@ export function PaymentAgentPage() {
                         className={`rounded-md border p-1.5 ${
                           q.is_paused
                             ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                            : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                            : 'border-slate-200 dark:border-slate-700 bg-white text-slate-600 hover:bg-slate-50 dark:bg-slate-950 dark:bg-slate-950'
                         }`}
                         title={q.is_paused ? 'Reprendre' : 'Mettre en pause'}
                       >
@@ -328,7 +328,7 @@ export function PaymentAgentPage() {
           >
             <div className="sticky top-0 flex items-center justify-between border-b border-slate-100 bg-white px-6 py-4">
               <div>
-                <h3 className="text-lg font-semibold text-slate-900">Timeline · {timeline.invoice_number}</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white dark:text-white">Timeline · {timeline.invoice_number}</h3>
                 <p className="text-xs text-slate-500">{timeline.client_email}</p>
               </div>
               <button onClick={() => setTimeline(null)} className="text-slate-400 hover:text-slate-600">
@@ -338,7 +338,7 @@ export function PaymentAgentPage() {
 
             <div className="p-6">
               {timeline.history.length === 0 && (
-                <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+                <div className="rounded-lg border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 p-6 text-center text-sm text-slate-500">
                   Aucune relance pour le moment.
                 </div>
               )}
@@ -353,7 +353,7 @@ export function PaymentAgentPage() {
                     >
                       <Mail className="h-3 w-3" />
                     </span>
-                    <div className="rounded-lg border border-slate-200 bg-white p-3">
+                    <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white p-3">
                       <div className="flex items-center justify-between">
                         <span
                           className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-xs ${
@@ -366,7 +366,7 @@ export function PaymentAgentPage() {
                           {h.sent_at ? new Date(h.sent_at).toLocaleString('fr-FR') : '—'}
                         </span>
                       </div>
-                      <div className="mt-1.5 text-sm font-medium text-slate-900">{h.subject}</div>
+                      <div className="mt-1.5 text-sm font-medium text-slate-900 dark:text-white dark:text-white">{h.subject}</div>
                       <div className="mt-1 text-xs text-slate-500">→ {h.recipient}</div>
                       <div className="mt-2 whitespace-pre-line border-t border-slate-100 pt-2 text-xs text-slate-600">
                         {h.body_preview}
@@ -390,9 +390,9 @@ export function PaymentAgentPage() {
                     <span className="absolute -left-[33px] flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-slate-300 text-white shadow-sm">
                       <Clock className="h-3 w-3" />
                     </span>
-                    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3">
+                    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 dark:bg-slate-950 p-3">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center rounded-md border border-slate-200 px-1.5 py-0.5 text-xs text-slate-700">
+                        <span className="inline-flex items-center rounded-md border border-slate-200 dark:border-slate-700 px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 dark:text-slate-300">
                           Prochain · {LEVEL_LABELS[timeline.next_level]}
                         </span>
                         <span className="text-xs text-slate-500">

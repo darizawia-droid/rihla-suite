@@ -40,7 +40,11 @@ export function BillingPage() {
     const total = invoices.reduce((a: number, i: any) => a + Number(i.total || 0), 0)
     const paid = invoices.filter((i: any) => i.status === 'paid')
                         .reduce((a: number, i: any) => a + Number(i.total || 0), 0)
-     const recoveryRate = stats.total > 0 ? Math.round((stats.paid / stats.total) * 100) : 0
+    const due = total - paid
+    return { total, paid, due, count: invoices.length, paidCount: invoices.filter((i: any) => i.status === 'paid').length }
+  }, [invoices])
+
+  const recoveryRate = stats.total > 0 ? Math.round((stats.paid / stats.total) * 100) : 0
 
   const [activeTab, setActiveTab] = useState<'clients' | 'suppliers'>('clients')
 
@@ -235,18 +239,6 @@ export function BillingPage() {
               )}
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
-  )
-}
-over:scale-105 transition-all">
-                    RELANCER CLIENT
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

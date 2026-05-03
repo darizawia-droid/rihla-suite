@@ -392,4 +392,5 @@ function Kbd({ children }: { children: React.ReactNode }) {
     <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-white/10 rounded text-[10px] font-mono font-medium text-slate-500 dark:text-slate-300 border border-slate-200/80 dark:border-white/10">
       {children}
     </kbd>
+  )
 }

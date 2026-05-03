@@ -21,7 +21,7 @@ const CrmPage               = lazy(() => import('@/pages/CrmPage').then(m => ({ 
 // Cœur de métier DMC
 const ProjectsPage          = lazy(() => import('@/pages/ProjectsPage').then(m => ({ default: m.ProjectsPage })))
 const ProjectCreatePage     = lazy(() => import('@/pages/ProjectCreatePage').then(m => ({ default: m.ProjectCreatePage })))
-const InvoicesPage          = lazy(() => import('@/pages/InvoicesPage').then(m => ({ default: m.InvoicesPage })))
+const InvoicesPage          = lazy(() => import('@/pages/InvoicePage').then(m => ({ default: m.InvoicePage })))
 const ErpInvoicingCenter    = lazy(() => import('@/pages/ErpInvoicingCenter').then(m => ({ default: m.ErpInvoicingCenter })))
 const ProjectDetailPage     = lazy(() => import('@/pages/ProjectDetailPageFixed').then(m => ({ default: m.ProjectDetailPage })))
 const QuotationsPage        = lazy(() => import('@/pages/QuotationsPage').then(m => ({ default: m.QuotationsPage })))
@@ -129,6 +129,27 @@ const VoiceAssistantPage    = lazy(() => import('@/pages/VoiceAssistantPage').th
 const OperationsWarRoomPage = lazy(() => import('@/pages/OperationsWarRoomPage').then(m => ({ default: m.OperationsWarRoomPage })))
 const LiveOpsSyncPage       = lazy(() => import('@/pages/LiveOpsSyncPage').then(m => ({ default: m.LiveOpsSyncPage })))
 const LogisticsControlTower = lazy(() => import('@/pages/LogisticsControlTower').then(m => ({ default: m.LogisticsControlTower })))
+
+// Suivi groupe temps réel — incidents & journey tracking
+const GroupLiveTrackingPage = lazy(() => import('@/pages/GroupLiveTrackingPage').then(m => ({ default: m.GroupLiveTrackingPage })))
+
+// Pipeline Commercial Kanban
+const SalesPipelinePage     = lazy(() => import('@/pages/SalesPipelinePage').then(m => ({ default: m.SalesPipelinePage })))
+
+// Moteur IA DMC — Brief → Package complet
+const AIDmcEnginePage       = lazy(() => import('@/pages/AIDmcEnginePage').then(m => ({ default: m.AIDmcEnginePage })))
+
+// B2B Hotel Booking Portal
+const B2BHotelPortalPage    = lazy(() => import('@/pages/B2BHotelPortalPage').then(m => ({ default: m.B2BHotelPortalPage })))
+
+// 7 pages précédemment non routées
+const AIAssistantPage       = lazy(() => import('@/pages/AIAssistantPage').then(m => ({ default: m.AIAssistantPage })))
+const CircuitModelPage      = lazy(() => import('@/pages/CircuitModelPage').then(m => ({ default: m.CircuitModelPage })))
+const ContentStudioPage     = lazy(() => import('@/pages/ContentStudioPage').then(m => ({ default: m.ContentStudioPage })))
+const EmailQuotationPage    = lazy(() => import('@/pages/EmailQuotationPage').then(m => ({ default: m.EmailQuotationPage })))
+const ItineraryBuilderPage  = lazy(() => import('@/pages/ItineraryBuilderPage').then(m => ({ default: m.ItineraryBuilderPage })))
+const OperationsFulfillmentPage = lazy(() => import('@/pages/OperationsFulfillmentPage').then(m => ({ default: m.OperationsFulfillmentPage })))
+const PassengerAppPage      = lazy(() => import('@/pages/PassengerAppPage').then(m => ({ default: m.PassengerAppPage })))
 
 // ── Skeleton loader shown during page transitions ─────────────────
 function PageSkeleton() {
@@ -325,6 +346,27 @@ export default function App() {
 
                 {/* Live Sync Hub */}
                 <Route path="/live-sync-hub" element={<LiveOpsSyncPage />} />
+
+                {/* Suivi groupe en temps réel — incidents & journey */}
+                <Route path="/operations/live-tracking" element={<GroupLiveTrackingPage />} />
+
+                {/* Pipeline Commercial Kanban */}
+                <Route path="/sales-pipeline" element={<SalesPipelinePage />} />
+
+                {/* Moteur IA DMC */}
+                <Route path="/ai-dmc-engine" element={<AIDmcEnginePage />} />
+
+                {/* B2B Hotel Booking Portal */}
+                <Route path="/b2b-hotel-portal" element={<B2BHotelPortalPage />} />
+
+                {/* 7 pages nouvellement routées */}
+                <Route path="/ai-assistant" element={<AIAssistantPage />} />
+                <Route path="/circuit-model" element={<CircuitModelPage />} />
+                <Route path="/content-studio" element={<ContentStudioPage />} />
+                <Route path="/email-quotation" element={<EmailQuotationPage />} />
+                <Route path="/itinerary-builder" element={<ItineraryBuilderPage />} />
+                <Route path="/operations/fulfillment" element={<OperationsFulfillmentPage />} />
+                <Route path="/passenger-app" element={<PassengerAppPage />} />
 
               </Route>
 

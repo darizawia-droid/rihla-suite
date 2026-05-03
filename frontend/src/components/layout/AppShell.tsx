@@ -67,11 +67,13 @@ export function AppShell() {
 
   const isPublicPath = location.pathname === '/pricing-simulator'
 
-  if (!user && !localStorage.getItem('stours_token') && !isPublicPath) {
+  const isDemo = localStorage.getItem('stours_demo') === 'true'
+
+  if (!user && !localStorage.getItem('stours_token') && !isPublicPath && !isDemo) {
     return <Navigate to="/login" replace />
   }
 
-  const role = user?.role?.name ?? ''
+  const role = user?.role?.name ?? (isDemo ? 'super_admin' : '')
   const mobileRole = isMobileRole(role)
 
   const { notifications, unreadCount, markAsRead, clearAll } = useAppNotifications()
