@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
   Building2, Users, Truck, UserCheck, ChefHat, MapPin,
   Search, Filter, Plus, X, Mail, Phone, Globe2,
@@ -214,7 +214,17 @@ const SUPPLIER_ICONS: Record<SupplierType, typeof Building2> = {
 // ─── ADD PARTNER MODAL ────────────────────────────────────────────────
 function AddPartnerModal({ open, onClose, defaultRole }: { open: boolean; onClose: () => void; defaultRole: PartnerRole }) {
   const [role, setRole] = useState<PartnerRole>(defaultRole)
-  const [form, setForm] = useState({ name: '', email: '', phone: '', country: '', city: '', contactName: '', contactRole: '', type: role === 'client' ? 'tour_operator' : 'hotelier', currency: 'MAD', notes: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', country: '', city: '', contactName: '', contactRole: '', type: defaultRole === 'client' ? 'tour_operator' : 'hotelier', currency: 'MAD', notes: '' })
+
+  useEffect(() => {
+    setRole(defaultRole)
+    setForm(f => ({ ...f, type: defaultRole === 'client' ? 'tour_operator' : 'hotelier' }))
+  }, [defaultRole, open])
+
+  const handleRoleToggle = (newRole: PartnerRole) => {
+    setRole(newRole)
+    setForm(f => ({ ...f, type: newRole === 'client' ? 'tour_operator' : 'hotelier' }))
+  }
 
   if (!open) return null
 
@@ -231,8 +241,8 @@ function AddPartnerModal({ open, onClose, defaultRole }: { open: boolean; onClos
         <div className="p-6 space-y-4">
           {/* Role toggle */}
           <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
-            <button onClick={() => setRole('client')} className={clsx('flex-1 py-2 rounded-lg text-[13px] font-medium transition-all', role === 'client' ? 'bg-white dark:bg-slate-700 text-rihla shadow-sm' : 'text-slate-500')}>Client</button>
-            <button onClick={() => setRole('supplier')} className={clsx('flex-1 py-2 rounded-lg text-[13px] font-medium transition-all', role === 'supplier' ? 'bg-white dark:bg-slate-700 text-rihla shadow-sm' : 'text-slate-500')}>Fournisseur</button>
+            <button onClick={() => handleRoleToggle('client')} className={clsx('flex-1 py-2 rounded-lg text-[13px] font-medium transition-all', role === 'client' ? 'bg-white dark:bg-slate-700 text-rihla shadow-sm' : 'text-slate-500')}>Client</button>
+            <button onClick={() => handleRoleToggle('supplier')} className={clsx('flex-1 py-2 rounded-lg text-[13px] font-medium transition-all', role === 'supplier' ? 'bg-white dark:bg-slate-700 text-rihla shadow-sm' : 'text-slate-500')}>Fournisseur</button>
           </div>
 
           <div>
