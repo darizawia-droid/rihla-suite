@@ -98,7 +98,7 @@ const ALL_GROUPS: NavGroup[] = [
     label: 'BASE SOLIDE — PARAMÉTRAGE',
     items: [
       { to: '/partners',            icon: 'Users',            label: 'Partenaires (Clients & Fournisseurs)', shortcut: 'X' },
-      { to: '/hotel-catalog',       icon: 'Hotel',            label: 'Hôtels — Chambres & Tarifs',            shortcut: 'H' },
+      { to: '/hotel-catalog',       icon: 'Hotel',            label: 'Hôtels — Chambres & Tarifs',            shortcut: 'O' },
       { to: '/guide-catalog',       icon: 'UserCheck',        label: 'Guides — Profils & Tarifs' },
       { to: '/fleet-management',    icon: 'Truck',            label: 'Transport — Flotte & Routes' },
       { to: '/seasons',             icon: 'Calendar',         label: 'Saisons & Périodes Tarifaires' },

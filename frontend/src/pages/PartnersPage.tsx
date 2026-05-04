@@ -340,7 +340,7 @@ function PartnerDetail({ partner, onClose }: { partner: Partner; onClose: () => 
                   <span className="text-slate-400">
                     {isClient ? CLIENT_TYPES[partner.type as ClientType] : SUPPLIER_TYPES[partner.type as SupplierType]}
                   </span>
-                  {partner.rating && <span className="flex items-center gap-0.5 text-amber-500"><Star size={10} /> {partner.rating}</span>}
+                  {partner.rating != null && <span className="flex items-center gap-0.5 text-amber-500"><Star size={10} /> {partner.rating}</span>}
                 </div>
               </div>
             </div>
