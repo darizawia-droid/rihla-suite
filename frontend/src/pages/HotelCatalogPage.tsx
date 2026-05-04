@@ -384,7 +384,7 @@ function HotelDetailPanel({ hotel, onClose }: { hotel: HotelEntry; onClose: () =
                     </div>
                     <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <p className="text-[10px] text-slate-400">Contrat</p>
-                      <p className={clsx('text-[12px] font-bold', hotel.contractStatus === 'active' ? 'text-emerald-600' : 'text-red-600')}>{hotel.contractStatus === 'active' ? 'Actif' : 'Expiré'}</p>
+                      <p className={clsx('text-[12px] font-bold', hotel.contractStatus === 'active' ? 'text-emerald-600' : hotel.contractStatus === 'expired' ? 'text-red-600' : 'text-amber-600')}>{hotel.contractStatus === 'active' ? 'Actif' : hotel.contractStatus === 'expired' ? 'Expiré' : 'En attente'}</p>
                       <p className="text-[10px] text-slate-400">→ {hotel.contractEnd}</p>
                     </div>
                   </div>
@@ -502,8 +502,8 @@ export function HotelCatalogPage() {
                     <span>&middot; {h.city}</span>
                   </div>
                 </div>
-                <span className={clsx('px-2 py-0.5 rounded-full text-[10px] font-bold', h.contractStatus === 'active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600')}>
-                  {h.contractStatus === 'active' ? 'Contrat actif' : 'Expiré'}
+                <span className={clsx('px-2 py-0.5 rounded-full text-[10px] font-bold', h.contractStatus === 'active' ? 'bg-emerald-500/10 text-emerald-600' : h.contractStatus === 'expired' ? 'bg-red-500/10 text-red-600' : 'bg-amber-500/10 text-amber-600')}>
+                  {h.contractStatus === 'active' ? 'Contrat actif' : h.contractStatus === 'expired' ? 'Expiré' : 'En attente'}
                 </span>
               </div>
 

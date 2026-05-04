@@ -108,7 +108,7 @@ const ALL_GROUPS: NavGroup[] = [
     label: 'RESEAU & INVENTAIRE',
     items: [
       { to: '/operations/supplier-audit', icon: 'ShieldCheck',     label: 'Audit Qualité & Réseau',  shortcut: 'Q' },
-      { to: '/inventory/hotels',     icon: 'Hotel',           label: 'Parc Hôtelier (legacy)',  shortcut: 'I' },
+      { to: '/inventory/hotels',     icon: 'Hotel',           label: 'Parc Hôtelier (legacy)',  shortcut: 'E' },
       { to: '/inventory/guides',     icon: 'Compass',         label: 'Réseau Guides (legacy)',  shortcut: 'G' },
       { to: '/inventory/restaurants',icon: 'Utensils',        label: 'Partenaires Resto',       shortcut: 'R' },
       { to: '/activities',           icon: 'Star',            label: 'Catalogue Activités',     shortcut: 'Y' },
