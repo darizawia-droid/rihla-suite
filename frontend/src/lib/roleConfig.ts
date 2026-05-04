@@ -95,11 +95,21 @@ const ALL_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: 'BASE SOLIDE — PARAMÉTRAGE',
+    items: [
+      { to: '/partners',            icon: 'Users',            label: 'Partenaires (Clients & Fournisseurs)', shortcut: 'X' },
+      { to: '/hotel-catalog',       icon: 'Hotel',            label: 'Hôtels — Chambres & Tarifs',            shortcut: 'O' },
+      { to: '/guide-catalog',       icon: 'UserCheck',        label: 'Guides — Profils & Tarifs' },
+      { to: '/fleet-management',    icon: 'Truck',            label: 'Transport — Flotte & Routes' },
+      { to: '/seasons',             icon: 'Calendar',         label: 'Saisons & Périodes Tarifaires' },
+    ],
+  },
+  {
     label: 'RESEAU & INVENTAIRE',
     items: [
       { to: '/operations/supplier-audit', icon: 'ShieldCheck',     label: 'Audit Qualité & Réseau',  shortcut: 'Q' },
-      { to: '/inventory/hotels',     icon: 'Hotel',           label: 'Hôtels & Allotements',    shortcut: 'H' },
-      { to: '/inventory/guides',     icon: 'Compass',         label: 'Réseau Guides',           shortcut: 'G' },
+      { to: '/inventory/hotels',     icon: 'Hotel',           label: 'Parc Hôtelier (legacy)',  shortcut: 'E' },
+      { to: '/inventory/guides',     icon: 'Compass',         label: 'Réseau Guides (legacy)',  shortcut: 'G' },
       { to: '/inventory/restaurants',icon: 'Utensils',        label: 'Partenaires Resto',       shortcut: 'R' },
       { to: '/activities',           icon: 'Star',            label: 'Catalogue Activités',     shortcut: 'Y' },
     ],
@@ -119,6 +129,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
   super_admin: [
     'STRATÉGIE & PILOTAGE',
     'CONCEPTION & IA',
+    'BASE SOLIDE — PARAMÉTRAGE',
     'RELATION CLIENT & B2B',
     'OPÉRATIONS & LOGISTIQUE',
     'RESEAU & INVENTAIRE',
@@ -132,6 +143,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
   ],
   travel_designer: [
     'CONCEPTION & IA',
+    'BASE SOLIDE — PARAMÉTRAGE',
     'OPÉRATIONS & LOGISTIQUE',
     'RESEAU & INVENTAIRE',
     'RELATION CLIENT & B2B',
@@ -141,6 +153,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
     'FINANCE & ERP',
   ],
   data_operator: [
+    'BASE SOLIDE — PARAMÉTRAGE',
     'RESEAU & INVENTAIRE',
   ],
   sales_agent: [

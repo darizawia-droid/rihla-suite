@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import {
   Plus, TrendingUp, FolderKanban,
   ArrowRight, Receipt,
-  Activity, Gem, AlertCircle, ChevronRight,
+  Activity, Gem, AlertCircle, ChevronRight, Sparkles,
 } from 'lucide-react'
 import { projectsApi, invoicesApi, dashboardApi } from '@/lib/api'
 import { StatusPill, Spinner, StatCard } from '@/components/ui'

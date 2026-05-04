@@ -12,7 +12,7 @@ import {
   Sparkles, BarChart2, Hash, Receipt, LogOut,
   Search, Bell, HelpCircle, Settings, Bus, FileText, Building2, Calendar, Hotel, BarChart3,
   Sun, Moon, Type, Compass, Gem, Utensils, Users, Radio, PieChart, TrendingUp,
-  Globe, Car, Star, Truck, Trophy, Copy, Image as ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, Target, Landmark, History, Camera, Mic, Activity, LucideIcon, Bed
+  Globe, Car, Star, Truck, Trophy, Copy, Image as ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, Target, Landmark, History, Camera, Mic, Activity, LucideIcon, Bed, UserCheck,
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -35,7 +35,7 @@ import { NotificationHub } from '@/components/notifications/NotificationHub'
 const ICON_MAP: Record<string, LucideIcon> = {
   LayoutDashboard, FolderKanban, Calculator, MapPin, Sparkles, BarChart2, Hash, Receipt,
   Bus, FileText, Building2, Calendar, Hotel, BarChart3, Type, Compass, Gem, Utensils,
-  Users, Radio, PieChart, TrendingUp, Globe, Car, Star, Truck, Bell, Settings, Trophy, Copy, ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, Target, Landmark, History, Camera, Mic, Activity, Bed,
+  Users, Radio, PieChart, TrendingUp, Globe, Car, Star, Truck, Bell, Settings, Trophy, Copy, ImageIcon, Wand2, Plug, Leaf, Bot, Brain, Cloud, Workflow, ShoppingCart, Database, Target, Landmark, History, Camera, Mic, Activity, Bed, UserCheck,
 }
 
 export function AppShell() {
