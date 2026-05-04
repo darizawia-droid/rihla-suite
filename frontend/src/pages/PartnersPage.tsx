@@ -218,7 +218,7 @@ function AddPartnerModal({ open, onClose, defaultRole }: { open: boolean; onClos
 
   useEffect(() => {
     setRole(defaultRole)
-    setForm(f => ({ ...f, type: defaultRole === 'client' ? 'tour_operator' : 'hotelier' }))
+    setForm({ name: '', email: '', phone: '', country: '', city: '', contactName: '', contactRole: '', type: defaultRole === 'client' ? 'tour_operator' : 'hotelier', currency: 'MAD', notes: '' })
   }, [defaultRole, open])
 
   const handleRoleToggle = (newRole: PartnerRole) => {
