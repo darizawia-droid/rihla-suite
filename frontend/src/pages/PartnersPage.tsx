@@ -408,7 +408,7 @@ function PartnerDetail({ partner, onClose }: { partner: Partner; onClose: () => 
                     </div>
                     <div className="flex items-center gap-4 text-[11px] text-slate-500">
                       <span className="flex items-center gap-1"><Calendar size={11} />{c.startDate} → {c.endDate}</span>
-                      {c.commission && <span className="flex items-center gap-1"><DollarSign size={11} />Commission: {c.commission}%</span>}
+                      {c.commission != null && c.commission !== 0 && <span className="flex items-center gap-1"><DollarSign size={11} />Commission: {c.commission}%</span>}
                     </div>
                     {c.notes && <p className="text-[12px] text-slate-500 mt-2">{c.notes}</p>}
                   </div>
