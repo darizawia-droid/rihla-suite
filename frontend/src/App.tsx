@@ -154,6 +154,13 @@ const PassengerAppPage      = lazy(() => import('@/pages/PassengerAppPage').then
 // CRM complet
 const CrmAnalyticsPage      = lazy(() => import('@/pages/CrmAnalyticsPage').then(m => ({ default: m.CrmAnalyticsPage })))
 
+// PHASE PATRON — Base Solide : Partenaires, Hôtels enrichis, Transport, Guides, Saisons
+const PartnersPage          = lazy(() => import('@/pages/PartnersPage').then(m => ({ default: m.PartnersPage })))
+const HotelCatalogPage      = lazy(() => import('@/pages/HotelCatalogPage').then(m => ({ default: m.HotelCatalogPage })))
+const SeasonsPage           = lazy(() => import('@/pages/SeasonsPage').then(m => ({ default: m.SeasonsPage })))
+const FleetManagementPage   = lazy(() => import('@/pages/FleetManagementPage').then(m => ({ default: m.FleetManagementPage })))
+const GuideCatalogPage      = lazy(() => import('@/pages/GuideCatalogPage').then(m => ({ default: m.GuideCatalogPage })))
+
 // ── Skeleton loader shown during page transitions ─────────────────
 function PageSkeleton() {
   return (
@@ -364,6 +371,13 @@ export default function App() {
 
                 {/* CRM Analytics */}
                 <Route path="/crm/analytics" element={<CrmAnalyticsPage />} />
+
+                {/* BASE SOLIDE — Phase Patron */}
+                <Route path="/partners" element={<PartnersPage />} />
+                <Route path="/hotel-catalog" element={<HotelCatalogPage />} />
+                <Route path="/seasons" element={<SeasonsPage />} />
+                <Route path="/fleet-management" element={<FleetManagementPage />} />
+                <Route path="/guide-catalog" element={<GuideCatalogPage />} />
 
                 {/* 7 pages nouvellement routées */}
                 <Route path="/ai-assistant" element={<AIAssistantPage />} />
