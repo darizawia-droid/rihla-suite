@@ -105,6 +105,14 @@ const ALL_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: 'PHASE 3 — FEATURES AVANCÉES',
+    items: [
+      { to: '/unified-catalog',      icon: 'Package',          label: 'Catalogue Unifié Produits' },
+      { to: '/circuit-pricing',      icon: 'Calculator',       label: 'Calculateur de Circuit' },
+      { to: '/ai-smart-builder',     icon: 'Sparkles',         label: 'AI Smart Builder' },
+    ],
+  },
+  {
     label: 'RESEAU & INVENTAIRE',
     items: [
       { to: '/operations/supplier-audit', icon: 'ShieldCheck',     label: 'Audit Qualité & Réseau',  shortcut: 'Q' },
@@ -130,6 +138,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
     'STRATÉGIE & PILOTAGE',
     'CONCEPTION & IA',
     'BASE SOLIDE — PARAMÉTRAGE',
+    'PHASE 3 — FEATURES AVANCÉES',
     'RELATION CLIENT & B2B',
     'OPÉRATIONS & LOGISTIQUE',
     'RESEAU & INVENTAIRE',
@@ -144,6 +153,7 @@ const ROLE_GROUPS: Record<string, string[]> = {
   travel_designer: [
     'CONCEPTION & IA',
     'BASE SOLIDE — PARAMÉTRAGE',
+    'PHASE 3 — FEATURES AVANCÉES',
     'OPÉRATIONS & LOGISTIQUE',
     'RESEAU & INVENTAIRE',
     'RELATION CLIENT & B2B',

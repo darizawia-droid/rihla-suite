@@ -161,6 +161,11 @@ const SeasonsPage           = lazy(() => import('@/pages/SeasonsPage').then(m =>
 const FleetManagementPage   = lazy(() => import('@/pages/FleetManagementPage').then(m => ({ default: m.FleetManagementPage })))
 const GuideCatalogPage      = lazy(() => import('@/pages/GuideCatalogPage').then(m => ({ default: m.GuideCatalogPage })))
 
+// PHASE 3 — Features Avancées : Catalogue Unifié, Calculateur Circuit, AI Smart Builder
+const UnifiedCatalogPage    = lazy(() => import('@/pages/UnifiedCatalogPage').then(m => ({ default: m.UnifiedCatalogPage })))
+const CircuitPricingPage    = lazy(() => import('@/pages/CircuitPricingPage').then(m => ({ default: m.CircuitPricingPage })))
+const AISmartBuilderPage    = lazy(() => import('@/pages/AISmartBuilderPage').then(m => ({ default: m.AISmartBuilderPage })))
+
 // ── Skeleton loader shown during page transitions ─────────────────
 function PageSkeleton() {
   return (
@@ -378,6 +383,11 @@ export default function App() {
                 <Route path="/seasons" element={<SeasonsPage />} />
                 <Route path="/fleet-management" element={<FleetManagementPage />} />
                 <Route path="/guide-catalog" element={<GuideCatalogPage />} />
+
+                {/* PHASE 3 — Features Avancées */}
+                <Route path="/unified-catalog" element={<UnifiedCatalogPage />} />
+                <Route path="/circuit-pricing" element={<CircuitPricingPage />} />
+                <Route path="/ai-smart-builder" element={<AISmartBuilderPage />} />
 
                 {/* 7 pages nouvellement routées */}
                 <Route path="/ai-assistant" element={<AIAssistantPage />} />
