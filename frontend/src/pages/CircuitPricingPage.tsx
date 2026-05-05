@@ -120,34 +120,31 @@ export function CircuitPricingPage() {
 
   const seasonMod = SEASON_MODS[season].mod
 
-  const pricing = useMemo(() => {
+  const calcPricing = (targetPax: number, calcDays: CircuitDay[]) => {
     let totalHotel = 0, totalTransport = 0, totalGuide = 0, totalRestaurant = 0, totalActivities = 0
     const perDay: { hotel: number; transport: number; guide: number; restaurant: number; activities: number }[] = []
 
-    for (const d of days) {
+    for (const d of calcDays) {
       let dayHotel = 0, dayTransport = 0, dayGuide = 0, dayRestaurant = 0, dayActivities = 0
 
-      // Hotel cost (per room night × rooms needed)
       if (d.hotelId) {
         const hotel = HOTELS.find(h => h.id === d.hotelId)
         if (hotel) {
           const room = hotel.rooms[d.roomType] || hotel.rooms[0]
-          const roomsNeeded = Math.ceil(pax / 2) // assume double occupancy
+          const roomsNeeded = Math.ceil(targetPax / 2)
           dayHotel = room.dbl * roomsNeeded * seasonMod
         }
       }
 
-      // Transport cost (flat rate per route)
       if (d.transportId) {
         const transport = TRANSPORTS.find(t => t.id === d.transportId)
         if (transport) {
           const route = transport.routes[d.routeIdx] || transport.routes[0]
-          const vehiclesNeeded = Math.ceil(pax / transport.capacity)
+          const vehiclesNeeded = Math.ceil(targetPax / transport.capacity)
           dayTransport = route.price * vehiclesNeeded
         }
       }
 
-      // Guide cost (daily rate, flat)
       if (d.guideId) {
         const guide = GUIDES.find(g => g.id === d.guideId)
         if (guide) {
@@ -156,16 +153,14 @@ export function CircuitPricingPage() {
         }
       }
 
-      // Restaurant cost (per pax)
       if (d.restaurantId) {
         const resto = RESTAURANTS.find(r => r.id === d.restaurantId)
         if (resto) {
-          dayRestaurant = resto.pricePerPax * pax
+          dayRestaurant = resto.pricePerPax * targetPax
         }
       }
 
-      // Activities cost (per pax)
-      dayActivities = d.activities.reduce((sum, a) => sum + a.pricePerPax * pax, 0)
+      dayActivities = d.activities.reduce((sum, a) => sum + a.pricePerPax * targetPax, 0)
 
       perDay.push({ hotel: dayHotel, transport: dayTransport, guide: dayGuide, restaurant: dayRestaurant, activities: dayActivities })
       totalHotel += dayHotel
@@ -178,10 +173,17 @@ export function CircuitPricingPage() {
     const totalCost = totalHotel + totalTransport + totalGuide + totalRestaurant + totalActivities
     const marginAmount = totalCost * (margin / 100)
     const totalSelling = totalCost + marginAmount
-    const pricePerPax = totalSelling / pax
+    const pricePerPax = totalSelling / targetPax
 
     return { totalHotel, totalTransport, totalGuide, totalRestaurant, totalActivities, totalCost, marginAmount, totalSelling, pricePerPax, perDay }
-  }, [days, pax, margin, seasonMod])
+  }
+
+  const pricing = useMemo(() => calcPricing(pax, days), [days, pax, margin, seasonMod]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const paxGrid = useMemo(() =>
+    [10, 15, 20, 25, 30, 40].map(p => ({ pax: p, pricePerPax: calcPricing(p, days).pricePerPax })),
+    [days, margin, seasonMod] // eslint-disable-line react-hooks/exhaustive-deps
+  )
 
   const addDay = () => {
     setDays(prev => [...prev, { ...DEFAULT_DAY, day: prev.length + 1 }])
@@ -460,16 +462,12 @@ export function CircuitPricingPage() {
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-white/10">
             <h3 className="font-bold text-sm text-slate-900 dark:text-cream mb-3 flex items-center gap-1"><Users size={14} /> Grille PAX</h3>
             <div className="space-y-1 text-xs">
-              {[10, 15, 20, 25, 30, 40].map(p => {
-                const scale = pax / p
-                const adjPrice = pricing.pricePerPax * scale
-                return (
-                  <div key={p} className={`flex items-center justify-between py-1 ${p === pax ? 'font-bold text-amber-600' : 'text-slate-600 dark:text-slate-400'}`}>
-                    <span>{p} PAX {p === pax && '←'}</span>
-                    <span>{fmt(adjPrice)} {currency}/pax</span>
-                  </div>
-                )
-              })}
+              {paxGrid.map(({ pax: p, pricePerPax: ppx }) => (
+                <div key={p} className={`flex items-center justify-between py-1 ${p === pax ? 'font-bold text-amber-600' : 'text-slate-600 dark:text-slate-400'}`}>
+                  <span>{p} PAX {p === pax && '←'}</span>
+                  <span>{fmt(ppx)} {currency}/pax</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
